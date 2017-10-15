@@ -7,4 +7,3 @@ app = Flask(__name__)
 
 app.register_blueprint(blueprint=home, url_prefix='/app')
 app.register_blueprint(blueprint=maps, url_prefix='/app/maps')
-

@@ -1,26 +1,22 @@
-{% extends "index.html" %}
+{% extends "home/index.html" %}
 {% block Header %}
     <div class="header">
-        <h3>
-            Visualiser
-        </h3>
+        <h2>
+            <a href="{{ url_for('home.index') }}">Visualiser</a>
+        </h2>
 
         <ul>
             <li>
-                <a href="/settings">Settings</a>
+                <a href="{{ url_for('home.settings') }}">Settings</a>
             </li>
             <li>
-                <a href="/about">About</a>
+                <a href="{{ url_for('maps.index') }}">Maps</a>
             </li>
         </ul>
     </div>
     <!--Blocks to include(should include main application modules.-->
-    {% block Home %}
+    {% block PageContent %}
     {%  endblock %}
-    {% block Settings %}
-    {% endblock %}
-    {% block About %}
-    {% endblock %}
 
     <div class="footer">
     <h5><strong>Created by:</strong> Radosław Potyka</h5>

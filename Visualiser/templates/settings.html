@@ -1,0 +1,14 @@
+{% extends "header.html" %}
+{% block Settings %}
+    <div class="page-content">
+        <h2>
+            Settings
+        </h2>
+
+        {% if user != None and user.name != None %}
+            <h3> You're logged as: {{ user.name }}</h3>
+        {% else %}
+            <h3> You are not logged in</h3>
+        {% endif %}
+    </div>
+{% endblock %}

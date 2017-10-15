@@ -13,3 +13,8 @@ def settings():
     # TODO: user info fetching
     user = None
     return render_template("settings.html", user=user)
+
+
+@app.route('/about')
+def about():
+    return render_template("about.html")

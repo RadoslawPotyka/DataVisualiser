@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+{% block Header %}
+    <div class="header">
+        <h3>
+            Visualiser
+        </h3>
+
+        <ul>
+            <li>
+                <a href="/settings">Settings</a>
+            </li>
+            <li>
+                <a href="/about">About</a>
+            </li>
+        </ul>
+    </div>
+    <!--Blocks to include(should include main application modules.-->
+    {% block Home %}
+    {%  endblock %}
+    {% block Settings %}
+    {% endblock %}
+    {% block About %}
+    {% endblock %}
+
+    <div class="footer">
+    <h5><strong>Created by:</strong> Radosław Potyka</h5>
+    </div>
+{% endblock %}

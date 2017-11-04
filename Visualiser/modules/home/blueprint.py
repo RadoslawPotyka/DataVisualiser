@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask import render_template
 
-from Visualiser.modules.main.controllers import HomeController
+from Visualiser.modules.home.controllers import HomeController
+# TODO: export as class instance
 
 
 home = Blueprint('home', __name__)
@@ -19,7 +20,3 @@ def settings():
     return render_template("home/settings.html", controller=HomeController())
 
 
-# @home.route('/maps')
-# def maps_list():
-#     # TODO: maps info fetching
-#     return render_template("maps/home.html", controller=MapsController())

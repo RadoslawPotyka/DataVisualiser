@@ -10,4 +10,4 @@ charts = Blueprint('charts', __name__)
 
 @charts.route('/home')
 def index():
-    return render_template("maps/home.html", controller=None)
+    return render_template("charts/home.html", controller=None)

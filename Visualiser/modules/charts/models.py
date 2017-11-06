@@ -8,19 +8,20 @@ class Chart(object):
         @property width(int): width of the chart in pixels
         @property height(int): height of the chart in pixels
         @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
-        @property y_axis(Axis): Axis class instance for determining values and display of Y axis of the chart
         @property title(ChartTitle): Title class instance containing styling and display of chart title
-        @property figure(Figure): Figure class instance containing options for shape to be displayed on the chart
+        @property layers(list(Figure)): List of all layers to be displayed on chart.
     """
+
+    __DEFAULT_SIZE = 500
 
     def __init__(self):
         self.__id = None
-        self.__width = None
-        self.__height = None
+        self.__name = None
+        self.__width = self.__DEFAULT_SIZE
+        self.__height = self.__DEFAULT_SIZE
         self.__X_axis = Axis()
-        self.__Y_axis = Axis()
+        self.__layers = []
         self.__title = ChartTitle()
-        self.__figure = Figure()
 
     @property
     def id(self):
@@ -29,6 +30,14 @@ class Chart(object):
     @id.setter
     def id(self, new_id):
         self.__id = new_id
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        self.__name = name
 
     @property
     def width(self):
@@ -51,12 +60,30 @@ class Chart(object):
         return self.__X_axis
 
     @property
-    def y_axis(self):
-        return self.__Y_axis
+    def layers(self):
+        return self.__layers
 
     @property
     def title(self):
         return self.__title
+
+
+class ChartLayer(object):
+    """
+    Object representation of a chart layer covering the Y axis settings and figure to display.
+
+    Attributes:
+        @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
+        @property figure(Figure): Figure class instance containing options for shape to be displayed on the chart layer
+    """
+
+    def __init__(self):
+        self.__axis = None
+        self.__figure = None
+
+    @property
+    def axis(self):
+        return self.__axis
 
     @property
     def figure(self):
@@ -108,15 +135,25 @@ class Figure(object):
     geometrical shapes on a plot.
 
     Attributes:
+        @property shape(str): Shape of the figure f.e. 'line' or 'circle'.
         @property colour(str): Colour of the figure. Can be string description or code for a colour.
         @property opacity(str): Determines transparency of the figure.
         @property size(str): Determines width of the figure on the plot in pixels.
     """
 
     def __init__(self):
+        self.__shape = None
         self.__colour = None
         self.__opacity = None
         self.__size = None
+
+    @property
+    def shape(self):
+        return self.__shape
+
+    @shape.setter
+    def shape(self, shape):
+        self.__shape = shape
 
     @property
     def colour(self):

@@ -1,4 +1,4 @@
-from Visualiser.modules.main.controllers import HomeController
+from Visualiser.modules.home.controllers import HomeController
 
 
 class MapsController(HomeController):

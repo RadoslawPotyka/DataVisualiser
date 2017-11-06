@@ -16,7 +16,4 @@ def index():
 
 @home.route('/settings')
 def settings():
-    # TODO: user info fetching
     return render_template("home/settings.html", controller=HomeController())
-
-

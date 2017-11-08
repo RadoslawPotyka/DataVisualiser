@@ -1,9 +1,10 @@
 # TODO: generate chart adjustments, move to controllers?
 import pandas as pd
+from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import CDN
-from bokeh.embed import components
-from ..home.models import TemplateResourcesData
+
+from Visualiser.modules.common.models import TemplateResourcesData
 from .models import Chart
 
 

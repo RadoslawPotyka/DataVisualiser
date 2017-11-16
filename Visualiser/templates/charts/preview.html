@@ -1,0 +1,11 @@
+{% extends "charts/navigation.html" %}
+{% block ChartContent %}
+
+    <link rel="stylesheet" href="{{ controller.bokeh_resources.css | safe}}" type="text/css" />
+    <script src="{{ controller.bokeh_resources.js | safe}}" type="text/javascript"></script>
+
+    <div class="page-content">
+        {{ controller.chart_resources.js  | safe }}
+        {{ controller.chart_resources.html | safe }}
+    </div>
+{% endblock %}

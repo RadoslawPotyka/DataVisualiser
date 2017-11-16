@@ -1,20 +1,16 @@
-{% extends "home/header.html" %}
-{% block PageContent %}
+{% extends "charts/navigation.html" %}
+{% block ChartContent %}
     <div class="page-content">
-    <h3>Charts:</h3>
         <h4>
             Here in charts module you'll be able to create and view charts.
         </h4>
-        <ul>
-            <li>
-                <a href="{{ url_for('charts.create') }}">Create chart</a>
-            </li>
+{#        <ul>#}
 {#            <li>#}
-{#                <a href="{{ url_for('maps.index') }}">Maps</a>#}
+{#                <a href="{{ url_for('charts.create') }}">Create chart</a>#}
 {#            </li>#}
 {#            <li>#}
-{#                <a href="{{ url_for('charts.index') }}">Charts</a>#}
+{#                <a href="{{ url_for('charts.preview') }}">See demo</a>#}
 {#            </li>#}
-        </ul>
+{#        </ul>#}
     </div>
 {% endblock %}

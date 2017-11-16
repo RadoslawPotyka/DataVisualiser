@@ -4,39 +4,39 @@ class TemplateResourcesData(object):
     strings which can be embedded in a template file embedding.
 
     Attributes:
-        @property css_list(list(str)): list of string containing links to css stylesheets.
-        @property js_list(list(str)): list of strings containing script to include in a html page.
-        @property html_list(list(str)): list of stringified html files to include in an html page.
+        @property css(str): list of string containing links to css stylesheets.
+        @property js(str): list of strings containing script to include in a html page.
+        @property html(str): list of stringified html files to include in an html page.
     """
 
     def __init__(self):
-        self.__css_list = []
-        self.__js_list = []
-        self.__html_list = []
+        self.__css = []
+        self.__js = []
+        self.__html = []
 
     @property
-    def css_list(self):
-        return self.__css_list
+    def css(self):
+        return self.__css
 
-    @css_list.setter
-    def css_list(self, css):
-        self.__css_list = css
-
-    @property
-    def js_list(self):
-        return self.__js_list
-
-    @js_list.setter
-    def js_list(self, js):
-        self.__js_list = js
+    @css.setter
+    def css(self, css):
+        self.__css = css
 
     @property
-    def html_list(self):
-        return self.__html_list
+    def js(self):
+        return self.__js
 
-    @html_list.setter
-    def html_list(self, html):
-        self.__html_list = html
+    @js.setter
+    def js(self, js):
+        self.__js = js
+
+    @property
+    def html(self):
+        return self.__html
+
+    @html.setter
+    def html(self, html):
+        self.__html = html
 
 
 class User(object):

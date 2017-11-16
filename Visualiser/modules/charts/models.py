@@ -1,6 +1,37 @@
 class Chart(object):
     """
-    Represents chart for data visualisation. Contains useful information and data
+    Represents whole chart object ready to display. Wraps chart configuration and its data source for easier
+    transportation throughout solution and its services.
+
+    Attributes:
+        @property chart_options(ChartOptions): chart configuration object for the chart.
+        @property data_source(pandas.DataFrame): data source used in the chart.
+    """
+
+    def __init__(self):
+        self.__chart_options = None
+        self.__data_source = None
+
+    @property
+    def chart_options(self):
+        return self.__chart_options
+
+    @chart_options.setter
+    def chart_options(self, chart_options):
+        self.__chart_options = chart_options
+
+    @property
+    def data_source(self):
+        return self.__data_source
+
+    @data_source.setter
+    def data_source(self, data_source):
+        self.__data_source = data_source
+
+
+class ChartOptions(object):
+    """
+    Represents chart configuration for data visualisation. Contains useful information and data
     for chart creation and customisation.
 
     Attributes:
@@ -9,7 +40,7 @@ class Chart(object):
         @property height(int): height of the chart in pixels
         @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
         @property title(ChartTitle): Title class instance containing styling and display of chart title
-        @property layers(list(Figure)): List of all layers to be displayed on chart.
+        @property layers(list(ChartFigure)): List of all layers to be displayed on chart.
     """
 
     __DEFAULT_SIZE = 500
@@ -59,13 +90,25 @@ class Chart(object):
     def x_axis(self):
         return self.__X_axis
 
+    @x_axis.setter
+    def x_axis(self, axis):
+        self.__X_axis = axis
+
     @property
     def layers(self):
         return self.__layers
 
+    @layers.setter
+    def layers(self, layers):
+        self.__layers = layers
+
     @property
     def title(self):
         return self.__title
+
+    @title.setter
+    def title(self, title):
+        self.__title = title
 
 
 class ChartLayer(object):
@@ -74,7 +117,7 @@ class ChartLayer(object):
 
     Attributes:
         @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
-        @property figure(Figure): Figure class instance containing options for shape to be displayed on the chart layer
+        @property figure(ChartFigure): ChartFigure class instance containing options for shape to be displayed on the chart layer
     """
 
     def __init__(self):
@@ -88,6 +131,14 @@ class ChartLayer(object):
     @property
     def figure(self):
         return self.__figure
+
+    @axis.setter
+    def axis(self, axis):
+        self.__axis = axis
+
+    @figure.setter
+    def figure(self, figure):
+        self.__figure = figure
 
 
 class Axis(object):
@@ -129,7 +180,7 @@ class Axis(object):
         self.__data_type = data_type
 
 
-class Figure(object):
+class ChartFigure(object):
     """
     Object representation of a figure on a plot. Contains data necessary for customising point, lines and other
     geometrical shapes on a plot.

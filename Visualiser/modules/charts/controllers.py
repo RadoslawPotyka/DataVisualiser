@@ -1,7 +1,4 @@
-from .services import BokehService, ChartCreator
-from .models import Chart, ChartLayer
-import pandas as pd
-from bokeh.plotting import figure
+from .services import BokehService, ChartService
 
 
 class ChartDisplayController(object):
@@ -9,10 +6,10 @@ class ChartDisplayController(object):
     Controller responsible for handling chart creation. Contains all methods necessary for creating and storing
     charts with options provided by form data and pandas data frame object with values loaded from uploaded file.
     """
-    chart_data = Chart()
 
-    def __init__(self):
-        pass
+    def __init__(self, chart_id=None):
+        chart = ChartService.get_chart(chart_id=chart_id)
+        plot = BokehService.generate_plot(chart)
 
-    def __load_chart(self):
-        pass
+        self.bokeh_resources = BokehService.get_bokeh_resources()
+        self.chart_resources = BokehService.export_plot(plot)

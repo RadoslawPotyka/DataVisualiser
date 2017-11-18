@@ -30,7 +30,7 @@ class ChartService(object):
         """
         Returns the demo chart generated from test_samples.
 
-        :return chart: (Chart) chart object configuration fir demo chart.
+        :return chart: (Chart) chart object configuration for demo chart.
         """
         chart = ChartSampleGenerator.create_chart()
         return chart
@@ -114,7 +114,7 @@ class ChartCreator(object):
         for layer in layers:
             layer_figure = layer.figure
             axis = layer.axis
-            plot.yaxis.axis_label = axis.name or axis.data_field
+            plot.yaxis.axis_label = axis.description or axis.data_field
             getattr(plot, layer_figure.shape)(self.__data_frame[self.__x_axis_data_field],
                                               self.__data_frame[axis.data_field],
                                               color=layer_figure.colour,
@@ -133,7 +133,7 @@ class ChartCreator(object):
         x_data_type = x.data_type or "auto"
 
         plot = figure(height=chart.height, width=chart.width, x_axis_type=x_data_type)
-        plot.xaxis.axis_label = chart.x_axis.name or chart.x_axis.data_field
+        plot.xaxis.axis_label = chart.x_axis.description or chart.x_axis.data_field
         self.__x_axis_data_field = chart.x_axis.data_field
         self.__add_title(plot, chart.title)
 

@@ -38,6 +38,7 @@ class ChartOptions(object):
         @property id(int): chart id for identyfying particular chart
         @property width(int): width of the chart in pixels
         @property height(int): height of the chart in pixels
+        @property description(str): description of the chart
         @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
         @property title(ChartTitle): Title class instance containing styling and display of chart title
         @property layers(list(ChartFigure)): List of all layers to be displayed on chart.
@@ -47,7 +48,7 @@ class ChartOptions(object):
 
     def __init__(self):
         self.__id = None
-        self.__name = None
+        self.__description = None
         self.__width = self.__DEFAULT_SIZE
         self.__height = self.__DEFAULT_SIZE
         self.__X_axis = Axis()
@@ -63,12 +64,12 @@ class ChartOptions(object):
         self.__id = new_id
 
     @property
-    def name(self):
-        return self.__name
+    def description(self):
+        return self.__description
 
-    @name.setter
-    def name(self, name):
-        self.__name = name
+    @description.setter
+    def description(self, name):
+        self.__description = name
 
     @property
     def width(self):
@@ -117,7 +118,8 @@ class ChartLayer(object):
 
     Attributes:
         @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
-        @property figure(ChartFigure): ChartFigure class instance containing options for shape to be displayed on the chart layer
+        @property figure(ChartFigure): ChartFigure class instance containing options for shape to be displayed on the
+        chart layer.
     """
 
     def __init__(self):
@@ -145,8 +147,8 @@ class Axis(object):
     """
     Object representation of an axis containing options necessary for controlling axis on a chart.
 
-    @property name(str): display name of an axis.
-    @property data_field(str): column name used for an axis.
+    @property description(str): display description of an axis.
+    @property data_field(str): column description used for an axis.
     @property data_type(str): data type used for an axis.
     """
 

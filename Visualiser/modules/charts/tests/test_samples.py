@@ -15,7 +15,7 @@ class ChartSampleGenerator(object):
 
         chart_options = ChartOptions()
         chart_options.title = ChartSampleGenerator.create_sample_title()
-        chart_options.name = "TEST"
+        chart_options.description = "TEST"
         chart_options.x_axis = ChartSampleGenerator.create_sample_axis("numbers")
 
         layer = ChartSampleGenerator.add_line_layer("squares")

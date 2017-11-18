@@ -1,4 +1,42 @@
 from .services import BokehService, ChartService
+from .models import Chart
+
+
+class ChartBaseEditorController(object):
+    """
+    Controller responsible for base steps of creation process.
+
+    Args:
+                request(request): request used for chart creation.
+
+    Attributes:
+        __request(request): request used for creation of the chart.
+        __form(wtforms.Form): Current form instance to gather data.
+        __chart(Chart): Chart instance awaiting creation.
+    """
+
+    __request = None
+    __form = None
+    __chart = None
+
+    def __init__(self, request):
+        self.__request = request
+
+    @property
+    def form(self):
+        return self.__form
+
+    @form.setter
+    def form(self, form):
+        self.__form = form
+
+    @property
+    def chart(self):
+        return self.__chart
+
+    @chart.setter
+    def chart(self, chart):
+        self.__chart = chart
 
 
 class ChartDisplayController(object):

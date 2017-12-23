@@ -1,5 +1,5 @@
-import pandas as pd
 from Visualiser.modules.charts.models import *
+from Visualiser.modules.common.models import *
 
 
 class ChartSampleGenerator(object):
@@ -12,7 +12,6 @@ class ChartSampleGenerator(object):
         df = ChartSampleGenerator.create_data_source()
         chart = Chart()
         chart.data_source = df
-
         chart_options = ChartOptions()
         chart_options.title = ChartSampleGenerator.create_sample_title()
         chart_options.description = "TEST"
@@ -36,7 +35,7 @@ class ChartSampleGenerator(object):
 
     @staticmethod
     def add_line_layer(column):
-        layer = ChartLayer()
+        layer = Layer()
         layer.axis = ChartSampleGenerator.create_sample_axis(column)
         layer.figure = ChartSampleGenerator.create_line()
 
@@ -44,37 +43,37 @@ class ChartSampleGenerator(object):
 
     @staticmethod
     def create_line():
-        line = ChartFigure()
+        line = ObjectFigure()
         line.colour = "purple"
         line.opacity = 0.5
-        line.shape = "line"
+        line.object_key = ObjectKey.Line
 
         return line
 
     @staticmethod
     def create_square():
-        line = ChartFigure()
+        line = ObjectFigure()
         line.colour = "purple"
         line.opacity = 0.5
-        line.shape = "square"
+        line.object_key = ObjectKey.Square
 
         return line
 
     @staticmethod
     def create_triangle():
-        line = ChartFigure()
+        line = ObjectFigure()
         line.colour = "purple"
         line.opacity = 0.5
-        line.shape = "triangle"
+        line.object_key = ObjectKey.Triangle
 
         return line
 
     @staticmethod
     def create_point():
-        line = ChartFigure()
+        line = ObjectFigure()
         line.colour = "purple"
         line.opacity = 0.5
-        line.shape = "circle"
+        line.object_key = ObjectKey.Circle
 
         return line
 

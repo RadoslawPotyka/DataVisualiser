@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 
 from Visualiser.modules.charts.controllers import ChartDisplayController
 
@@ -15,4 +15,7 @@ def index():
 
 @charts.route('/preview')
 def preview():
-    return render_template("charts/preview.html", controller=ChartDisplayController())
+    controller = ChartDisplayController()
+    controller.load_demo_plot()
+
+    return render_template("charts/preview.html", controller=controller)

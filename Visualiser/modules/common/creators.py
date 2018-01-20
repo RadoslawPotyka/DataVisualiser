@@ -56,7 +56,7 @@ class DocumentFactory(Factory):
 
         for layer in document.model.layers:
             self.build(base_object=created_object, document=LayerDocument(layer=layer,
-                                                                          data_source=document.data_source,
+                                                                          data_source=document.data_source.data,
                                                                           x_axis=document.model.x_axis))
         return created_object
 

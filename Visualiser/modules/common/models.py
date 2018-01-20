@@ -1,4 +1,5 @@
 from enum import Enum
+
 import pandas as pd
 
 
@@ -12,6 +13,78 @@ class ObjectKey(Enum):
     Square = "Square"
     Triangle = "Triangle"
     Circle = "Circle"
+
+
+class FormAction(Enum):
+    Initialised = 0
+    FileUploaded = 1
+    LayerSubmitted = 2
+    LayerRemoved = 3
+    FormSubmitted = 4
+    DocumentCreated = 5
+    DocumentSaved = 6
+    DocumentDisposed = 7
+    DocumentEdited = 8
+
+
+class DataSource(object):
+    """
+    Object representation of document data source.
+
+    Attributes:
+        @property data: (pd.DataFrame) DataFrame object containing data for the document.
+        @property column_index: (int) Row index of columns in the DataFrame.
+        @property separator: (str) Separator of columns in a file containing DataSource.
+        @property file_name: (str) Name of the file containing data for the DataSource.
+        @property datetime_columns: [str] List of columns with values in a datetime format.
+    """
+
+    def __init__(self):
+        self.__data = None
+        self.__column_index = None
+        self.__separator = None
+        self.__file_name = None
+        self.__datetime_columns = None
+
+    @property
+    def data(self) -> pd.DataFrame:
+        return self.__data
+
+    @data.setter
+    def data(self, data_frame: pd.DataFrame) -> None:
+        self.__data = data_frame
+
+    @property
+    def column_index(self) -> int:
+        return self.__column_index
+
+    @column_index.setter
+    def column_index(self, index: int) -> None:
+        self.__column_index = index
+
+    @property
+    def separator(self) -> str:
+        return self.__separator
+
+    @separator.setter
+    def separator(self, sep: str) -> None:
+        self.__separator = sep
+
+    @property
+    def file_name(self) -> str:
+        return self.__file_name
+
+    @file_name.setter
+    def file_name(self, file_name: str) -> None:
+        self.__file_name = file_name
+
+    @property
+    def datetime_columns(self) -> [str]:
+        return self.__datetime_columns
+
+    @datetime_columns.setter
+    def datetime_columns(self, datetime_columns: [str]) -> None:
+        self.__datetime_columns = datetime_columns
 
 
 class ObjectFigure(object):
@@ -110,13 +183,13 @@ class Layer(object):
 
     Attributes:
         @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
-        @property figure(ChartFigure): ChartFigure class instance containing options for object_key to be displayed on the
-        chart layer.
+        @property figure(ChartFigure): ChartFigure class instance containing options for object_key to be displayed on
+        the chart layer.
     """
 
     def __init__(self):
-        self.__axis = None
-        self.__figure = None
+        self.__axis = Axis()
+        self.__figure = ObjectFigure()
 
     @property
     def axis(self) -> Axis:
@@ -142,13 +215,22 @@ class DocumentOptions(object):
 
     Attributes:
         @property description(str): description of the chart
-        @property layers(list(ChartFigure)): List of all layers to be displayed on chart.
+        @property layers(list(Layer)): List of all layers to be displayed on chart.
     """
 
     def __init__(self):
+        self.__title = None
         self.__description = None
         self.__X_axis = Axis()
         self.__layers = []
+
+    @property
+    def title(self) -> str:
+        return self.__title
+
+    @title.setter
+    def title(self, name: str):
+        self.__title = name
 
     @property
     def description(self) -> str:
@@ -182,24 +264,28 @@ class Document(object):
 
     Attributes:
         @property model(DocumentOptions): model object containing characteristics of the document.
-        @property data_source(pd.DataFrame): data source object for document.
+        @property data_source(DataSource): data source object for document.
         @property object_key(Enum): object key of the document.
     """
 
     _model = None
-    _data_source = None
+    _data_source = DataSource()
     _object_key = None
 
     @property
     def model(self) -> DocumentOptions:
         return self._model
 
+    @model.setter
+    def model(self, new_model: DocumentOptions) -> None:
+        self._model = new_model
+
     @property
-    def data_source(self) -> pd.DataFrame:
+    def data_source(self) -> DataSource:
         return self._data_source
 
     @data_source.setter
-    def data_source(self, data_source: pd.DataFrame):
+    def data_source(self, data_source: DataSource):
         self._data_source = data_source
 
     @property
@@ -213,10 +299,11 @@ class LayerDocument(Document):
 
     Attributes:
         @property model(Layer): model object containing characteristics of a layer.
-        @property data_source(pd.DataFrame): data source object for the layer.
+        @property data_source(pd.DataFrame): DataFrame object with values used by layer.
         @property object_key(Enum): object key of the layer.
         @property x_axis(Axis): x_axis used for the layer.
     """
+
     def __init__(self,
                  layer: Layer = None,
                  data_source: pd.DataFrame = None,
@@ -225,7 +312,6 @@ class LayerDocument(Document):
         self._data_source = data_source
         self._object_key = layer.figure.object_key
         self.__X_axis = x_axis
-        print(layer.figure)
 
     @property
     def model(self) -> Layer:
@@ -238,6 +324,14 @@ class LayerDocument(Document):
     @x_axis.setter
     def x_axis(self, axis: Axis):
         self.__X_axis = axis
+
+    @property
+    def data_source(self) -> pd.DataFrame:
+        return self._data_source
+
+    @data_source.setter
+    def data_source(self, data_source: pd.DataFrame):
+        self._data_source = data_source
 
 
 class FormState(Enum):
@@ -293,6 +387,39 @@ class TemplateResourcesData(object):
     @html.setter
     def html(self, html):
         self.__html = html
+
+
+class ApplicationOptions(object):
+    """
+    Object representation of configuration options for running flask application.
+
+    Attributes:
+        @property backend_url: (str) url used for backend connection.
+        @property colour_palette: ([str]) Colour palette supported throughout application.
+        @property allowed_extensions: ([str]) file extensions supported throughout application.
+    """
+
+    __backend_url = None
+    __colour_palette = None
+    __allowed_extensions = None
+    __environment = None
+
+    def __init__(self, options: dict):
+        self.__backend_url = options['BACKEND_URL']
+        self.__colour_palette = options['COLOURS']
+        self.__allowed_extensions = options['ALLOWED_EXTENSIONS']
+
+    @property
+    def backend_url(self):
+        return self.__backend_url
+
+    @property
+    def colour_palette(self):
+        return self.__colour_palette
+
+    @property
+    def allowed_extensions(self):
+        return self.__allowed_extensions
 
 
 class User(object):

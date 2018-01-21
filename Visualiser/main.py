@@ -1,10 +1,13 @@
 from flask import Flask, redirect, url_for
 
-from Visualiser.modules.home.blueprint import home
-from Visualiser.modules.maps.blueprint import maps
-from Visualiser.modules.charts.blueprint import charts
+from .modules.home.blueprint import home
+from .modules.maps.blueprint import maps
+from .modules.charts.blueprint import charts
+from .config import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static", static_folder="static")
+
+app.config.from_object(TestingConfig)
 
 app.register_blueprint(blueprint=home, url_prefix='/app')
 app.register_blueprint(blueprint=maps, url_prefix='/app/maps')

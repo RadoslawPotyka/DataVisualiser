@@ -1,27 +1,57 @@
 {% extends "home/index.html" %}
 {% block Header %}
-    <div class="header">
-        <h2>
-            <a href="{{ url_for('home.index') }}">Visualiser</a>
-        </h2>
-
-        <ul>
-            <li>
-                <a href="{{ url_for('home.settings') }}">Settings</a>
-            </li>
-            <li>
-                <a href="{{ url_for('maps.index') }}">Maps</a>
-            </li>
-            <li>
-                <a href="{{ url_for('charts.index') }}">Charts</a>
-            </li>
-        </ul>
-    </div>
-    <!--Blocks to include(should include home application modules.-->
-    {% block PageContent %}
-    {%  endblock %}
-
-    <div class="footer">
-    <h5><strong>Created by:</strong> Radosław Potyka</h5>
+    <div class="panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-pills nav-justified" role="tablist">
+                        <li role="presentation">
+                            <a class="btn btn-success" href="{{ url_for('home.index') }}">
+                                <h2 style="color:purple">Visualiser</h2>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-pills nav-justified" role="tablist">
+                        <li role="presentation">
+                            <a class="btn btn-default" href="{{ url_for('maps.index') }}">
+                                <strong class="text-success">Maps</strong>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a class="btn btn-default" href="{{ url_for('charts.index') }}">
+                                <strong class="text-success">Charts</strong>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a class="btn btn-default" href="{{ url_for('home.settings') }}">
+                                <strong class="text-success">Settings</strong>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--Blocks to include(should include home application modules.-->
+                    {#                <div class="panel-info">#}
+                    {% block PageContent %}
+                    {% endblock %}
+                </div>
+                {#                </div>#}
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5><strong>Created by:</strong> Radosław Potyka</h5>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

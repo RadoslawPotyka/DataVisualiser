@@ -1,11 +1,17 @@
 from flask import Blueprint
 from flask import render_template
 
-from Visualiser.modules.home.controllers import HomeController
-# TODO: export as class instance
-
+from .controllers import HomeController
+from ..common.services import Service
 
 home = Blueprint('home', __name__)
+
+
+@home.record
+def record_config(setup_state):
+    config = setup_state.app.config
+    home.config = config
+    Service.set_options(options=dict([(key, value) for (key, value) in config.items()]))
 
 
 @home.route('/')

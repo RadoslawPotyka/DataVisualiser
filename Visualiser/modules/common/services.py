@@ -5,10 +5,11 @@ from enum import Enum
 
 import pandas as pd
 from inspect import isabstract, isclass
-from flask import session
+from flask import session, redirect, render_template, url_for
 
-from .models import User, ApplicationOptions, DataSource
+from .models import User, ApplicationOptions, DataSource, FilterExpression
 from .fileio import FileHandlers, FileHandler
+from .utils import StringTools
 
 
 class Service(object):
@@ -118,14 +119,6 @@ class WorkingContextService(Service):
         SessionService.save_item(SessionService.Columns, columns)
 
     @staticmethod
-    def save_file_name(file_name: str) -> None:
-        SessionService.save_item(SessionService.FileName, file_name)
-
-    @staticmethod
-    def get_file_name() -> str:
-        SessionService.get_item(SessionService.FileName)
-
-    @staticmethod
     def get_upload_folder() -> str:
         """
         Returns path to the folder in which uploaded files are stored. Accesses FileService and uses the file path set
@@ -155,6 +148,7 @@ class FileService(Service):
 
     Attributes:
         UPLOAD_PATH: (str) path under which the uploaded files are stored.
+        file_handlers: (FileHandlers) file handlers used for file reading.
     """
 
     UPLOAD_PATH = "..\\..\\..\\public\\DATA\\"
@@ -180,10 +174,12 @@ class FileService(Service):
         :param data_source: (DataSource) DataSource object instance containing options for a file.
         :return: (list(str)) list of columns names read from provided file.
         """
-        file_type = FileService.__get_file_type(data_source.file_name)
-        file_handler = FileService.__create_file_handler(file_handler_type=file_type)
+        file_handler = FileService.__create_file_handler(file_name=data_source.file_name)
 
-        return file_handler.read_columns(data_source=data_source, file_path=FileService.get_upload_folder())
+        data_frame = file_handler.read_columns(data_source=data_source, file_path=FileService.get_upload_folder())
+        DataFrameService.fix_column_names(data_frame=data_frame)
+
+        return DataFrameService.extract_columns(data_frame=data_frame)
 
     @staticmethod
     def read_file(data_source: DataSource) -> pd.DataFrame:
@@ -193,10 +189,15 @@ class FileService(Service):
         :param data_source: (DataSource) DataSource object instance containing options for a file.
         :return: (pd.DataFrame) pandas DataFrame object with values read and parsed from the file.
         """
-        file_type = FileService.__get_file_type(data_source.file_name)
-        file_handler = FileService.__create_file_handler(file_handler_type=file_type)
+        file_handler = FileService.__create_file_handler(file_name=data_source.file_name)
 
-        return file_handler.read_file(data_source=data_source, file_path=FileService.get_upload_folder())
+        data_frame = file_handler.read_file(data_source=data_source, file_path=FileService.get_upload_folder())
+        DataFrameService.fix_column_names(data_frame=data_frame)
+
+        if data_source.should_fill_missing_data:
+            return DataFrameService.fill_missing_data(data_frame=data_frame)
+
+        return data_frame
 
     @staticmethod
     def __get_file_type(file_name: str):
@@ -204,7 +205,7 @@ class FileService(Service):
         Determine and return type of the file. Method tries to fetch extension by splitting the file name by default
         returning 'csv' type.
 
-        :param file_name: (str) name of the file to fetch extension for
+        :param file_name: (str) name of the file to fetch extension for.
         :return extension: (str) extension of provided file_name
         """
         extension = ""
@@ -217,24 +218,79 @@ class FileService(Service):
             return extension
 
     @staticmethod
-    def __create_file_handler(file_handler_type: str) -> FileHandler:
+    def __create_file_handler(file_name: str) -> FileHandler:
         """
         Creates file type specific handler based on file extension provided by params (should match existing file
         handlers.
 
-        :param file_handler_type: (str) type of the file handler that should be generated
+        :param file_name: (str) name of the file to prepare file handler for.
         :return: (FileHandler) file handler needed for proper parsing of the file with provided extension.
         """
+        file_handler_type = FileService.__get_file_type(file_name=file_name)
+
         if file_handler_type not in FileService.get_allowed_extensions():
             raise TypeError("Unsupported type {0} ".format(file_handler_type))
 
         file_handler = FileService.file_handlers[file_handler_type].value
-        # file_handler = eval(file_handler_type.upper())
 
         if isabstract(file_handler) or not isclass(file_handler):
             raise TypeError("File handler not implemented for type {0}".format(file_handler_type))
 
         return file_handler()
+
+
+class DataFrameService(object):
+    """
+    Service handling pandas DataFrame objects and performing operations on them such as interpolation used for filling
+    missing data or filtering data based on condition.
+    """
+
+    @staticmethod
+    def fill_missing_data(data_frame: pd.DataFrame) -> pd.DataFrame:
+        """
+        Fills missing data in the data_frame using interpolation method.
+
+        :param data_frame: (pd.DataFrame) pandas DataFrame object to perform interpolation on.
+        :return: (pd.DataFrame) interpolated DataFrame object with missing data filled.
+        """
+        return data_frame.interpolate()
+
+    @staticmethod
+    def filter(data_frame: pd.DataFrame, filter_expression: FilterExpression) -> pd.DataFrame:
+        """
+        Filters data in provided data_frame by provided filter_expression. Uses DataFrame query method to perform
+        filtering.
+
+        :param data_frame: (pd.DataFrame) DataFrame object to perform filtering on.
+        :param filter_expression: (FilterExpression) filter expression to filter data by.
+        :return df: (pd.DataFrame) DataFrame object with filtered data based on provided expression.
+        """
+        query = str(filter_expression)
+        print(query)
+        df = data_frame.query(query)
+        return df
+
+    @staticmethod
+    def extract_columns(data_frame: pd.DataFrame) -> [str]:
+        """
+        Extract columns list from provided data frame.
+
+        :param data_frame: (pd.DataFrame) DataFrame object instance to extract columns from.
+        :return: list of columns from provided data frame.
+        """
+        return data_frame.columns.values.tolist()
+
+    @staticmethod
+    def fix_column_names(data_frame: pd.DataFrame) -> None:
+        """
+        Replaces whitespaces in provided data_frame columns with underscores to avoid errors in data_frame querying.
+
+        :param data_frame: (pd.DataFrame) data frame to replace whitespaces for.
+        :return: None
+        """
+        cols = data_frame.columns
+        cols = cols.map(lambda x: StringTools.to_snake_case(string=x))
+        data_frame.columns = cols
 
 
 class DocumentService(Service):
@@ -273,6 +329,47 @@ class DocumentService(Service):
         return [(colour, colour) for colour in colours]
 
 
+class RouterStateService(Service):
+    """
+    Service handling routing, redirecting and rendering template.
+    """
+
+    @staticmethod
+    def go(state: str) -> redirect:
+        """
+        Redirect user to a state provided with method params.
+
+        :param state: (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
+        redirection between and inside blueprints.
+
+        :return: route matching provided state.
+        """
+        return redirect(url_for(state))
+
+    @staticmethod
+    def submit(state: str) -> redirect:
+        """
+        Redirect user to a state provided with method params using request POST method.
+
+        :param state: (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
+        redirection between and inside blueprints.
+
+        :return: route matching provided state.
+        """
+        return redirect(url_for(state), code=307)
+
+    @staticmethod
+    def render(template_path: str, controller: any) -> render_template:
+        """
+        Renders view with controller.
+
+        :param template_path: (str) path to the template that should be displayed to a user.
+        :param controller: (any) controller that should be assigned to rendered template.
+        :return: rendered template with bound controller.
+        """
+        return render_template(template_path, controller=controller)
+
+
 class CommonServiceProvider(object):
     """
     Service provider for common module. Contains exportable services for later usage throughout the application.
@@ -280,3 +377,5 @@ class CommonServiceProvider(object):
     WorkingContextService = WorkingContextService
     DocumentService = DocumentService
     FileService = FileService
+    RouterStateService = RouterStateService
+    DataFrameService = DataFrameService

@@ -10,7 +10,8 @@ from wtforms.fields import SelectField, StringField, TextAreaField, FieldList, \
 from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HTMLString, html_params, Select
 
-from ..common.models import Layer, Document, DocumentOptions, DataSource
+from .models import Layer, Document, DocumentOptions, DataSource, FilterExpression
+from .utils import StringTools
 
 
 class ColourSelect(Select):
@@ -18,8 +19,7 @@ class ColourSelect(Select):
     Renders a select field that supports options including additional html params.
 
     The field must provide an `iter_choices()` method which the widget will
-    call on rendering; this method must yield tuples of
-    `(value, label, selected, html_attributes)`.
+    call on rendering; this method must yield tuples of `(value, label, selected, html_attributes)`.
     """
 
     def __call__(self, field, **kwargs):
@@ -46,33 +46,7 @@ class ColourSelectField(SelectField):
             yield (value, label, self.coerce(value) == self.data, render_args)
 
 
-class BaseForm(FlaskForm):
-    """
-    Base class form flask wtforms. Contains method for mapping data from and to form object into respective objects that
-    will be used later throughout the application.
-    """
-
-    def map_to_object(self, an_object: any) -> None:
-        """
-        Applies data from form to provided object. Method changes object in place and does not
-        instantiate it.
-
-        :param an_object: (any) object to map data to
-        :return: None
-        """
-        return None
-
-    def map_from_object(self, an_object: any) -> None:
-        """
-        Assign values of respective fields of provided object to a form.
-
-        :param an_object: (any) object to map data from
-        :return: None
-        """
-        return None
-
-
-class LayerOptionsForm(BaseForm):
+class LayerOptionsForm(FlaskForm):
     """
     Class representing form for gathering user input regarding layer options.
     """
@@ -83,7 +57,7 @@ class LayerOptionsForm(BaseForm):
     remove_layer = SubmitField("Remove")
 
 
-class FileForm(BaseForm):
+class FileForm(FlaskForm):
     """
     Class representing form for gathering user input regarding data source and handling file upload.
     """
@@ -95,7 +69,7 @@ class FileForm(BaseForm):
     file_name = HiddenField(StringField())
 
 
-class DocumentBaseOptionsForm(BaseForm):
+class DocumentBaseOptionsForm(FlaskForm):
     """
     Class representing form for gathering user input regarding document options usable for all documents in app.
     """
@@ -104,12 +78,11 @@ class DocumentBaseOptionsForm(BaseForm):
     is_date_column = BooleanField(label="Click if the column contains dates")
 
 
-class DocumentBaseForm(BaseForm):
+class DocumentBaseForm(FlaskForm):
     """
     Class representing form for gathering user input regarding whole document. Contains field, methods and sub-forms
     common for all types of documents
     """
-    # data_source = FileField(label="Data")
     data_source = FormField(FileForm)
     file_name = HiddenField(StringField())
     layers = FieldList(FormField(LayerOptionsForm),
@@ -136,7 +109,9 @@ class DocumentBaseForm(BaseForm):
             if not layer_entry.remove_layer.data:
                 layer_list.append(layer_entry)
 
-        for layer in layer_list.reverse():
+        layer_list.reverse()
+
+        for layer in layer_list:
             self.layers.append_entry(layer)
 
     def submit_layer(self):
@@ -178,6 +153,9 @@ class FormHandler(object):
     __columns = None
     __shape_keys = None
     __colours = None
+    __supported_conditions = [("", "None"), ("==", "="), ("!=", "!="),
+                              ("<=", "<="), (">=", ">="), (">", ">"), ("<", "<")]
+    __supported_collocations = [("&", "and"), ("|", "or")]
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
         self.__columns = columns
@@ -266,7 +244,26 @@ class FormHandler(object):
         LayerForm.shape = SelectField("Shape", choices=self.__supported_shapes, validators=[DataRequired()])
         LayerForm.colour = ColourSelectField("Colour", choices=self.__colours, validators=[DataRequired()])
 
+        LayerForm.filter_expressions = FieldList(FormField(self.prepare_filter_form()), min_entries=2, max_entries=2)
+        LayerForm.operator = SelectField("", choices=self.__supported_collocations)
+
         form = LayerForm
+        return form
+
+    def prepare_filter_form(self) -> FlaskForm:
+        """
+        Dynamically create wtforms derived filter options form.
+
+        :return form: (FilterOptionsForm) filter form for a singular filter expression
+        """
+
+        class FilterOptionsForm(FlaskForm):
+            pass
+
+        FilterOptionsForm.operator = SelectField("Condition", choices=self.__supported_conditions)
+        FilterOptionsForm.value = StringField("Value")
+
+        form = FilterOptionsForm
         return form
 
     @staticmethod
@@ -338,7 +335,8 @@ class FormHandler(object):
         """
         layer = Layer()
 
-        layer.axis.data_field = layer_form["data_field"]
+        data_field = layer_form["data_field"]
+        layer.axis.data_field = data_field
         layer.axis.name = layer_form["layer_name"]
 
         layer.figure.size = layer_form["size"]
@@ -346,4 +344,49 @@ class FormHandler(object):
         layer.figure.opacity = layer_form["opacity"]
         layer.figure.colour = layer_form["colour"]
 
+        layer.filter_expression = self.map_filters(layer_form=layer_form)
+
         return layer
+
+    def map_filters(self, layer_form: dict) -> FilterExpression:
+        """
+        Map filter values from layers filter sub-form.
+
+        :param layer_form: (dict) layer form dictionary to parse filter from
+        :return filter_expression: (FilterExpression) parsed filter expression for a layer.
+        """
+        data_field = layer_form["data_field"]
+        operator = layer_form["operator"]
+
+        expr1 = self.map_filter(filter_entry=layer_form["filter_expressions"][0], data_field=data_field)
+        expr2 = self.map_filter(filter_entry=layer_form["filter_expressions"][1], data_field=data_field)
+
+        if expr1 is None:
+            filter_expression = None
+        elif expr2 is None:
+            filter_expression = expr1
+        else:
+            expr1 = "({0})".format(expr1)
+            expr2 = "({0})".format(expr2)
+            filter_expression = FilterExpression(expression1=expr1, expression2=expr2, operator=operator)
+
+        return filter_expression
+
+    @staticmethod
+    def map_filter(filter_entry: dict, data_field: str) -> FilterExpression:
+        """
+        Map single filter expression from filter form.
+
+        :param filter_entry: (dict) filter form dictionary with values to map onto FilterExpression instance.
+        :param data_field: (str) data field used for filter expression.
+        :return filter_expression: (FilterExpression) mapped filter expression.
+        """
+        filter_expression = None
+
+        if not (StringTools.is_empty(filter_entry["value"]) and StringTools.is_empty(filter_entry["operator"])):
+            value = StringTools.parse(filter_entry["value"])
+            filter_expression = FilterExpression(expression1=data_field,
+                                                 operator=filter_entry["operator"],
+                                                 expression2=value)
+
+        return filter_expression

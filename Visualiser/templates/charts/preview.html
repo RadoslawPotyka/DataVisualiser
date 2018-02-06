@@ -1,8 +1,25 @@
-{% extends "charts/navigation.html" %}
-{% block ChartContent %}
+{% extends "home/header.html" %}
+{% from "makros/charts.html" import display_chart with context %}
+{% block PageContent %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <h3 class="text-success">Demo chart</h3>
+                </div>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{ display_chart(controller.bokeh_resources, controller.chart_resources) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <link rel="stylesheet" href="{{ controller.bokeh_resources.css | safe}}" type="text/css" />
-    <script src="{{ controller.bokeh_resources.js | safe}}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ controller.bokeh_resources.css | safe }}" type="text/css"/>
+    <script src="{{ controller.bokeh_resources.js | safe }}" type="text/javascript"></script>
 
     <div class="page-content">
         {{ controller.chart_resources.js  | safe }}

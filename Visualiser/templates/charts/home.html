@@ -1,16 +1,28 @@
-{% extends "charts/navigation.html" %}
-{% block ChartContent %}
-    <div class="page-content">
-        <h4>
-            Here in charts module you'll be able to create and view charts.
-        </h4>
-{#        <ul>#}
-{#            <li>#}
-{#                <a href="{{ url_for('charts.create') }}">Create chart</a>#}
-{#            </li>#}
-{#            <li>#}
-{#                <a href="{{ url_for('charts.preview') }}">See demo</a>#}
-{#            </li>#}
-{#        </ul>#}
+{% extends "home/header.html" %}
+{% from "makros/charts.html" import render_chart_actions with context %}
+{% block PageContent %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <h3 class="text-success">Charts</h3>
+                </div>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4>
+                                Here in charts module you'll be able to create and view charts.
+                            </h4>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{ render_chart_actions() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

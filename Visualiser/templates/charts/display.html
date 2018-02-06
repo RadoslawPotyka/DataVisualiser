@@ -1,0 +1,76 @@
+{% extends "home/header.html" %}
+{% from "makros/form.html" import render_display_footer with context %}
+{% from "makros/charts.html" import display_chart with context %}
+{% block PageContent %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <h3 class="text-success">Chart creator</h3>
+                    <p class="text-success">
+                        If the chart is not displaying see if you ticked the checkbox if X column you've chosen contains
+                        dates
+                    </p>
+                </div>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>
+                                {{ controller.chart_options.description }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{ display_chart(controller.bokeh_resources, controller.chart_resources) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                {{ render_display_footer(controller.form) }}
+                            </form>
+                        </div>
+                    </div>
+                {#                    <div class="row">#}
+                {#                        <div class="col-lg-12">#}
+                {#                            <form action="" method="POST" enctype="multipart/form-data">#}
+                {#                                {{ render_display_footer(controller.form) }}#}
+                {#                            </form>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+{#    <div class="row">#}
+{#        <div class="col-lg-12">#}
+{#            <div class="panel panel-success">#}
+{#                <div class="panel-body">#}
+{#                    <h3 class="text-success">Chart creator</h3>#}
+{#                    <p>#}
+{#                        If the chart is not displaying see if you ticked the checkbox if X column you've chosen contains#}
+{#                        dates#}
+{#                    </p>#}
+{#                </div>#}
+{#                <div class="panel-heading">#}
+{#                    <div class="row">#}
+{#                        <div class="col-lg-12">#}
+{#                            <p>#}
+{#                                {{ controller.chart_options.description }}#}
+{#                            </p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="row">#}
+{#                        <div class="col-lg-12">#}
+{#                            {{ display_chart(controller.bokeh_resources, controller.chart_resources) }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

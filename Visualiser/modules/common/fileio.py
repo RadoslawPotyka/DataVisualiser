@@ -38,11 +38,12 @@ class JSON(FileHandler):
     """
     FileHandler object for reading json type files.
     """
+
     def read_columns(self, data_source: DataSource, file_path: str) -> [str]:
         super().read_columns(data_source, file_path)
         data_frame = self.read_file(data_source=data_source, file_path=file_path)
 
-        return data_frame.columns.values.tolist()
+        return data_frame
 
     def read_file(self, data_source: DataSource, file_path: str) -> pd.DataFrame:
         super().read_file(data_source, file_path)
@@ -67,6 +68,7 @@ class CSV(FileHandler):
                          skiprows=data_source.column_index,
                          sep=data_source.separator,
                          parse_dates=data_source.datetime_columns)
+
         return df
 
     def read_columns(self, data_source: DataSource, file_path: str) -> [str]:
@@ -77,7 +79,7 @@ class CSV(FileHandler):
                                  skiprows=data_source.column_index,
                                  sep=data_source.separator,
                                  nrows=1)
-        return data_frame.columns.values.tolist()
+        return data_frame
 
 
 class FileHandlers(Enum):

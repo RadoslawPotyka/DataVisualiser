@@ -23,7 +23,7 @@ class FileHandler(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def read_columns(self, data_source: DataSource, file_path: str) -> [str]:
+    def read_columns(self, data_source: DataSource, file_path: str) -> pd.DataFrame:
         """
         Read columns from a file and return list of those columns.
 
@@ -39,7 +39,7 @@ class JSON(FileHandler):
     FileHandler object for reading json type files.
     """
 
-    def read_columns(self, data_source: DataSource, file_path: str) -> [str]:
+    def read_columns(self, data_source: DataSource, file_path: str) -> pd.DataFrame:
         super().read_columns(data_source, file_path)
         data_frame = self.read_file(data_source=data_source, file_path=file_path)
 
@@ -71,7 +71,7 @@ class CSV(FileHandler):
 
         return df
 
-    def read_columns(self, data_source: DataSource, file_path: str) -> [str]:
+    def read_columns(self, data_source: DataSource, file_path: str) -> pd.DataFrame:
         super().read_columns(data_source=data_source, file_path=file_path)
         name = file_path + data_source.file_name
 

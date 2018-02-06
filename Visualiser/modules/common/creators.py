@@ -1,8 +1,11 @@
+import pandas as pd
+
 from abc import abstractmethod
 from enum import Enum
 
 from .utils import Factory, Recipe
-from .models import Document, LayerDocument
+from .models import Document, LayerDocument, Layer, FilterExpression, DataSource
+from .services import CommonServiceProvider
 
 
 class DocumentRecipe(Recipe):
@@ -40,10 +43,21 @@ class DocumentRecipe(Recipe):
 class DocumentFactory(Factory):
     """
     Interface for Document factorisation. Contains methods necessary for proper handling of all documents factorisation.
+
+    Attributes:
+        _recipes: (Enum) enumerator object containing recipes for document factory.
+        _data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.
+
+    Args:
+        recipes: (Enum) enumerator object containing recipes for document factory.
+        data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.
     """
 
-    def __init__(self, recipes: Enum):
+    def __init__(self,
+                 recipes: Enum,
+                 data_frame_service: CommonServiceProvider.DataFrameService = CommonServiceProvider.DataFrameService):
         self._recipes = recipes
+        self._data_frame_service = data_frame_service
 
     def create_object(self, document: Document) -> any:
         """
@@ -55,10 +69,41 @@ class DocumentFactory(Factory):
         created_object = self.build(document=document)
 
         for layer in document.model.layers:
-            self.build(base_object=created_object, document=LayerDocument(layer=layer,
-                                                                          data_source=document.data_source.data,
-                                                                          x_axis=document.model.x_axis))
+            layer_document = self.prepare_layer_document(layer=layer, document=document)
+            self.build(base_object=created_object, document=layer_document)
+
         return created_object
+
+    @abstractmethod
+    def prepare_layer_document(self, layer: Layer, document: Document) -> LayerDocument:
+        """
+        Prepares LayerDocument object for creating layer on a document.
+
+        :param layer: (Layer) layer configuration object.
+        :param document: (Document) document to append LayerDocument to.
+        :return layer_document: (LayerDocument) prepared layer document to append on a document.
+        """
+        pass
+
+    def prepare_layer_data_source(self, data_source: DataSource,
+                                  filter_expression: FilterExpression = None) -> pd.DataFrame:
+        """
+        Prepare data source for layer filtering the data if filter_expression is provided.
+
+        :param data_source: (DataSource) base data source object to assign to layer document.
+        :param filter_expression: (FilterExpression) filter expression to filter data by before assigning to layer
+                                                     document.
+        :return layer_data_source: (pd.DataFrame) prepared and filtered data_source for a layer.
+        """
+        data_frame = data_source.data
+
+        if filter_expression is not None:
+            layer_data_source = self._data_frame_service.filter(data_frame=data_frame,
+                                                                filter_expression=filter_expression)
+        else:
+            layer_data_source = data_frame
+
+        return layer_data_source
 
     def build(self, document: Document, base_object: any = None) -> any:
         """

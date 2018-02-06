@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from enum import Enum
 
 from Folium import Map, FeatureGroup, CircleMarker, LayerControl, Marker
 
@@ -110,6 +111,15 @@ class MapRecipe(DocumentRecipe):
         map_object.add_child(LayerControl())
 
         return map_object
+
+
+class MapRecipes(Enum):
+    """
+    Enum class containing supported recipes for chart document factorisation.
+    """
+    Map = MapRecipe
+    Circle = CircleMarkerRecipe
+    Marker = MarkerRecipe
 
 
 class MapFactory(DocumentFactory):

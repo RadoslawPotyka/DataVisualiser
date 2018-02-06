@@ -1,0 +1,34 @@
+{% macro display_chart(main_resources, chart_resources) %}
+    <link rel="stylesheet" href="{{ main_resources.css | safe }}" type="text/css"/>
+    <script src="{{ main_resources.js | safe }}" type="text/javascript"></script>
+
+    <div class="page-content">
+        {{ chart_resources.js  | safe }}
+        {{ chart_resources.html | safe }}
+    </div>
+{% endmacro %}
+
+{% macro display_charts_list(charts_list) %}
+    <table>
+        <thead>
+        <tr>ID</tr>
+        <tr>Title</tr>
+        <tr>Description</tr>
+        </thead>
+        <tbody>
+        {% for chart in charts_list %}
+            <tr><a href="{{ url_for('display') + chart.chart_options.id }}">{{ chart.chart_options.id }}</a></tr>
+            <tr>{{ chart.chart_options.title.title }}</tr>
+            <tr>{{ chart.charts_options.description }}</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+
+{% macro render_chart_actions() %}
+    <div class="col-lg-6">
+        <a class="btn btn-info" href="{{ url_for('charts.edit') }}">Create chart</a>
+        <a class="btn btn-info" href="{{ url_for('charts.preview') }}">See demo</a>
+    </div>
+{% endmacro %}

@@ -1,0 +1,407 @@
+{% macro colour_selector(field_name) %}
+    <select title="{{ field_name }}">
+        <option value="#1f77b4" style="background:#1f77b4"></option>
+        <option value="#98df8a" style="background:#98df8a"></option>
+        <option value="#8c564b" style="background:#8c564b"></option>
+        <option value="#c7c7c7" style="background:#c7c7c7"></option>
+        <option value="#aec7e8" style="background:#aec7e8"></option>
+        <option value="#d62728" style="background:#d62728"></option>
+        <option value="#c49c94" style="background:#c49c94"></option>
+        <option value="#bcbd22" style="background:#bcbd22"></option>
+        <option value="#ff7f0e" style="background:#ff7f0e"></option>
+        <option value="#ff9896" style="background:#ff9896"></option>
+        <option value="#e377c2" style="background:#e377c2"></option>
+        <option value="#dbdb8d" style="background:#dbdb8d"></option>
+        <option value="#ffbb78" style="background:#ffbb78"></option>
+        <option value="#9467bd" style="background:#9467bd"></option>
+        <option value="#f7b6d2" style="background:#f7b6d2"></option>
+        <option value="#17becf" style="background:#17becf"></option>
+        <option value="#2ca02c" style="background:#2ca02c"></option>
+        <option value="#c5b0d5" style="background:#c5b0d5"></option>
+        <option value="#7f7f7f" style="background:#7f7f7f"></option>
+        <option value="#9edae5" style="background:#9edae5"></option>
+    </select>
+{% endmacro %}
+
+{% macro render_checkbox(field) %}
+    <div class="col-lg-4">
+        {{ field.label(class_="control-label") }}:
+    </div>
+    <div class="col-lg-7">
+        {{ field(class_="form-control") | safe }}:
+    </div>
+{% endmacro %}
+
+{% macro render_field_with_label(field) %}
+    <div class="col-lg-3">
+        {{ field.label(class_="control-label") }}:
+    </div>
+    <div class="col-lg-8">
+        {% if field.type == "TextAreaField" %}
+            {{ field(cols='50', rows='4', class_="form-control") | safe }}
+        {% else %}
+            {{ field(class_="form-control") | safe }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{% macro render_field_errors(field) %}
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            {% for error in field.errors %}
+                <strong class="text-danger">
+                    ! {{ error }} - {{ field.label }} !
+                </strong>
+            {% endfor %}<br>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_button(button, class="btn btn-default") %}
+    <div class="form-group">
+        <div class="col-lg-12">
+            {{ button(class_=class) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_field(field, should_display_label=True, should_display_errors=True) %}
+    <div class="form-group">
+        {% if field.type != "BooleanField" %}
+            <div class="col-lg-12">
+                {% if should_display_label %}
+                    {{ render_field_with_label(field) }}
+                {% else %}
+                    {{ field(class_="form-control") }}
+                {% endif %}
+                {% if field.flags.required %}<h3><span class="text-danger">*</span></h3>{% endif %}
+
+            </div>
+        {% else %}
+            {{ render_checkbox(field) }}
+        {% endif %}
+    </div>
+    {% if should_display_errors %}
+        <div class="form-group">
+            <div class="col-lg-6">
+                {% if field.errors %}
+                    {{ render_field_errors(field) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro render_field_set(form) %}
+    {% for field in form %}
+        {% if field.type != "SubmitField" %}
+            {{ render_field(field) }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+
+{% macro render_filter_form(form) %}
+    {{  form.hidden_tag() }}
+    <div class="row">
+        <div class="col-lg-6">
+            {{ render_field(form.operator, False) }}
+        </div>
+        <div class="col-lg-6">
+            {{ render_field(form.value, False) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_layer_form(form) %}
+    {{ form.hidden_tag() }}
+    <div class="pull-left">
+        {{ render_button(form.remove_layer, "btn btn-danger") }}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.layer_name) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.data_field) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.shape) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.colour) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.opacity) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.size) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <span class="text-success">Filters (if you don't want to filter data just leave this empty)</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_filter_form(form.filter_expressions.entries[0]) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.operator) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_filter_form(form.filter_expressions.entries[1]) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_chart_document_options_form(form) %}
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.title) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.free_text) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.x_axis) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.x_axis_label) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.is_date_column) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_map_document_options_form(form) %}
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.title) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.free_text) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.latitude_column) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.latitude_column_label) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.longtitude_column) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.longtitude_column_label) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.is_date_column) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_document_options_form(form, document_type) %}
+    {% if document_type == "Map" %}
+        {{ render_map_document_options_form(form) }}
+    {% else %}
+        {{ render_chart_document_options_form(form) }}
+    {% endif %}
+{% endmacro %}
+
+
+{% macro render_file_form(form, is_empty = True) %}
+    {{ form.hidden_tag() }}
+    {% if is_empty %}
+        <div class="row">
+            <div class="col-lg-12">
+                {{ render_field(form.data_source) }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.separator_type) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {{ render_field(form.columns_row_index) }}
+        </div>
+    </div>
+    {% if form.file_name %}
+        <div class="row">
+            <div class="col-lg-12">
+                {{ form.file_name }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_empty_form(form) %}
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 class="text-success">
+                                File Options:
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ render_file_form(form.data_source, True) }}
+                            {{ render_button(form.submit_file, "btn btn-info") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_document_form(form, is_empty, document_type) %}
+    {% if is_empty %}
+        {{ render_empty_form(form) }}
+    {% else %}
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-success">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="text-success">
+                                            File Options:
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                {{ render_file_form(form.data_source, is_empty) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-success">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="text-success">
+                                            Basic Options:
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-heading">
+                                {{ render_document_options_form(form.document_options, document_type) }}
+                                {{ render_button(form.submit_document, "btn btn-info") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                {% for layer in form.layers %}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-success">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 class="text-success">
+                                                Layer Options:
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-heading">
+                                    {{ render_layer_form(layer) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-lg-6 pull-left">
+                        {{ render_button(form.add_layer, "btn btn-info") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro render_display_footer(form) %}
+    <div class="row">
+        <div class="col-lg-6">
+            <ul class="nav nav-pills nav-justified" role="tablist">
+                <li role="presentation">
+                    {{ form.hidden_tag() }}
+                    {{ render_button(form.cancel, "btn btn-danger") }}
+                </li>
+{#                <li role="presentation">#}
+{#                    {{ render_button(form.edit_document, "btn btn-success") }}#}
+{#                </li>#}
+{#                <li role="presentation">#}
+{#                    {{ render_button(form.save_document, "btn btn-info") }}#}
+{#                </li>#}
+            </ul>
+        </div>
+    </div>
+{% endmacro %}

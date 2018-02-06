@@ -1,15 +1,18 @@
+from enum import Enum
+
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import CDN
 
 from ..common.models import TemplateResourcesData
-from ..common.creators import DocumentFactory
-from .creators import ChartRecipes
+from ..common.services import CommonServiceProvider
+
+from .creators import ChartRecipes, ChartFactory
 from .models import Chart
 from .tests.test_samples import ChartSampleGenerator
 
 
-class ChartService(object):
+class ChartService(CommonServiceProvider.DocumentService):
     """
     Service handling all basic operations on charts like fetching or saving them.
     """
@@ -19,8 +22,9 @@ class ChartService(object):
         """
         Returns chart configuration object for a chart with given id. Communicates with external database api to fetch
         chart.
+
         :param chart_id: (int) id of a chart that should be returned. If none provided will return the demo chart.
-        :return:
+        :return: (Chart) chart document options.
         """
         if chart_id is None:
             raise ValueError("No id provided.")
@@ -41,6 +45,20 @@ class ChartService(object):
     def get_supported_recipes() -> ChartRecipes:
         return ChartRecipes
 
+    @staticmethod
+    def get_recipe(recipe_name: str) -> Enum:
+        return ChartRecipes[recipe_name]
+
+    @classmethod
+    def get_supported_shapes(cls) -> [str]:
+        shapes = [(key.name, key.name) for key in ChartRecipes if key != ChartRecipes.Chart]
+        return shapes
+
+    @classmethod
+    def get_supported_shape_keys(cls):
+        super().get_supported_shape_keys()
+        return ChartService.get_supported_recipes()
+
 
 class BokehService(object):
     """
@@ -55,7 +73,8 @@ class BokehService(object):
         :param chart: (Chart) options for a chart display and shapes.
         :return plot: (bokeh.plotting.figure) bokeh plot object
         """
-        factory = DocumentFactory(recipes=ChartService.get_supported_recipes())
+        factory = ChartFactory(recipes=ChartService.get_supported_recipes(),
+                               data_frame_service=CommonServiceProvider.DataFrameService)
         plot = factory.create_object(document=chart)
 
         return plot
@@ -86,3 +105,8 @@ class BokehService(object):
         template_resources.js, template_resources.html = components(plot)
 
         return template_resources
+
+
+class ChartServiceProvider(CommonServiceProvider):
+    ChartService = ChartService
+    BokehService = BokehService

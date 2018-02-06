@@ -1,6 +1,29 @@
-from enum import Enum
+import pandas as pd
 
-from ..common.models import Document, DocumentOptions, ObjectKey
+from ..common.models import Document, DocumentOptions, ObjectKey, Axis, LayerDocument, Layer
+
+
+class ChartLayerDocument(LayerDocument):
+    """
+    Represents chart layer configuration.
+
+    Attributes:
+        @property x_axis(Axis): x_axis used for the layer.
+    """
+    def __init__(self,
+                 layer: Layer = None,
+                 data_source: pd.DataFrame = None,
+                 x_axis: Axis = Axis()):
+        super().__init__(layer=layer, data_source=data_source)
+        self.__X_axis = x_axis
+
+    @property
+    def x_axis(self):
+        return self.__X_axis
+
+    @x_axis.setter
+    def x_axis(self, x_axis: Axis):
+        self.__X_axis = x_axis
 
 
 class ChartTitle(object):
@@ -68,29 +91,10 @@ class ChartOptions(DocumentOptions):
         @property layers(list(ChartFigure)): List of all layers to be displayed on chart.
     """
 
-    __DEFAULT_SIZE = 500
-
     def __init__(self):
         super().__init__()
-        self.__width = self.__DEFAULT_SIZE
-        self.__height = self.__DEFAULT_SIZE
+        self.__X_axis = Axis()
         self.__title = ChartTitle()
-
-    @property
-    def width(self) -> int:
-        return self.__width
-
-    @width.setter
-    def width(self, width: int):
-        self.__width = width
-
-    @property
-    def height(self) -> int:
-        return self.__height
-
-    @height.setter
-    def height(self, height: int):
-        self.__height = height
 
     @property
     def title(self) -> ChartTitle:
@@ -99,6 +103,14 @@ class ChartOptions(DocumentOptions):
     @title.setter
     def title(self, title: ChartTitle):
         self.__title = title
+
+    @property
+    def x_axis(self) -> Axis:
+        return self.__X_axis
+
+    @x_axis.setter
+    def x_axis(self, axis: Axis):
+        self.__X_axis = axis
 
 
 class Chart(Document):
@@ -115,8 +127,6 @@ class Chart(Document):
 
     def __init__(self):
         super().__init__()
-        self._model = None
-        self._data_source = None
 
     @property
     def chart_options(self) -> ChartOptions:

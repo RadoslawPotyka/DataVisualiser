@@ -27,6 +27,41 @@ class FormAction(Enum):
     DocumentEdited = 8
 
 
+class FilterExpression(object):
+    """
+    Object representation of filter expression. Might connect subexpressions for better and more advanced querying.
+
+    Attributes:
+        @property a: (Expression or str) first value of an expression
+        @property b: (Expression or str) second value of an expression
+    """
+
+    def __init__(self, expression1: str = None,
+                 expression2: str = None,
+                 operator: str = None):
+        self.__value1 = expression1
+        self.__value2 = expression2
+        self.__operator = operator
+
+    @property
+    def a(self) -> str:
+        return self.__value1
+
+    @property
+    def b(self) -> str:
+        return self.__value2
+
+    @property
+    def operator(self) -> str:
+        return self.__operator
+
+    def __str__(self):
+        value1 = str(self.a)
+        value2 = str(self.b)
+
+        return "{0} {1} {2}".format(value1, self.operator, value2)
+
+
 class DataSource(object):
     """
     Object representation of document data source.
@@ -37,6 +72,8 @@ class DataSource(object):
         @property separator: (str) Separator of columns in a file containing DataSource.
         @property file_name: (str) Name of the file containing data for the DataSource.
         @property datetime_columns: [str] List of columns with values in a datetime format.
+        @property should_fill_missing_data: (bool) Boolean value determining if missing data should be filled when
+                                                   parsing data.
     """
 
     def __init__(self):
@@ -45,6 +82,7 @@ class DataSource(object):
         self.__separator = None
         self.__file_name = None
         self.__datetime_columns = None
+        self.__should_fill_missing_data = True
 
     @property
     def data(self) -> pd.DataFrame:
@@ -77,6 +115,14 @@ class DataSource(object):
     @file_name.setter
     def file_name(self, file_name: str) -> None:
         self.__file_name = file_name
+
+    @property
+    def should_fill_missing_data(self) -> bool:
+        return self.__should_fill_missing_data
+
+    @should_fill_missing_data.setter
+    def should_fill_missing_data(self, should_fill_missing_data: bool) -> None:
+        self.__should_fill_missing_data = should_fill_missing_data
 
     @property
     def datetime_columns(self) -> [str]:
@@ -179,17 +225,19 @@ class Axis(object):
 
 class Layer(object):
     """
-    Object representation of a chart layer covering the Y axis settings and figure to display.
+    Object representation of a document layer covering the Y axis settings and figure to display.
 
     Attributes:
         @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
-        @property figure(ChartFigure): ChartFigure class instance containing options for object_key to be displayed on
-        the chart layer.
+        @property figure(ObjectFigure): ObjectFigure class instance containing options for object_key to be displayed on
+        the document layer.
+        @property filter_expression(FilterExpression): filter expression to assign on a layer data.
     """
 
     def __init__(self):
         self.__axis = Axis()
         self.__figure = ObjectFigure()
+        self.__filter = None
 
     @property
     def axis(self) -> Axis:
@@ -207,6 +255,14 @@ class Layer(object):
     def figure(self, figure: ObjectFigure):
         self.__figure = figure
 
+    @property
+    def filter_expression(self) -> FilterExpression:
+        return self.__filter
+
+    @filter_expression.setter
+    def filter_expression(self, filter_expression) -> None:
+        self.__filter = filter_expression
+
 
 class DocumentOptions(object):
     """
@@ -216,12 +272,22 @@ class DocumentOptions(object):
     Attributes:
         @property description(str): description of the chart
         @property layers(list(Layer)): List of all layers to be displayed on chart.
+        @property width(int): width of the chart in pixels
+        @property height(int): height of the chart in pixels
+        @property description(str): description of the chart
+        @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
+        @property title(str): Title class instance containing styling and display of chart title
+        @property layers(list(ObjectFigure)): List of all layers to be displayed on chart.
     """
+
+    __DEFAULT_SIZE = 750
 
     def __init__(self):
         self.__title = None
         self.__description = None
         self.__X_axis = Axis()
+        self.__width = self.__DEFAULT_SIZE
+        self.__height = self.__DEFAULT_SIZE
         self.__layers = []
 
     @property
@@ -239,6 +305,22 @@ class DocumentOptions(object):
     @description.setter
     def description(self, name: str):
         self.__description = name
+
+    @property
+    def width(self) -> int:
+        return self.__width
+
+    @width.setter
+    def width(self, width: int):
+        self.__width = width
+
+    @property
+    def height(self) -> int:
+        return self.__height
+
+    @height.setter
+    def height(self, height: int):
+        self.__height = height
 
     @property
     def x_axis(self) -> Axis:
@@ -301,29 +383,18 @@ class LayerDocument(Document):
         @property model(Layer): model object containing characteristics of a layer.
         @property data_source(pd.DataFrame): DataFrame object with values used by layer.
         @property object_key(Enum): object key of the layer.
-        @property x_axis(Axis): x_axis used for the layer.
     """
 
     def __init__(self,
                  layer: Layer = None,
-                 data_source: pd.DataFrame = None,
-                 x_axis: Axis = None):
+                 data_source: pd.DataFrame = None):
         self._model = layer
         self._data_source = data_source
         self._object_key = layer.figure.object_key
-        self.__X_axis = x_axis
 
     @property
     def model(self) -> Layer:
         return self._model
-
-    @property
-    def x_axis(self) -> Axis:
-        return self.__X_axis
-
-    @x_axis.setter
-    def x_axis(self, axis: Axis):
-        self.__X_axis = axis
 
     @property
     def data_source(self) -> pd.DataFrame:

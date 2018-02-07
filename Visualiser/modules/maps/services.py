@@ -1,6 +1,6 @@
 from enum import Enum
 
-from Folium import Map
+from folium import Map
 
 from .creators import MapRecipes, MapFactory
 from .models import MapDocument
@@ -13,8 +13,7 @@ class MapService(CommonServiceProvider.DocumentService):
     Service containing common methods for handling maps and objects and operations related to them.
     """
 
-    __supported_tiles = ["Stamen Tone", "Stamen Terrain", "Mapbox Bright",
-                         "openstreetmap", "MapQuest Open Aerial", "stamenwatercolor"]
+    __supported_tiles = ["Stamen Terrain", "Mapbox Bright", "openstreetmap", "stamenwatercolor"]
 
     @staticmethod
     def get_supported_recipes() -> MapRecipes:
@@ -48,7 +47,7 @@ class FoliumService(object):
     __default_map_name = "map.html"
 
     @staticmethod
-    def generate_plot(map_document: MapDocument) -> Map:
+    def generate_map(map_document: MapDocument) -> Map:
         """
         Generate plot for given pandas DataFrame and chart options. Returns created map object
 
@@ -62,15 +61,16 @@ class FoliumService(object):
         return generated_map
 
     @staticmethod
-    def export_map(map_object: Map) -> None:
+    def export_map(map_object: Map) -> str:
         """
-        Export map as html file.
+        Export map as html string.
 
         :param map_object: (Map) bokeh figure object to export resources from.
-        :return: None.
+        :return: (str) generated html for map.
         """
-        upload_path = CommonServiceProvider.FileService.get_upload_folder()
-        file_name = FoliumService.__default_map_name
-        full_name = upload_path + "/{0}".format(file_name)
+        return map_object._repr_html_()
 
-        map_object.save(full_name)
+
+class MapsServiceProvider(object):
+    FoliumService = FoliumService
+    MapService = MapService

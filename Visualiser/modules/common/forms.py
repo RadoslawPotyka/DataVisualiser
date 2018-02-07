@@ -6,7 +6,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 
 from wtforms.fields import SelectField, StringField, TextAreaField, FieldList, \
-    FloatField, HiddenField, FormField, SubmitField, BooleanField, IntegerField
+    FloatField, HiddenField, FormField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HTMLString, html_params, Select
 
@@ -53,7 +53,6 @@ class LayerOptionsForm(FlaskForm):
     layer_name = StringField("Label", validators=[Length(max=100)])
 
     opacity = FloatField("Opacity", default=0.8)
-    size = FloatField("Size", default=1.21)
     remove_layer = SubmitField("Remove")
 
 
@@ -74,8 +73,7 @@ class DocumentBaseOptionsForm(FlaskForm):
     Class representing form for gathering user input regarding document options usable for all documents in app.
     """
     free_text = TextAreaField(label="Description", validators=[Length(min=0, max=200)])
-    x_axis_label = StringField(label="X column label", validators=[Length(max=50)])
-    is_date_column = BooleanField(label="Click if the column contains dates")
+    title = StringField("Title", default="My Document", validators=[DataRequired()])
 
 
 class DocumentBaseForm(FlaskForm):
@@ -89,11 +87,11 @@ class DocumentBaseForm(FlaskForm):
                        min_entries=1)
 
     submit_file = SubmitField("Submit file")
-    submit_document = SubmitField("Create chart")
+    submit_document = SubmitField("Create")
     add_layer = SubmitField("Add Layer")
     cancel = SubmitField("Dispose")
-    edit_document = SubmitField("Edit chart")
-    save_document = SubmitField("Save chart")
+    edit_document = SubmitField("Edit")
+    save_document = SubmitField("Save")
 
     def remove_layer(self):
         """
@@ -143,25 +141,27 @@ class FormHandler(object):
                 colour_palette([tuple]): list of tuples representing available colours.
 
     Attributes:
-        __supported_shapes([tuple]): list of tuples representing shapes available for layer options form object_key.
-        __columns([tuple]): list of tuples representing columns available for layer options form data field.
-        __shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.
-        __colours([tuple]): list of tuples representing available colours.
+        _supported_shapes([tuple]): list of tuples representing shapes available for layer options form object_key.
+        _columns([tuple]): list of tuples representing columns available for layer options form data field.
+        _shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.
+        _colours([tuple]): list of tuples representing available colours.
     """
 
-    __supported_shapes = None
-    __columns = None
-    __shape_keys = None
-    __colours = None
-    __supported_conditions = [("", "None"), ("==", "="), ("!=", "!="),
-                              ("<=", "<="), (">=", ">="), (">", ">"), ("<", "<")]
-    __supported_collocations = [("&", "and"), ("|", "or")]
+    _supported_shapes = None
+    _columns = None
+    _shape_keys = None
+    _colours = None
+    _default_size = None
+    _default_title = "My Document"
+    _supported_conditions = [("", "None"), ("==", "="), ("!=", "!="),
+                             ("<=", "<="), (">=", ">="), (">", ">"), ("<", "<")]
+    _supported_collocations = [("&", "and"), ("|", "or")]
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
-        self.__columns = columns
-        self.__supported_shapes = shapes
-        self.__shape_keys = shape_keys
-        self.__colours = colour_palette
+        self._columns = columns
+        self._supported_shapes = shapes
+        self._shape_keys = shape_keys
+        self._colours = colour_palette
 
     def __call__(self, *args, **kwargs):
         return self.__init__(*args, **kwargs)
@@ -199,6 +199,7 @@ class FormHandler(object):
         form = DocumentForm()
         return form
 
+    @abstractmethod
     def prepare_document_options_form(self) -> DocumentBaseOptionsForm:
         """
         Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
@@ -206,27 +207,16 @@ class FormHandler(object):
 
         :return form: (DocumentOptionsForm) document options form with commonly required fields.
         """
+        pass
 
-        class DocumentOptionsForm(DocumentBaseOptionsForm):
-            pass
-
-        DocumentOptionsForm.x_axis = SelectField("X Column", choices=self.__columns, validators=[DataRequired()])
-        DocumentOptionsForm.title = self.prepare_title_form()
-
-        form = DocumentOptionsForm
-        return form
-
-    @staticmethod
-    def prepare_title_form(document_type: str = "Document") -> StringField:
+    def prepare_title_form(self) -> StringField:
         """
         Prepare title form for document title assignment.
 
-        :param document_type: (str) type of a document to set as the default value.
         :return title_form: (StringField) title form for a document.
         """
-        default_title = "My " + document_type
-        title_form = StringField("Title", default=default_title, validators=[DataRequired()])
-
+        title_form = StringField("Title", default=self._default_title, validators=[DataRequired()])
+        print(title_form)
         return title_form
 
     def prepare_layer_form(self) -> LayerOptionsForm:
@@ -240,12 +230,14 @@ class FormHandler(object):
         class LayerForm(LayerOptionsForm):
             pass
 
-        LayerForm.data_field = SelectField("Column", choices=self.__columns, validators=[DataRequired()])
-        LayerForm.shape = SelectField("Shape", choices=self.__supported_shapes, validators=[DataRequired()])
-        LayerForm.colour = ColourSelectField("Colour", choices=self.__colours, validators=[DataRequired()])
+        LayerForm.data_field = SelectField("Column", choices=self._columns, validators=[DataRequired()])
+        LayerForm.shape = SelectField("Shape", choices=self._supported_shapes, validators=[DataRequired()])
+        LayerForm.colour = ColourSelectField("Colour", choices=self._colours, validators=[DataRequired()])
+
+        LayerForm.size = FloatField("Size", default=self._default_size)
 
         LayerForm.filter_expressions = FieldList(FormField(self.prepare_filter_form()), min_entries=2, max_entries=2)
-        LayerForm.operator = SelectField("", choices=self.__supported_collocations)
+        LayerForm.operator = SelectField("", choices=self._supported_collocations)
 
         form = LayerForm
         return form
@@ -260,7 +252,7 @@ class FormHandler(object):
         class FilterOptionsForm(FlaskForm):
             pass
 
-        FilterOptionsForm.operator = SelectField("Condition", choices=self.__supported_conditions)
+        FilterOptionsForm.operator = SelectField("Condition", choices=self._supported_conditions)
         FilterOptionsForm.value = StringField("Value")
 
         form = FilterOptionsForm
@@ -293,18 +285,16 @@ class FormHandler(object):
 
         return data_source
 
-    def map_to_document(self, document_form: DocumentBaseForm, document: Document) -> Document:
+    def map_to_document(self, document_form: DocumentBaseForm, document: Document) -> None:
         """
         Map data from provided document_form and assign respective values from it to provided document object instance.
 
         :param document_form: (DocumentBaseForm) Base document form containing user input regarding document.
         :param document: (Document) document object instance to assign data from form.
-        :return document: (Document) document object instance with assigned values.
+        :return document: None
         """
         document.model = self.map_document_options(document_options_form=document_form.document_options)
         document.model.layers = [self.map_layer(layer_entry) for layer_entry in document_form.layers.data]
-
-        return document
 
     @abstractmethod
     def map_document_options(self, document_options_form: DocumentBaseOptionsForm) -> DocumentOptions:
@@ -340,7 +330,7 @@ class FormHandler(object):
         layer.axis.name = layer_form["layer_name"]
 
         layer.figure.size = layer_form["size"]
-        layer.figure.object_key = self.__shape_keys[layer_form["shape"]]
+        layer.figure.object_key = self._shape_keys[layer_form["shape"]]
         layer.figure.opacity = layer_form["opacity"]
         layer.figure.colour = layer_form["colour"]
 

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from enum import Enum
 
-from Folium import Map, FeatureGroup, CircleMarker, LayerControl, Marker
+from folium import Map, FeatureGroup, CircleMarker, LayerControl, Marker
 
 from .models import MapLayerDocument, MapDocument, MapOptions
 from ..common.creators import DocumentFactory, DocumentRecipe
@@ -10,7 +10,7 @@ from ..common.models import Layer, ObjectFigure
 
 class MarkerRecipe(DocumentRecipe):
     @classmethod
-    def create(cls, document: Map, base_object: MapLayerDocument) -> None:
+    def create(cls, document: MapLayerDocument, base_object: Map) -> None:
         """
         Create marker layer on a Folium Map.
 
@@ -19,7 +19,7 @@ class MarkerRecipe(DocumentRecipe):
         :param base_object: (Map) Folium map to create marker on
         :return: None
         """
-        return cls._add_layer(map_object=document, layer_document=base_object)
+        return cls._add_layer(map_object=base_object, layer_document=document)
 
     @classmethod
     def _add_layer(cls, map_object: Map, layer_document: MapLayerDocument) -> None:
@@ -106,9 +106,9 @@ class MapRecipe(DocumentRecipe):
         :param map_options: (MapOptions) Configuration object for a map.
         :return map_object: (Map) Map object instance based on provided configuration.
         """
-        map_object = Map(zoom_start=6, world_copy_jump=True, tiles=map_options.tiles,
-                         height=map_options.height, width=map_options.width)
-        map_object.add_child(LayerControl())
+        map_object = Map(zoom_start=2.5, tiles=map_options.tiles, location=[40.0, 10.0])
+        # TODO: add callback to factory appending layer control to map -has to be last thing added to it
+        # map_object.add_child(LayerControl())
 
         return map_object
 
@@ -123,6 +123,10 @@ class MapRecipes(Enum):
 
 
 class MapFactory(DocumentFactory):
+    """
+    Map specific DocumentFactory containing all necessary methods and overridings for proper map factorisation.
+    """
+
     def prepare_layer_document(self, layer: Layer, document: MapDocument) -> MapLayerDocument:
         """
         Prepares LayerDocument object for creating layer on a map.

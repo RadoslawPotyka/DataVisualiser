@@ -220,34 +220,24 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            {{ render_field(form.latitude_column) }}
+            {{ render_field(form.tiles) }}
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            {{ render_field(form.latitude_column_label) }}
+            {{ render_field(form.latitude) }}
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            {{ render_field(form.longtitude_column) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            {{ render_field(form.longtitude_column_label) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            {{ render_field(form.is_date_column) }}
+            {{ render_field(form.longtitude) }}
         </div>
     </div>
 {% endmacro %}
 
 
 {% macro render_document_options_form(form, document_type) %}
-    {% if document_type == "Map" %}
+    {% if document_type == "map" %}
         {{ render_map_document_options_form(form) }}
     {% else %}
         {{ render_chart_document_options_form(form) }}
@@ -311,6 +301,7 @@
 {% endmacro %}
 
 {% macro render_document_form(form, is_empty, document_type) %}
+    {{ document_type }}
     {% if is_empty %}
         {{ render_empty_form(form) }}
     {% else %}

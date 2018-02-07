@@ -266,8 +266,8 @@ class DataFrameService(object):
         :return df: (pd.DataFrame) DataFrame object with filtered data based on provided expression.
         """
         query = str(filter_expression)
-        print(query)
         df = data_frame.query(query)
+
         return df
 
     @staticmethod

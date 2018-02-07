@@ -1,0 +1,43 @@
+{% extends "home/header.html" %}
+{% from "makros/form.html" import render_document_form with context %}
+{% block PageContent %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <h3 class="text-success">Map creator</h3>
+                </div>
+                <div class="panel-heading">
+                    <p>
+                        Here you can create a map of your own.
+                    </p>
+                    <p>
+                        First upload a file and choose the row at which Visualiser will be able to find columns
+                        and choose the separator for your file (if it's an excel or json file just leave the field as it
+                        is.)
+                    </p>
+                    <p>
+                        Then you'll be able to personalise your map by typing it's description, title, the columns by
+                        which
+                        we should display the map and add layers each of which will be a different, personalised shape
+                        that
+                        will be displayed on your map.
+                    </p>
+
+                    <p>
+                        * - field is required.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="form-horizontal">
+                    {{ render_document_form(controller.form, controller.is_empty, "map") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -6,7 +6,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 
 from wtforms.fields import SelectField, StringField, TextAreaField, FieldList, \
-    FloatField, HiddenField, FormField, SubmitField, IntegerField
+    FloatField, HiddenField, FormField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HTMLString, html_params, Select
 
@@ -66,6 +66,7 @@ class FileForm(FlaskForm):
                                  default=(",", "comma"))
     columns_row_index = IntegerField("Index of columns row", default=0)
     file_name = HiddenField(StringField())
+    should_fill_missing_data = BooleanField("Select if missing data should be filled", default=True)
 
 
 class DocumentBaseOptionsForm(FlaskForm):
@@ -282,6 +283,7 @@ class FormHandler(object):
         data_source.file_name = file_name
         data_source.separator = separator
         data_source.column_index = column_index
+        data_source.should_fill_missing_data = file_form.should_fill_missing_data.data
 
         return data_source
 

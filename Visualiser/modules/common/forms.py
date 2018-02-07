@@ -111,7 +111,7 @@ class DocumentBaseForm(FlaskForm):
         layer_list.reverse()
 
         for layer in layer_list:
-            self.layers.append_entry(layer)
+            self.layers.append_entry(layer.data)
 
     def submit_layer(self):
         """

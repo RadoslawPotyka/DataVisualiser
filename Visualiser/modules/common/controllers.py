@@ -156,6 +156,15 @@ class DocumentBaseEditController(BaseController):
         self.form.submit_layer()
         return self._router_state_service.render(template_path=self._template_path, controller=self)
 
+    def on_layer_removed(self):
+        """
+        Action to perform when document layer is removed by user.
+
+        :return: Rendered controller template.
+        """
+        self.form.remove_layer()
+        return self._router_state_service.render(template_path=self._template_path, controller=self)
+
     @abstractmethod
     def on_form_submitted(self, is_valid: bool = False):
         """
@@ -219,4 +228,4 @@ class DocumentBaseEditController(BaseController):
         elif self.form.edit_document.data:
             return self.on_document_edited()
         else:
-            return self.form.remove_layer()
+            return self.on_layer_removed()

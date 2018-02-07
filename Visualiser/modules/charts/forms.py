@@ -1,4 +1,5 @@
-from wtforms.fields import StringField
+from wtforms.fields import StringField, SelectField, BooleanField
+from wtforms.validators import DataRequired, Length
 
 from .models import ChartTitle, ChartOptions
 from ..common.forms import FormHandler, DocumentBaseOptionsForm
@@ -9,6 +10,31 @@ class ChartsFormHandler(FormHandler):
     """
     Class responsible for creating forms being used in charts module.
     """
+
+    _default_size = 1.5
+    _default_title = "My Chart"
+
+    def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
+        super().__init__(colour_palette=colour_palette, shape_keys=shape_keys, shapes=shapes, columns=columns)
+
+    def prepare_document_options_form(self) -> DocumentBaseOptionsForm:
+        """
+        Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
+        columns provided with initialisation.
+
+        :return form: (DocumentOptionsForm) document options form with commonly required fields.
+        """
+
+        class DocumentOptionsForm(DocumentBaseOptionsForm):
+            pass
+
+        DocumentOptionsForm.x_axis = SelectField("X Column", choices=self._columns, validators=[DataRequired()])
+        DocumentOptionsForm.title = self.prepare_title_form()
+        DocumentOptionsForm.x_axis_label = StringField(label="X column label", validators=[Length(max=50)])
+        DocumentOptionsForm.is_date_column = BooleanField(label="Click if the column contains dates")
+
+        form = DocumentOptionsForm
+        return form
 
     def map_document_options(self, document_options_form: DocumentBaseOptionsForm) -> ChartOptions:
         """

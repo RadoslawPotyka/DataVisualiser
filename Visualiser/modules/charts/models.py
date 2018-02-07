@@ -135,3 +135,11 @@ class Chart(Document):
     @chart_options.setter
     def chart_options(self, chart_options: ChartOptions):
         self._model = chart_options
+
+    @property
+    def model(self) -> ChartOptions:
+        return self._model
+
+    @model.setter
+    def model(self, chart_options: ChartOptions):
+        self._model = chart_options

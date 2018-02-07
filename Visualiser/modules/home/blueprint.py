@@ -20,6 +20,6 @@ def index():
     return render_template("home/home.html", controller=HomeController())
 
 
-@home.route('/settings')
-def settings():
-    return render_template("home/settings.html", controller=HomeController())
+@home.route('/about')
+def about():
+    return render_template("home/about.html", controller=HomeController())

@@ -275,7 +275,6 @@ class DocumentOptions(object):
         @property width(int): width of the chart in pixels
         @property height(int): height of the chart in pixels
         @property description(str): description of the chart
-        @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
         @property title(str): Title class instance containing styling and display of chart title
         @property layers(list(ObjectFigure)): List of all layers to be displayed on chart.
     """
@@ -285,7 +284,6 @@ class DocumentOptions(object):
     def __init__(self):
         self.__title = None
         self.__description = None
-        self.__X_axis = Axis()
         self.__width = self.__DEFAULT_SIZE
         self.__height = self.__DEFAULT_SIZE
         self.__layers = []
@@ -321,14 +319,6 @@ class DocumentOptions(object):
     @height.setter
     def height(self, height: int):
         self.__height = height
-
-    @property
-    def x_axis(self) -> Axis:
-        return self.__X_axis
-
-    @x_axis.setter
-    def x_axis(self, axis: Axis):
-        self.__X_axis = axis
 
     @property
     def layers(self) -> [Layer]:

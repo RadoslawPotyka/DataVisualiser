@@ -1,4 +1,100 @@
-from .services import BokehService, ChartService
+import pandas as pd
+
+from .services import ChartServiceProvider as Services
+from .forms import ChartsFormHandler
+from .models import Chart
+from ..common.controllers import DocumentBaseEditController
+
+
+class ChartEditController(DocumentBaseEditController):
+    """
+    Controller for handling chart edition and chart form handling.
+    """
+
+    def __init__(self,
+                 template_path: str = "",
+                 chart_service: Services.ChartService = Services.ChartService,
+                 form_creator: ChartsFormHandler = ChartsFormHandler):
+        super().__init__(template_path=template_path, document_service=chart_service, form_creator=form_creator)
+
+    def on_form_submitted(self, is_valid: bool = False):
+        if is_valid:
+            return self._router_state_service.submit('charts.create')
+        return self._router_state_service.render(template_path=self._template_path, controller=self)
+
+    def on_document_disposed(self):
+        return self._router_state_service.go('charts.index')
+
+
+class ChartCreateController(DocumentBaseEditController):
+    __chart_resources = None
+    __bokeh_resources = None
+    __chart_options = None
+
+    def __init__(self,
+                 template_path: str = "",
+                 chart_service: Services.ChartService = Services.ChartService,
+                 form_creator: ChartsFormHandler = ChartsFormHandler,
+                 document_create_service: Services.BokehService = Services.BokehService):
+        super().__init__(document_service=chart_service, form_creator=form_creator, template_path=template_path)
+        self._document_creator_service = document_create_service
+
+    def load_plot(self, chart: Chart) -> None:
+        """
+
+        :param chart:
+        :return:
+        """
+        plot = self._document_creator_service.generate_plot(chart)
+
+        self.__bokeh_resources = self._document_creator_service.get_bokeh_resources()
+        self.__chart_resources = self._document_creator_service.export_plot(plot)
+
+    def setup_data_source(self, datetime_columns: [str] = None) -> pd.DataFrame:
+        creator = self._get_form_creator()
+        data_source = creator.map_data_source(self.form.data_source, is_file_uploaded=True)
+        data_source.datetime_columns = datetime_columns  # if len(datetime_columns) > 0 else False
+        data_source.data = self._file_service.read_file(data_source=data_source)
+
+        return data_source
+
+    def on_document_saved(self):
+        super().on_document_saved()
+
+    def on_form_submitted(self, is_valid: bool = True):
+        super().on_form_submitted()
+        creator = self._get_form_creator()
+
+        chart = Chart()
+        creator.map_to_document(document=chart, document_form=self.form)
+        self.__chart_options = chart.model
+
+        x_axis = self.__chart_options.x_axis
+        parse_dates = [x_axis.data_field] if x_axis.data_type == "datetime" else False
+
+        chart.data_source = self.setup_data_source(datetime_columns=parse_dates)
+        self.load_plot(chart=chart)
+
+        return self._router_state_service.render(template_path=self._template_path, controller=self)
+
+    def on_document_edited(self):
+        return self._router_state_service.submit('charts.edit')
+
+    @property
+    def chart_options(self):
+        return self.__chart_options
+
+    @property
+    def chart_resources(self):
+        return self.__chart_resources
+
+    @property
+    def bokeh_resources(self):
+        return self.__bokeh_resources
+
+    def on_document_disposed(self):
+        super().on_document_disposed()
+        return self._router_state_service.go('charts.index')
 
 
 class ChartDisplayController(object):
@@ -15,11 +111,22 @@ class ChartDisplayController(object):
     __bokeh_resources = None
 
     def load_demo_plot(self):
-        chart = ChartService.get_demo_chart()
-        plot = BokehService.generate_plot(chart)
+        chart = Services.ChartService.get_demo_chart()
+        plot = Services.BokehService.generate_plot(chart)
 
-        self.__bokeh_resources = BokehService.get_bokeh_resources()
-        self.__chart_resources = BokehService.export_plot(plot)
+        self.__bokeh_resources = Services.BokehService.get_bokeh_resources()
+        self.__chart_resources = Services.BokehService.export_plot(plot)
+
+    def load_plot(self, chart: Chart):
+        """
+
+        :param chart:
+        :return:
+        """
+        plot = Services.BokehService.generate_plot(chart)
+
+        self.__bokeh_resources = Services.BokehService.get_bokeh_resources()
+        self.__chart_resources = Services.BokehService.export_plot(plot)
 
     @property
     def chart_resources(self):

@@ -217,7 +217,6 @@ class FormHandler(object):
         :return title_form: (StringField) title form for a document.
         """
         title_form = StringField("Title", default=self._default_title, validators=[DataRequired()])
-        print(title_form)
         return title_form
 
     def prepare_layer_form(self) -> LayerOptionsForm:
@@ -260,7 +259,7 @@ class FormHandler(object):
         return form
 
     @staticmethod
-    def map_data_source(file_form: FileForm, is_file_uploaded: bool = False):
+    def map_data_source(file_form: FileForm, is_file_uploaded: bool = False) -> DataSource:
         """
         Instantiate DataSource object and map data from provided file_form to it. Depending whether the file from the
         form was previously submitted or not method will either secure the name of uploaded file or read it from.

@@ -47,6 +47,7 @@ class DocumentFactory(Factory):
     Attributes:
         _recipes: (Enum) enumerator object containing recipes for document factory.
         _data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.
+        _post_creation_tasks: (list) tasks to perform after the document is created.
 
     Args:
         recipes: (Enum) enumerator object containing recipes for document factory.
@@ -58,6 +59,7 @@ class DocumentFactory(Factory):
                  data_frame_service: CommonServiceProvider.DataFrameService = CommonServiceProvider.DataFrameService):
         self._recipes = recipes
         self._data_frame_service = data_frame_service
+        self._post_creation_tasks = []
 
     def create_object(self, document: Document) -> any:
         """
@@ -72,7 +74,21 @@ class DocumentFactory(Factory):
             layer_document = self.prepare_layer_document(layer=layer, document=document)
             self.build(base_object=created_object, document=layer_document)
 
-        return created_object
+        return self.__post_create(document=document, base_object=created_object)
+
+    def __post_create(self, document: Document = None, base_object: any = None) -> any:
+        """
+        Run all recipes that should be executed after document creation.
+
+        :param document: (Document) characteristics and ingredients necessary for proper creation of the object.
+        :param base_object: (any) optional param for recipe execution. Provide this param when recipe appends object to
+        another one rather then creating a new one.
+        :return base_object: (any) object created by factory with all modifications related to post creation tasks.
+        """
+        for additional_task in self._post_creation_tasks:
+            additional_task.execute(document=document, base_object=base_object)
+
+        return base_object
 
     @abstractmethod
     def prepare_layer_document(self, layer: Layer, document: Document) -> LayerDocument:
@@ -117,5 +133,8 @@ class DocumentFactory(Factory):
         """
         recipe = self._get_recipe(object_key=document.object_key)
         instance = recipe.execute(document=document, base_object=base_object)
+
+        if recipe.post_execute is not None:
+            self._post_creation_tasks.append(recipe.post_execute)
 
         return instance

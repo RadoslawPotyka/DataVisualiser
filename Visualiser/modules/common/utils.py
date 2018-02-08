@@ -7,7 +7,12 @@ from numpy import unicode
 class Recipe(metaclass=ABCMeta):
     """
     Base interface for function objects.
+
+    Attributes:
+        post_execute: (Recipe) recipe that should be executed after this one.
     """
+
+    post_execute = None
 
     @classmethod
     @abstractmethod

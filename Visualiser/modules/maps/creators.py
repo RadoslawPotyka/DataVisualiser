@@ -9,6 +9,9 @@ from ..common.models import Layer, ObjectFigure
 
 
 class MarkerRecipe(DocumentRecipe):
+    """
+    Recipe for basic folium Marker creation that should be appended to a folium map.
+    """
     @classmethod
     def create(cls, document: MapLayerDocument, base_object: Map) -> None:
         """
@@ -67,6 +70,9 @@ class MarkerRecipe(DocumentRecipe):
 
 
 class CircleMarkerRecipe(MarkerRecipe):
+    """
+    Recipe for folium CircleMarker creation.
+    """
     @classmethod
     def _create_marker(cls, layer_value: str, coordinates: [float], layer_figure: ObjectFigure) -> CircleMarker:
         """
@@ -83,7 +89,29 @@ class CircleMarkerRecipe(MarkerRecipe):
                             color='grey', fill_opacity=layer_figure.opacity)
 
 
+class LayerControlRecipe(DocumentRecipe):
+    """
+    Recipe for layer control appendage to a map.
+    """
+    @classmethod
+    def create(cls, base_object: Map, *args, **kwargs) -> Map:
+        """
+        Add LayerControl feature group to provided folium map.
+        :param base_object: (Map) map that layer control should be appended to.
+        :return base_object: (Map) folium map object with appended layer control.
+        """
+        base_object.add_child(LayerControl())
+
+        return base_object
+
+
 class MapRecipe(DocumentRecipe):
+    """
+    Recipe for folium Map object creation.
+    """
+
+    post_execute = LayerControlRecipe
+
     @classmethod
     def create(cls, document: MapDocument) -> Map:
         """
@@ -107,8 +135,6 @@ class MapRecipe(DocumentRecipe):
         :return map_object: (Map) Map object instance based on provided configuration.
         """
         map_object = Map(zoom_start=2.5, tiles=map_options.tiles, location=[40.0, 10.0])
-        # TODO: add callback to factory appending layer control to map -has to be last thing added to it
-        # map_object.add_child(LayerControl())
 
         return map_object
 

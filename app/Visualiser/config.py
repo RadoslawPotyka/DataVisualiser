@@ -1,4 +1,3 @@
-# UPLOAD_FOLDER = '/public/DATA'
 ALLOWED_EXTENSIONS = {'txt', 'csv', 'xls', 'json'}
 
 COLOURS = ["#1f77b4", "#98df8a", "#8c564b", "#c7c7c7", "#aec7e8", "#d62728",
@@ -7,16 +6,17 @@ COLOURS = ["#1f77b4", "#98df8a", "#8c564b", "#c7c7c7", "#aec7e8", "#d62728",
            "#7f7f7f", "#9edae5"]
 
 BACKEND_URL = ""
+UPLOAD_PATH = "..\\..\\..\\public\\DATA\\"
 
 
 class BaseConfig:
     """Base configuration"""
     DEBUG = False
     TESTING = False
-    # UPLOAD_FOLDER = UPLOAD_FOLDER
     ALLOWED_EXTENSIONS = ALLOWED_EXTENSIONS
     COLOURS = COLOURS
     BACKEND_URL = BACKEND_URL
+    UPLOAD_PATH = UPLOAD_PATH
 
 
 class DevelopmentConfig(BaseConfig):

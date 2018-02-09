@@ -1,14 +1,17 @@
-import pandas as pd
-
 from .services import ChartServiceProvider as Services
 from .forms import ChartsFormHandler
 from .models import Chart
 from ..common.controllers import DocumentBaseEditController
+from ..common.models import DataSource
 
 
 class ChartEditController(DocumentBaseEditController):
     """
     Controller for handling chart edition and chart form handling.
+
+    Args:
+        chart_service: (ChartService) charts specific document service.
+        form_creator: (ChartsFormHandler) charts specific form handler.
     """
 
     def __init__(self,
@@ -18,6 +21,13 @@ class ChartEditController(DocumentBaseEditController):
         super().__init__(template_path=template_path, document_service=chart_service, form_creator=form_creator)
 
     def on_form_submitted(self, is_valid: bool = False):
+        """
+        Action to perform when the form is submitted by the user. Depending whether controllers form is valid or not
+        either returns rendered view template or redirects to charts.create route.
+
+        :param is_valid: (bool) param determining whether form is valid.
+        :return: rendered view template or redirect to charts creation url.
+        """
         if is_valid:
             return self._router_state_service.submit('charts.create')
         return self._router_state_service.render(template_path=self._template_path, controller=self)
@@ -27,6 +37,21 @@ class ChartEditController(DocumentBaseEditController):
 
 
 class ChartCreateController(DocumentBaseEditController):
+    """
+    Controller handling creation of the chart by parsing data from form into chart document object and creating it
+    using provided document_create_service.
+
+    Args:
+        chart_service: (ChartService) charts specific document service.
+        form_creator: (ChartsFormHandler) charts specific form handler.
+        document_create_service (BokehService) bokeh service for creating and exporting plots.
+
+    Attributes:
+        @property chart_options: (ChartOptions) options for a chart parsed from controllers form.
+        @property bokeh_resources: (TemplateResourcesData) template resources for bokeh library.
+        @property chart_resources: (TemplateResourcesData) template resources for generated bokeh plot.
+        _document_creator_service: (BokehService) bokeh service for creating and exporting plots.
+    """
     __chart_resources = None
     __bokeh_resources = None
     __chart_options = None
@@ -41,16 +66,24 @@ class ChartCreateController(DocumentBaseEditController):
 
     def load_plot(self, chart: Chart) -> None:
         """
+        Create plot from chart document object instance using controllers document creator service and assigns
+        template resources from generated plot to controllers properties.
 
-        :param chart:
-        :return:
+        :param chart: (Chart) chart object instance to generate plot from.
+        :return: None
         """
         plot = self._document_creator_service.generate_plot(chart)
 
         self.__bokeh_resources = self._document_creator_service.get_bokeh_resources()
         self.__chart_resources = self._document_creator_service.export_plot(plot)
 
-    def setup_data_source(self, datetime_columns: [str] = None) -> pd.DataFrame:
+    def setup_data_source(self, datetime_columns: [str] = None) -> DataSource:
+        """
+        Map data from controllers form data source sub-form and read file from generated data source.
+
+        :param datetime_columns: (list(str)) list of datetime columns in the data source.
+        :return data_source: (DataSource)
+        """
         creator = self._get_form_creator()
         data_source = creator.map_data_source(self.form.data_source, is_file_uploaded=True)
         data_source.datetime_columns = datetime_columns  # if len(datetime_columns) > 0 else False

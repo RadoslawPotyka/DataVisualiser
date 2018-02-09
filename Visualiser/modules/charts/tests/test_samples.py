@@ -11,7 +11,7 @@ class ChartSampleGenerator(object):
     def create_chart():
         df = ChartSampleGenerator.create_data_source()
         chart = Chart()
-        chart.data_source = df
+        chart.data_source.data = df
         chart_options = ChartOptions()
         chart_options.title = ChartSampleGenerator.create_sample_title()
         chart_options.description = "TEST"
@@ -47,6 +47,7 @@ class ChartSampleGenerator(object):
         line.colour = "purple"
         line.opacity = 0.5
         line.object_key = ObjectKey.Line
+        line.size = 4.2
 
         return line
 
@@ -56,6 +57,7 @@ class ChartSampleGenerator(object):
         line.colour = "purple"
         line.opacity = 0.5
         line.object_key = ObjectKey.Square
+        line.size = 2.2
 
         return line
 
@@ -65,6 +67,7 @@ class ChartSampleGenerator(object):
         line.colour = "purple"
         line.opacity = 0.5
         line.object_key = ObjectKey.Triangle
+        line.size = 2.2
 
         return line
 
@@ -78,10 +81,11 @@ class ChartSampleGenerator(object):
         return line
 
     @staticmethod
-    def create_sample_axis(column_name):
+    def create_sample_axis(column_name, data_type='auto'):
         axis = Axis()
         axis.data_field = column_name
         axis.name = column_name.upper()
+        axis.data_type = data_type
 
         return axis
 

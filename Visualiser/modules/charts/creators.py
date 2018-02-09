@@ -4,7 +4,7 @@ from bokeh.plotting import figure
 
 from .models import Chart, ChartOptions, ChartTitle, ChartLayerDocument
 from ..common.creators import DocumentRecipe, DocumentFactory
-from ..common.models import LayerDocument, Layer
+from ..common.models import Layer
 
 
 class LineRecipe(DocumentRecipe):
@@ -23,7 +23,6 @@ class LineRecipe(DocumentRecipe):
         :param base_object: (bokeh.plotting.figure) bokeh figure to create line on
         :return: None
         """
-        # TODO: Either remove the call and go with _add_layer instantly or create
         return cls._add_layer(plot=base_object, layer_document=document)
 
     @classmethod

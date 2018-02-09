@@ -1,4 +1,4 @@
-from app.Visualiser.modules.common import WorkingContextService
+from ..common.services import WorkingContextService
 
 
 class HomeController(object):

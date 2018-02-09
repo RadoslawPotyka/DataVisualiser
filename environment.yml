@@ -1,0 +1,17 @@
+name: visualiser
+dependencies:
+  - python=3.5.*
+  - pip
+  - pip:
+    - folium==0.5.0
+  - bokeh=0.12.2=py35_0
+  - flask = 0.11.1=py35_0
+  - flask-cors=2.1.2=py35_0
+  - flask-wtf=0.14.2=py35_0
+  - jinja2=2.8=py35_1
+  - numpy=1.11.*=py35_1
+  - pandas=0.18.1=np111py35_0
+  - tornado=4.4.1=py35_0
+  - unicodecsv=0.14.1=py35_0
+  - werkzeug=0.11.11=py35_0
+  - wtforms=2.1=py35_0

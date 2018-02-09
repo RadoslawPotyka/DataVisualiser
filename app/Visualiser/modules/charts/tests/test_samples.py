@@ -1,5 +1,5 @@
-from Visualiser.modules.charts.models import *
-from app.Visualiser.modules.common import *
+from ...charts.models import *
+from ...common.models import *
 
 
 class ChartSampleGenerator(object):

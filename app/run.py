@@ -1,4 +1,4 @@
-from app.Visualiser.main import app
+from app.Visualiser.main import flask_app
 
 if __name__ == "__main__":
-    app.run()
+    flask_app.run()

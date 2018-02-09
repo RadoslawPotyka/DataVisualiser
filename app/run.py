@@ -1,4 +1,4 @@
-from Visualiser.main import app
+from app.Visualiser.main import app
 
 if __name__ == "__main__":
     app.run()

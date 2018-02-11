@@ -1,0 +1,19 @@
+{% macro render_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="row">
+                    <div class="col-lg-4 col-lg-offset-4">
+                        <div class="panel panel-{{ category }}">
+                            <div class=panel-heading>
+                                <div class="text-center">
+                                    <span>{{ message | safe }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endmacro %}

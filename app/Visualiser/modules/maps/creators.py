@@ -4,6 +4,8 @@ from enum import Enum
 from folium import Map, FeatureGroup, CircleMarker, LayerControl, Marker
 
 from .models import MapLayerDocument, MapDocument, MapOptions
+from .errors import InvalidCoordinatesError
+
 from ..common.creators import DocumentFactory, DocumentRecipe
 from ..common.models import Layer, ObjectFigure
 
@@ -12,6 +14,7 @@ class MarkerRecipe(DocumentRecipe):
     """
     Recipe for basic folium Marker creation that should be appended to a folium map.
     """
+
     @classmethod
     def create(cls, document: MapLayerDocument, base_object: Map) -> None:
         """
@@ -50,7 +53,6 @@ class MarkerRecipe(DocumentRecipe):
 
             coordinates = [latitude, longtitude]
             marker = cls._create_marker(layer_value=str(value), coordinates=coordinates, layer_figure=model.figure)
-
             feature_group.add_child(marker)
 
         map_object.add_child(feature_group)
@@ -73,6 +75,7 @@ class CircleMarkerRecipe(MarkerRecipe):
     """
     Recipe for folium CircleMarker creation.
     """
+
     @classmethod
     def _create_marker(cls, layer_value: str, coordinates: [float], layer_figure: ObjectFigure) -> CircleMarker:
         """
@@ -93,6 +96,7 @@ class LayerControlRecipe(DocumentRecipe):
     """
     Recipe for layer control appendage to a map.
     """
+
     @classmethod
     def create(cls, base_object: Map, *args, **kwargs) -> Map:
         """
@@ -153,6 +157,18 @@ class MapFactory(DocumentFactory):
     Map specific DocumentFactory containing all necessary methods and overridings for proper map factorisation.
     """
 
+    def validate(self, document: MapDocument) -> None:
+        super().validate(document=document)
+
+        map_options = document.model
+        data_frame = document.data_source.data
+        columns = [map_options.latitude, map_options.longtitude]
+
+        invalid_columns = self._data_frame_service.get_invalid_columns(columns_list=columns, data_frame=data_frame)
+
+        if len(invalid_columns):
+            raise InvalidCoordinatesError(coordinates=invalid_columns)
+
     def prepare_layer_document(self, layer: Layer, document: MapDocument) -> MapLayerDocument:
         """
         Prepares LayerDocument object for creating layer on a map.
@@ -163,7 +179,6 @@ class MapFactory(DocumentFactory):
         """
         layer_data_source = self.prepare_layer_data_source(data_source=document.data_source,
                                                            filter_expression=layer.filter_expression)
-
         layer_document = MapLayerDocument(layer=layer, data_source=layer_data_source,
                                           latitude=document.model.latitude, longtitude=document.model.longtitude)
         return layer_document

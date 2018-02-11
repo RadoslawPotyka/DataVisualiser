@@ -1,7 +1,9 @@
 from abc import abstractmethod
 from werkzeug.utils import secure_filename
+
 from .forms import FormHandler
 from .services import CommonServiceProvider as Services
+from .errors import VisualiserError, UnhandledError
 
 
 class BaseController(object):
@@ -36,9 +38,20 @@ class BaseController(object):
         Activate the controller. Method should return either rendered template or redirect user to a proper page.
         Method should be called in blueprints respective endpoint to display the correct view to the user.
 
-        :return:
+        :return: rendered template for a view or redirect to another page.
         """
         return self._router_state_service.render(template_path=self._template_path, controller=self)
+
+    def on_error_occurred(self, error: Exception, next_state: str = ".index"):
+        """
+        Action to perform when an error occurred during controller activation. Method notifies the user about the error
+        and switches route state to the one provided via params or to the index page of the current module.
+
+        :param error: (Exception) exception that occurred during application runtime..
+        :param next_state: (str) route path for the state the application should switch to.
+        """
+        self._router_state_service.notify(message=str(error), status="danger")
+        return self._router_state_service.go(state=next_state)
 
 
 class DocumentBaseEditController(BaseController):
@@ -80,10 +93,14 @@ class DocumentBaseEditController(BaseController):
         :param is_empty: (bool) determines whether the controller form data is empty or filled with data.
         :return: call to the form_action method resolving in proper template rendering or view redirection.
         """
-        self._is_empty = is_empty
-
-        self.prepare_form()
-        return self.form_action()
+        try:
+            self._is_empty = is_empty
+            self.prepare_form()
+            return self.form_action()
+        except VisualiserError as error:
+            return self.on_error_occurred(error=error)
+        except Exception:
+            return self.on_error_occurred(error=UnhandledError(), next_state=".index")
 
     def prepare_form(self):
         """
@@ -141,6 +158,7 @@ class DocumentBaseEditController(BaseController):
         file.save(self._working_context_service.get_upload_folder() + file_name)
 
         self._working_context_service.save_file_columns(self._file_service.read_columns(data_source=data_source))
+
         self.prepare_form()
         self.form.upload_file(data_source.file_name)
 
@@ -202,6 +220,9 @@ class DocumentBaseEditController(BaseController):
 
     def on_form_initialised(self):
         return self._router_state_service.render(template_path=self._template_path, controller=self)
+
+    def on_error_occurred(self, error, next_state: str = ".edit"):
+        return super().on_error_occurred(error, next_state)
 
     def form_action(self):
         """

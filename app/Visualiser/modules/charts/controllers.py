@@ -3,6 +3,7 @@ from .forms import ChartsFormHandler
 from .models import Chart
 from ..common.controllers import DocumentBaseEditController
 from ..common.models import DataSource
+from ..common.errors import VisualiserError
 
 
 class ChartEditController(DocumentBaseEditController):
@@ -34,6 +35,9 @@ class ChartEditController(DocumentBaseEditController):
 
     def on_document_disposed(self):
         return self._router_state_service.go('charts.index')
+
+    def on_error_occurred(self, error: VisualiserError, next_state: str = "charts.edit"):
+        return super().on_error_occurred(error=error, next_state=next_state)
 
 
 class ChartCreateController(DocumentBaseEditController):
@@ -86,7 +90,7 @@ class ChartCreateController(DocumentBaseEditController):
         """
         creator = self._get_form_creator()
         data_source = creator.map_data_source(self.form.data_source, is_file_uploaded=True)
-        data_source.datetime_columns = datetime_columns  # if len(datetime_columns) > 0 else False
+        data_source.datetime_columns = datetime_columns
         data_source.data = self._file_service.read_file(data_source=data_source)
 
         return data_source
@@ -128,6 +132,9 @@ class ChartCreateController(DocumentBaseEditController):
     def on_document_disposed(self):
         super().on_document_disposed()
         return self._router_state_service.go('charts.index')
+
+    def on_error_occurred(self, error: VisualiserError, next_state: str = "charts.edit"):
+        return super().on_error_occurred(error=error, next_state=next_state)
 
 
 class ChartDisplayController(object):

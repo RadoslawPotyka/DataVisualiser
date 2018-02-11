@@ -1,7 +1,6 @@
 from enum import Enum
 
 from bokeh.plotting import figure
-
 from .models import Chart, ChartOptions, ChartTitle, ChartLayerDocument
 from ..common.creators import DocumentRecipe, DocumentFactory
 from ..common.models import Layer
@@ -163,6 +162,7 @@ class ChartRecipe(DocumentRecipe):
         """
         x = chart_options.x_axis
         x_data_type = x.data_type
+
         plot = figure(height=chart_options.height, width=chart_options.width, x_axis_type=x_data_type)
         plot.xaxis.axis_label = chart_options.x_axis.name or chart_options.x_axis.data_field
 
@@ -207,3 +207,6 @@ class ChartFactory(DocumentFactory):
 
         layer_document = ChartLayerDocument(layer=layer, data_source=layer_data_source, x_axis=document.model.x_axis)
         return layer_document
+
+    def validate(self, document: Chart) -> None:
+        super().validate(document=document)

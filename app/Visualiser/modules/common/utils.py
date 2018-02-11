@@ -13,6 +13,7 @@ class Recipe(metaclass=ABCMeta):
     """
 
     post_execute = None
+    pre_execute = None
 
     @classmethod
     @abstractmethod
@@ -89,7 +90,7 @@ class StringTools(object):
         return string == "" or string is None
 
     @staticmethod
-    def parse(string: str) -> any:
+    def parse(string: str = "") -> any:
         """
         Guess the data type written in string and return its instance.
 
@@ -100,6 +101,19 @@ class StringTools(object):
             return StringTools.to_float(string)
         except ValueError:
             return "'{0}'".format(string)
+
+    @staticmethod
+    def parse_params(string: str, params: dict):
+        """
+        Parametrise string by provided params.
+
+        :param string: (str) string to parametrise.
+        :param params: (dict) dictionary with parameter keys and values to parse.
+        :return: (str) string formatted with provided params.
+        """
+        if params:
+            return string.format(**params)
+        return string
 
     @staticmethod
     def to_snake_case(string: str) -> str:

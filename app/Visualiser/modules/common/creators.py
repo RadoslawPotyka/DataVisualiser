@@ -68,6 +68,8 @@ class DocumentFactory(Factory):
         :param document: (Document) characteristics and ingredients necessary for proper creation of the object.
         :return created_object: (any) instance of an object created from ingredients provided in params.
         """
+        self.validate(document=document)
+
         created_object = self.build(document=document)
 
         for layer in document.model.layers:
@@ -132,9 +134,19 @@ class DocumentFactory(Factory):
         :return instance: (any) object created by recipe execution.
         """
         recipe = self._get_recipe(object_key=document.object_key)
+
         instance = recipe.execute(document=document, base_object=base_object)
 
         if recipe.post_execute is not None:
             self._post_creation_tasks.append(recipe.post_execute)
 
         return instance
+
+    @abstractmethod
+    def validate(self, document: Document) -> None:
+        """
+        Validates data in document. Should raise an error if data in provided document is incorrect.
+
+        :return: None
+        """
+        pass

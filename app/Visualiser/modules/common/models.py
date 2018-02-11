@@ -193,10 +193,10 @@ class Axis(object):
     @property data_type(str): data type used for an axis.
     """
 
-    def __init__(self):
-        self.__data_field = None
-        self.__name = None
-        self.__data_type = None
+    def __init__(self, data_field: str = None, name: str = None, data_type: str = None):
+        self.__data_field = data_field
+        self.__name = name
+        self.__data_type = data_type
 
     @property
     def name(self):

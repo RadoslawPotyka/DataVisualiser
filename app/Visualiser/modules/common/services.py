@@ -5,11 +5,12 @@ from enum import Enum
 
 import pandas as pd
 from inspect import isabstract, isclass
-from flask import session, redirect, render_template, url_for
+from flask import session, redirect, render_template, url_for, flash
 
-from .models import User, ApplicationOptions, DataSource, FilterExpression
+from .models import User, ApplicationOptions, DataSource, FilterExpression, Axis
 from .fileio import FileHandlers, FileHandler
 from .utils import StringTools
+from .errors import IncorrectFileNameError, UnsupportedExtensionError, ParsingError
 
 
 class Service(object):
@@ -189,15 +190,19 @@ class FileService(Service):
         :param data_source: (DataSource) DataSource object instance containing options for a file.
         :return: (pd.DataFrame) pandas DataFrame object with values read and parsed from the file.
         """
-        file_handler = FileService.__create_file_handler(file_name=data_source.file_name)
+        try:
+            file_handler = FileService.__create_file_handler(file_name=data_source.file_name)
 
-        data_frame = file_handler.read_file(data_source=data_source, file_path=FileService.get_upload_folder())
-        DataFrameService.fix_column_names(data_frame=data_frame)
+            data_frame = file_handler.read_file(data_source=data_source, file_path=FileService.get_upload_folder())
+            DataFrameService.fix_column_names(data_frame=data_frame)
 
-        if data_source.should_fill_missing_data:
-            return DataFrameService.fill_missing_data(data_frame=data_frame)
-
-        return data_frame
+            should_fill_data = data_source.should_fill_missing_data
+            # if data_source.should_fill_missing_data:
+            callback = DataFrameService.fill_missing_data if should_fill_data else DataFrameService.remove_missing_data
+            return callback(data_frame=data_frame)
+        except TypeError:
+            raise ParsingError()
+        # return DataFrameService.remove_missing_data(data_frame=data_frame) if
 
     @staticmethod
     def __get_file_type(file_name: str):
@@ -213,7 +218,7 @@ class FileService(Service):
         try:
             extension = file_name.split(".")[-1]
         except IndexError:
-            extension = "csv"
+            raise IncorrectFileNameError(file_name=file_name)
         finally:
             return extension
 
@@ -227,14 +232,15 @@ class FileService(Service):
         :return: (FileHandler) file handler needed for proper parsing of the file with provided extension.
         """
         file_handler_type = FileService.__get_file_type(file_name=file_name)
+        supported_extensions = FileService.get_allowed_extensions()
 
-        if file_handler_type not in FileService.get_allowed_extensions():
-            raise TypeError("Unsupported type {0} ".format(file_handler_type))
+        if file_handler_type not in supported_extensions:
+            raise UnsupportedExtensionError(extension=file_handler_type, supported_extensions=supported_extensions)
 
         file_handler = FileService.file_handlers[file_handler_type].value
 
         if isabstract(file_handler) or not isclass(file_handler):
-            raise TypeError("File handler not implemented for type {0}".format(file_handler_type))
+            raise UnsupportedExtensionError(extension=file_handler_type, supported_extensions=supported_extensions)
 
         return file_handler()
 
@@ -256,6 +262,10 @@ class DataFrameService(object):
         return data_frame.interpolate()
 
     @staticmethod
+    def remove_missing_data(data_frame: pd.DataFrame) -> pd.DataFrame:
+        return data_frame.dropna()
+
+    @staticmethod
     def filter(data_frame: pd.DataFrame, filter_expression: FilterExpression) -> pd.DataFrame:
         """
         Filters data in provided data_frame by provided filter_expression. Uses DataFrame query method to perform
@@ -266,8 +276,10 @@ class DataFrameService(object):
         :return df: (pd.DataFrame) DataFrame object with filtered data based on provided expression.
         """
         query = str(filter_expression)
+        # try:
         df = data_frame.query(query)
-
+        # except TypeError as error:
+        #     print(error, error.args)
         return df
 
     @staticmethod
@@ -291,6 +303,35 @@ class DataFrameService(object):
         cols = data_frame.columns
         cols = cols.map(lambda x: StringTools.to_snake_case(string=x))
         data_frame.columns = cols
+
+    @staticmethod
+    def get_invalid_columns(data_frame: pd.DataFrame, columns_list: [Axis]) -> bool:
+        """
+        Returns list of columns form data frame whose data types do not match respective data types of Axis objects
+        in provided columns list.
+
+        :param data_frame: (pd.DataFrame) data frame object to find unmatched types for
+        :param columns_list: (list(Axis)) list of Axis objects for which the data types should be tested.
+        :return: (list) list of columns with unmatched data types.
+        """
+        return [column.data_field for column in columns_list if not
+                DataFrameService.validate_column(data_frame=data_frame, column=column)]
+
+    @staticmethod
+    def validate_columns(data_frame: pd.DataFrame, columns_list: [Axis]) -> bool:
+        return all([DataFrameService.validate_column(data_frame=data_frame, column=column) for column in columns_list])
+
+    @staticmethod
+    def validate_column(data_frame: pd.DataFrame, column: Axis) -> bool:
+        """
+        Validate data frame columns by provided Axis object. If it has specified data type the method will check whether
+        it matches the type of that column in the data frame.
+
+        :param data_frame: (pd.DataFrame) data frame to check columns values in.
+        :param column: (Axis) Axis object to check provided data frame against
+        :return: (bool)
+        """
+        return column.data_type is None or data_frame[column.data_field].dtype == column.data_type
 
 
 class DocumentService(Service):
@@ -368,6 +409,18 @@ class RouterStateService(Service):
         :return: rendered template with bound controller.
         """
         return render_template(template_path, controller=controller)
+
+    @staticmethod
+    def notify(message: str, status: str = "info") -> None:
+        """
+        Flashes flask message to the user for later display in the view.
+
+        :param message: (str) Message that should be flashed to the user
+        :param status: (str) status of the flashed message.
+        :return: None
+        """
+        formatted_message = message.replace("\n", "</br>")
+        flash(formatted_message, status)
 
 
 class CommonServiceProvider(object):

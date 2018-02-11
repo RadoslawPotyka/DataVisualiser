@@ -50,8 +50,8 @@ class MapOptions(DocumentOptions):
 
     def __init__(self):
         super().__init__()
-        self.__latitude = Axis()
-        self.__longtitude = Axis()
+        self.__latitude = Axis(data_type="float")
+        self.__longtitude = Axis(data_type="float")
         self.__tiles = None
 
     @property

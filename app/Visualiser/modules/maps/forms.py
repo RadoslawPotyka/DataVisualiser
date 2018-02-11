@@ -3,12 +3,17 @@ from wtforms.validators import DataRequired
 
 from .models import MapOptions
 from ..common.forms import FormHandler, DocumentBaseOptionsForm
-from ..common.models import Axis
 
 
 class MapsFormHandler(FormHandler):
     """
     Class responsible for creating forms being used in maps module.
+
+    Args:
+        tiles: [tuple] list of tuples containing supported tiles.
+
+    Attributes:
+        __supported_tiles: [tuple] list of supported types that will be used as select field choices for map tiles.
     """
 
     _default_size = 8.0
@@ -52,13 +57,8 @@ class MapsFormHandler(FormHandler):
         map_options.description = document_options_form.free_text.data
         map_options.tiles = document_options_form.tiles.data
 
-        latitude = Axis()
-        latitude.data_field = document_options_form.latitude.data
-        map_options.latitude = latitude
-
-        longtitude = Axis()
-        longtitude.data_field = document_options_form.longtitude.data
-        map_options.longtitude = longtitude
+        map_options.latitude.data_field = document_options_form.latitude.data
+        map_options.longtitude.data_field = document_options_form.longtitude.data
 
         title = self.map_title(document_options_form.title)
         map_options.title = title

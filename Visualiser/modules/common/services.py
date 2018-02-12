@@ -90,7 +90,10 @@ class SessionService(Service):
         :param key: Key by which the data is stored
         :return: Value stored under given key in session storage.
         """
-        return session[key]
+        try:
+            return session[key]
+        except KeyError:
+            return None
 
 
 class WorkingContextService(Service):
@@ -106,7 +109,7 @@ class WorkingContextService(Service):
 
         :return: [tuple] columns saved from currently uploaded file.
         """
-        columns = SessionService.get_item(SessionService.Columns)
+        columns = SessionService.get_item(SessionService.Columns) or []
         return [(column, column) for column in columns]
 
     @staticmethod

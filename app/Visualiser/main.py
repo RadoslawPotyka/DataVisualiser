@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for
+import werkzeug.exceptions as exceptions
 
 from .modules.home.blueprint import home
 from .modules.maps.blueprint import maps
@@ -16,4 +17,14 @@ flask_app.register_blueprint(blueprint=charts, url_prefix='/app/charts')
 
 @flask_app.route("/")
 def index():
+    return redirect(url_for('home.index'))
+
+
+@flask_app.errorhandler(exceptions.BadRequest)
+def internal_error(error):
+    return redirect(url_for('home.index'))
+
+
+@flask_app.errorhandler(exceptions.InternalServerError)
+def internal_error(error):
     return redirect(url_for('home.index'))

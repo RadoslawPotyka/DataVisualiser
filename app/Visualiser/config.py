@@ -34,3 +34,4 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     """Production configuration"""
     DEBUG = False
+    SECRET_KEY = 'production-key642'

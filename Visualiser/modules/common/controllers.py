@@ -99,7 +99,7 @@ class DocumentBaseEditController(BaseController):
             return self.form_action()
         except VisualiserError as error:
             return self.on_error_occurred(error=error)
-        except Exception:
+        except Exception as e:
             return self.on_error_occurred(error=UnhandledError(), next_state=".index")
 
     def prepare_form(self):

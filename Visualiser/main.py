@@ -8,7 +8,7 @@ from .config import *
 
 flask_app = Flask(__name__, static_url_path="/static", static_folder="static")
 
-flask_app.config.from_object(TestingConfig)
+flask_app.config.from_object(ProductionConfig)
 
 flask_app.register_blueprint(blueprint=home, url_prefix='/app')
 flask_app.register_blueprint(blueprint=maps, url_prefix='/app/maps')

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from enum import Enum
 
-from folium import Map, FeatureGroup, CircleMarker, LayerControl, Marker
+from folium import Map, FeatureGroup, CircleMarker, LayerControl,RegularPolygonMarker, Marker
 
 from .models import MapLayerDocument, MapDocument, MapOptions
 from .errors import InvalidCoordinatesError
@@ -92,6 +92,49 @@ class CircleMarkerRecipe(MarkerRecipe):
                             color='grey', fill_opacity=layer_figure.opacity)
 
 
+class PolygonMarkerRecipe(MarkerRecipe):
+    """
+    Recipe for folium PolygonMarker creation.
+
+    Attributes:
+        _number_of_sides: (int) number of sides of created polygon.
+    """
+
+    _number_of_sides = 6
+
+    @classmethod
+    def _create_marker(cls, layer_value: str, coordinates: [float], layer_figure: ObjectFigure) -> CircleMarker:
+        """
+        Create single Folium PolygonMarker object.
+
+        :param layer_value: (str) value of layers data_field to display on markers popup.
+        :param coordinates: [float] coordinates on which the marker should be displayed
+        :param layer_figure: (ObjectFigure) layer figure configuration object.
+        :return: (Marker) marker instance adjusted for provided params.
+        """
+
+        return RegularPolygonMarker(location=coordinates, radius=layer_figure.size,
+                                    popup=layer_value, fill_color=layer_figure.colour,
+                                    color='grey', fill_opacity=layer_figure.opacity,
+                                    number_of_sides=cls._number_of_sides)
+
+
+class RectangleMarkerRecipe(PolygonMarkerRecipe):
+    """
+    Class representation of rectangle marker. Declares number of sides that should be used in _create method of parent
+    class.
+    """
+    _number_of_sides = 4
+
+
+class TriangleMarkerRecipe(PolygonMarkerRecipe):
+    """
+        Class representation of triangle marker. Declares number of sides that should be used in _create method of parent
+        class.
+        """
+    _number_of_sides = 3
+
+
 class LayerControlRecipe(DocumentRecipe):
     """
     Recipe for layer control appendage to a map.
@@ -150,6 +193,9 @@ class MapRecipes(Enum):
     Map = MapRecipe
     Circle = CircleMarkerRecipe
     Marker = MarkerRecipe
+    RectangleMarker = RectangleMarkerRecipe
+    TriangleMarker = TriangleMarkerRecipe
+    Hexagon = PolygonMarkerRecipe
 
 
 class MapFactory(DocumentFactory):

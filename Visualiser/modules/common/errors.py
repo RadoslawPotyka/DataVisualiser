@@ -78,6 +78,14 @@ class UnsupportedExtensionError(VisualiserError):
         }
 
 
+class FileNotUploadedError(VisualiserError):
+    _error = "Visualiser can't find uploaded file."
+    _solution = "Please check if you uploaded the file in correct format."
+
+    def __init__(self):
+        super().__init__(error=self._error, solution=self._solution)
+
+
 class IncorrectFileNameError(VisualiserError):
     _error = "File name of uploaded file - {file_name} is incorrect"
     _solution = "Please check the name of your file"

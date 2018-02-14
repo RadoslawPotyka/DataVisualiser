@@ -60,7 +60,7 @@ class FileForm(FlaskForm):
     """
     Class representing form for gathering user input regarding data source and handling file upload.
     """
-    data_source = FileField(label="Data")
+    data_source = FileField(label="File")
     separator_type = SelectField("Columns separator",
                                  choices=[(",", "comma"), (";", "semicolon"), ("\t", "tab"), (" ", "space")],
                                  default=(",", "comma"))
@@ -275,9 +275,11 @@ class FormHandler(object):
 
         if is_file_uploaded:
             file_name = file_form.file_name.data
-        else:
+        elif file_form.data_source.data:
             file = file_form.data_source.data
             file_name = secure_filename(file.filename)
+        else:
+            raise FileNotFoundError()
 
         data_source.file_name = file_name
         data_source.separator = separator

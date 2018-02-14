@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 
 from .forms import FormHandler
 from .services import CommonServiceProvider as Services
-from .errors import VisualiserError, UnhandledError
+from .errors import VisualiserError, UnhandledError, FileNotUploadedError
 
 
 class BaseController(object):
@@ -65,7 +65,6 @@ class DocumentBaseEditController(BaseController):
         _document_service: (Services.DocumentService) Service for document handling.
         _is_empty: (bool) determines whether the form is initialised for the first time throughout the current
         context of the application
-        _is_submitting: (bool) param determining whether the form used by controller is ready for submission and posting
         _form: (Form) form object instance used by the controller.
 
     Args:
@@ -99,7 +98,7 @@ class DocumentBaseEditController(BaseController):
             return self.form_action()
         except VisualiserError as error:
             return self.on_error_occurred(error=error)
-        except Exception as e:
+        except Exception:
             return self.on_error_occurred(error=UnhandledError(), next_state=".index")
 
     def prepare_form(self):
@@ -150,10 +149,17 @@ class DocumentBaseEditController(BaseController):
 
         :return: Rendered controller template.
         """
+        file = self.form.data_source.data_source.data
+
+        if file is None:
+            raise FileNotUploadedError()
+
+        if file.filename is None:
+            raise FileNotUploadedError()
+
         creator = self._get_form_creator()
         data_source = creator.map_data_source(self.form.data_source)
 
-        file = self.form.data_source.data_source.data
         file_name = secure_filename(file.filename)
         file.save(self._working_context_service.get_upload_folder() + file_name)
 

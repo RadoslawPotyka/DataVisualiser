@@ -106,7 +106,7 @@
 
 
 {% macro render_filter_form(form) %}
-    {{  form.hidden_tag() }}
+    {{ form.hidden_tag() }}
     <div class="row">
         <div class="col-lg-6">
             {{ render_field(form.operator, False) }}
@@ -390,12 +390,12 @@
                     {{ form.hidden_tag() }}
                     {{ render_button(form.cancel, "btn btn-danger") }}
                 </li>
-{#                <li role="presentation">#}
-{#                    {{ render_button(form.edit_document, "btn btn-success") }}#}
-{#                </li>#}
-{#                <li role="presentation">#}
-{#                    {{ render_button(form.save_document, "btn btn-info") }}#}
-{#                </li>#}
+                <li role="presentation">
+                    {{ render_button(form.edit_document, "btn btn-success") }}
+                </li>
+                {#                <li role="presentation">#}
+                {#                    {{ render_button(form.save_document, "btn btn-info") }}#}
+                {#                </li>#}
             </ul>
         </div>
     </div>

@@ -16,7 +16,7 @@ class MapsFormHandler(FormHandler):
         __supported_tiles: [tuple] list of supported types that will be used as select field choices for map tiles.
     """
 
-    _default_size = 8.0
+    _scale = 4.0
     _default_title = "My Map"
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple], tiles: [tuple]):

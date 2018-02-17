@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from enum import Enum
 
-from folium import Map, FeatureGroup, CircleMarker, LayerControl,RegularPolygonMarker, Marker
+from folium import Map, FeatureGroup, CircleMarker, LayerControl, RegularPolygonMarker, Marker
 
 from .models import MapLayerDocument, MapDocument, MapOptions
 from .errors import InvalidCoordinatesError
@@ -129,9 +129,9 @@ class RectangleMarkerRecipe(PolygonMarkerRecipe):
 
 class TriangleMarkerRecipe(PolygonMarkerRecipe):
     """
-        Class representation of triangle marker. Declares number of sides that should be used in _create method of parent
-        class.
-        """
+    Class representation of triangle marker. Declares number of sides that should be used in _create method of
+    parent class.
+    """
     _number_of_sides = 3
 
 

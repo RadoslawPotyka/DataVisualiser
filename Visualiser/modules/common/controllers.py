@@ -246,13 +246,13 @@ class DocumentBaseEditController(BaseController):
             return self.on_file_uploaded()
         elif self.form.add_layer.data:
             return self.on_layer_submitted()
+        elif self.form.edit_document.data:
+            return self.on_document_edited()
         elif self.form.submit_document.data:
             return self.on_form_submitted(is_valid=is_valid)
         elif self.form.cancel.data:
             return self.on_document_disposed()
         elif self.form.save_document.data:
             return self.on_document_saved()
-        elif self.form.edit_document.data:
-            return self.on_document_edited()
         else:
             return self.on_layer_removed()

@@ -63,7 +63,7 @@ class Factory(metaclass=ABCMeta):
         :return: (any) value returned by object creation.
         """
         pass
-
+    
 
 class StringTools(object):
     """

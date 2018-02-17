@@ -152,11 +152,12 @@ class FormHandler(object):
     _columns = None
     _shape_keys = None
     _colours = None
-    _default_size = None
+    _scale = 1.0
     _default_title = "My Document"
     _supported_conditions = [("", "None"), ("==", "="), ("!=", "!="),
                              ("<=", "<="), (">=", ">="), (">", ">"), ("<", "<")]
     _supported_collocations = [("&", "and"), ("|", "or")]
+    _object_size_scales = [("1.25", "Thin"), ("2", "Medium"), ("3.5", "Thick")]
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
         self._columns = columns
@@ -234,7 +235,7 @@ class FormHandler(object):
         LayerForm.shape = SelectField("Shape", choices=self._supported_shapes, validators=[DataRequired()])
         LayerForm.colour = ColourSelectField("Colour", choices=self._colours, validators=[DataRequired()])
 
-        LayerForm.size = FloatField("Size", default=self._default_size)
+        LayerForm.size = SelectField("Size", choices=self._object_size_scales)
 
         LayerForm.filter_expressions = FieldList(FormField(self.prepare_filter_form()), min_entries=2, max_entries=2)
         LayerForm.operator = SelectField("", choices=self._supported_collocations)
@@ -332,11 +333,12 @@ class FormHandler(object):
         layer.axis.data_field = data_field
         layer.axis.name = layer_form["layer_name"]
 
-        layer.figure.size = layer_form["size"]
+        size = StringTools.to_float(string=layer_form["size"])
+        layer.figure.size = size * self._scale
+
         layer.figure.object_key = self._shape_keys[layer_form["shape"]]
         layer.figure.opacity = layer_form["opacity"]
         layer.figure.colour = layer_form["colour"]
-
         layer.filter_expression = self.map_filters(layer_form=layer_form)
 
         return layer

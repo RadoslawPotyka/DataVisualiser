@@ -1,4 +1,4 @@
-import pandas as pd
+from bokeh.models import ColumnDataSource
 
 from ..common.models import Document, DocumentOptions, ObjectKey, Axis, LayerDocument, Layer
 
@@ -12,10 +12,11 @@ class ChartLayerDocument(LayerDocument):
     """
     def __init__(self,
                  layer: Layer = None,
-                 data_source: pd.DataFrame = None,
+                 data_source: ColumnDataSource = None,
                  x_axis: Axis = Axis()):
         super().__init__(layer=layer, data_source=data_source)
         self.__X_axis = x_axis
+        # self._data_source = data_source
 
     @property
     def x_axis(self):
@@ -24,6 +25,14 @@ class ChartLayerDocument(LayerDocument):
     @x_axis.setter
     def x_axis(self, x_axis: Axis):
         self.__X_axis = x_axis
+
+    @property
+    def data_source(self) -> ColumnDataSource:
+        return self._data_source
+
+    @data_source.setter
+    def data_source(self, data_source: ColumnDataSource):
+        self._data_source = data_source
 
 
 class ChartTitle(object):
@@ -95,6 +104,7 @@ class ChartOptions(DocumentOptions):
         super().__init__()
         self.__X_axis = Axis()
         self.__title = ChartTitle()
+        self.__tooltips = []
 
     @property
     def title(self) -> ChartTitle:
@@ -111,6 +121,14 @@ class ChartOptions(DocumentOptions):
     @x_axis.setter
     def x_axis(self, axis: Axis):
         self.__X_axis = axis
+
+    @property
+    def tooltips(self) -> [tuple]:
+        return self.__tooltips
+
+    @tooltips.setter
+    def tooltips(self, tooltips: [tuple]):
+        self.__tooltips = tooltips
 
 
 class Chart(Document):

@@ -345,6 +345,9 @@
                             <div class="panel-heading">
                                 {{ render_document_options_form(form.document_options, document_type) }}
                                 {{ render_button(form.submit_document, "btn btn-info") }}
+                                {% if document_type == "map" %}
+                                    <span class="text-mute">(Creation of a map might take a while)</span>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -390,9 +393,9 @@
                     {{ form.hidden_tag() }}
                     {{ render_button(form.cancel, "btn btn-danger") }}
                 </li>
-{#                <li role="presentation">#}
-{#                    {{ render_button(form.edit_document, "btn btn-success") }}#}
-{#                </li>#}
+                {#                <li role="presentation">#}
+                {#                    {{ render_button(form.edit_document, "btn btn-success") }}#}
+                {#                </li>#}
                 {#                <li role="presentation">#}
                 {#                    {{ render_button(form.save_document, "btn btn-info") }}#}
                 {#                </li>#}

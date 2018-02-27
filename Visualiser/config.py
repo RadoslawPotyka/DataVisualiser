@@ -1,4 +1,4 @@
-ALLOWED_EXTENSIONS = {'txt', 'csv', 'xls', 'json'}
+ALLOWED_EXTENSIONS = {'txt', 'csv', 'dat', 'json'}
 
 COLOURS = ["#1f77b4", "#98df8a", "#8c564b", "#c7c7c7", "#aec7e8", "#d62728",
            "#c49c94", "#bcbd22", "#ff7f0e", "#ff9896", "#e377c2", "#dbdb8d",

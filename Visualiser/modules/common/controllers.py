@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from werkzeug.utils import secure_filename
 
 from .forms import FormHandler
 from .services import CommonServiceProvider as Services
@@ -154,13 +153,10 @@ class DocumentBaseEditController(BaseController):
         if file is None:
             raise FileNotUploadedError()
 
-        if file.filename is None:
-            raise FileNotUploadedError()
-
         creator = self._get_form_creator()
         data_source = creator.map_data_source(self.form.data_source)
 
-        file_name = secure_filename(file.filename)
+        file_name = data_source.file_name
         file.save(self._working_context_service.get_upload_folder() + file_name)
 
         self._working_context_service.save_file_columns(self._file_service.read_columns(data_source=data_source))

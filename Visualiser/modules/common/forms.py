@@ -12,6 +12,7 @@ from wtforms.widgets import HTMLString, html_params, Select
 
 from .models import Layer, Document, DocumentOptions, DataSource, FilterExpression
 from .utils import StringTools
+from .errors import FileNotUploadedError
 
 
 class ColourSelect(Select):
@@ -280,7 +281,7 @@ class FormHandler(object):
             file = file_form.data_source.data
             file_name = secure_filename(file.filename)
         else:
-            raise FileNotFoundError()
+            raise FileNotUploadedError()
 
         data_source.file_name = file_name
         data_source.separator = separator

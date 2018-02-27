@@ -75,7 +75,7 @@ class LayerRecipe(DocumentRecipe):
         Create a layer on a plot figure. Method creates layer and adjusts it based on configuration.
         The layer is appended to the provided plot.
 
-        :param document: (LayerDocument) layer document object containing ingredients and configuration for
+        :param document: (LayerDocument) layer document object containing ingredients and configuration.
         creating a line.
         :param base_object: (bokeh.plotting.figure) bokeh figure to create line on
         :return: None
@@ -99,8 +99,8 @@ class LineRecipe(LayerRecipe):
         Create line on a plot figure. Method creates line and adjusts it based on configuration. The line is appended to
         the provided plot.
 
-        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration for
-        :param plot: (bokeh.plotting.figure) bokeh figure to create line on
+        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
+        :param plot: (bokeh.plotting.figure) bokeh figure to create line on.
         :return: None
         """
         layer_model = layer_document.model
@@ -130,8 +130,8 @@ class CircleRecipe(LayerRecipe):
         Create circle on a plot figure. Method creates circle and adjusts it based on configuration. The circle is
         appended to the provided plot.
 
-        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration for
-        :param plot: (bokeh.plotting.figure) bokeh figure to create circle on
+        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
+        :param plot: (bokeh.plotting.figure) bokeh figure to create circle on.
         :return: None
         """
         layer_model = layer_document.model
@@ -162,8 +162,8 @@ class SquareRecipe(LayerRecipe):
         Create square on a plot figure. Method creates square and adjusts it based on configuration.
         The square is appended to the provided plot.
 
-        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration for
-        :param plot: (bokeh.plotting.figure) bokeh figure to create square on
+        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
+        :param plot: (bokeh.plotting.figure) bokeh figure to create square on.
         :return: None
         """
         layer_model = layer_document.model
@@ -180,6 +180,37 @@ class SquareRecipe(LayerRecipe):
                     legend=axis.name,
                     size=layer_figure.size,
                     source=layer_document.data_source)
+
+
+class BarRecipe(LayerRecipe):
+    """
+    Recipe for creating bars on a plot.
+    """
+
+    @classmethod
+    def _add_layer(cls, plot: figure, layer_document: ChartLayerDocument) -> None:
+        """
+        Create bars on a plot figure. Method creates bars and adjusts them based on configuration.
+        TGenerated bars are appended to the plot.
+
+        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
+        :param plot: (bokeh.plotting.figure) bokeh figure to create bars on.
+        :return: None
+        """
+        layer_model = layer_document.model
+        layer_figure = layer_model.figure
+
+        axis = layer_model.axis
+        axis.name = axis.name or axis.data_field
+
+        plot.yaxis.axis_label = axis.name
+        plot.vbar(x=layer_document.x_axis.data_field,
+                  top=axis.data_field,
+                  color=layer_figure.colour,
+                  alpha=layer_figure.opacity,
+                  legend=axis.name,
+                  width=layer_figure.size,
+                  source=layer_document.data_source)
 
 
 class ChartRecipe(DocumentRecipe):
@@ -242,6 +273,7 @@ class ChartRecipes(Enum):
     Line = LineRecipe
     Circle = CircleRecipe
     Square = SquareRecipe
+    Bars = BarRecipe
 
 
 class ChartFactory(DocumentFactory):

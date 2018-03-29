@@ -1,0 +1,2415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to DataVisualiser’s documentation! &#8212; DataVisualiser 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="DataVisualiser 1 documentation" href="#" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-datavisualiser-s-documentation">
+<h1>Welcome to DataVisualiser&#8217;s documentation!<a class="headerlink" href="#welcome-to-datavisualiser-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="module-1-common">
+<h1>Module #1 &#8211; Common<a class="headerlink" href="#module-1-common" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="services">
+<h2><em>Services:</em><a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.services"></span><dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.services.</code><code class="descname">CommonServiceProvider</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service provider for common module. Contains exportable services for later usage throughout the application.</p>
+<dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService">
+<em class="property">class </em><code class="descname">DataFrameService</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service handling pandas DataFrame objects and performing operations on them such as interpolation used for filling
+missing data or filtering data based on condition.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.extract_columns">
+<em class="property">static </em><code class="descname">extract_columns</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &rarr; [&lt;class 'str'&gt;]<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.extract_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract columns list from provided data frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_frame</strong> &#8211; (pd.DataFrame) DataFrame object instance to extract columns from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of columns from provided data frame.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.fill_missing_data">
+<em class="property">static </em><code class="descname">fill_missing_data</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &rarr; pandas.core.frame.DataFrame<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.fill_missing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills missing data in the data_frame using interpolation method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_frame</strong> &#8211; (pd.DataFrame) pandas DataFrame object to perform interpolation on.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(pd.DataFrame) interpolated DataFrame object with missing data filled.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.filter">
+<em class="property">static </em><code class="descname">filter</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame</em>, <em>filter_expression: Visualiser.modules.common.models.FilterExpression</em><span class="sig-paren">)</span> &rarr; pandas.core.frame.DataFrame<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters data in provided data_frame by provided filter_expression. Uses DataFrame query method to perform
+filtering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_frame</strong> &#8211; (pd.DataFrame) DataFrame object to perform filtering on.</li>
+<li><strong>filter_expression</strong> &#8211; (FilterExpression) filter expression to filter data by.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(pd.DataFrame) DataFrame object with filtered data based on provided expression.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.fix_column_names">
+<em class="property">static </em><code class="descname">fix_column_names</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.fix_column_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces whitespaces in provided data_frame columns with underscores to avoid errors in data_frame querying.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_frame</strong> &#8211; (pd.DataFrame) data frame to replace whitespaces for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.get_invalid_columns">
+<em class="property">static </em><code class="descname">get_invalid_columns</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame, columns_list: [&lt;class 'Visualiser.modules.common.models.Axis'&gt;]</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.get_invalid_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of columns form data frame whose data types do not match respective data types of Axis objects
+in provided columns list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_frame</strong> &#8211; (pd.DataFrame) data frame object to find unmatched types for</li>
+<li><strong>columns_list</strong> &#8211; (list(Axis)) list of Axis objects for which the data types should be tested.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(list) list of columns with unmatched data types.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.validate_column">
+<em class="property">static </em><code class="descname">validate_column</code><span class="sig-paren">(</span><em>data_frame: pandas.core.frame.DataFrame</em>, <em>column: Visualiser.modules.common.models.Axis</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DataFrameService.validate_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate data frame columns by provided Axis object. If it has specified data type the method will check whether
+it matches the type of that column in the data frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_frame</strong> &#8211; (pd.DataFrame) data frame to check columns values in.</li>
+<li><strong>column</strong> &#8211; (Axis) Axis object to check provided data frame against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DocumentService">
+<em class="property">class </em><code class="descclassname">CommonServiceProvider.</code><code class="descname">DocumentService</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DocumentService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base interface for document service. Contains method necessary for correct work in base  context of the document.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_colours">
+<em class="property">classmethod </em><code class="descname">get_supported_colours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_colours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return supported colours for a document. Returns colours in format expected by wtforms SelectField.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">([tuple]) list of supported colours for given document.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_shape_keys">
+<em class="property">classmethod </em><code class="descname">get_supported_shape_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; enum.Enum<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_shape_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return enum object containing shape keys supported for a given document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(Enum) Enum object containing keys of supported objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_shapes">
+<em class="property">classmethod </em><code class="descname">get_supported_shapes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; [&lt;class 'tuple'&gt;]<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.DocumentService.get_supported_shapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return supported shapes for a document. Returns shapes in format expected by wtforms SelectField.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">([tuple]) list of supported shapes for given document.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.FileService">
+<em class="property">class </em><code class="descclassname">CommonServiceProvider.</code><code class="descname">FileService</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.FileService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service handling upload, parsing and reading data off of a file.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">UPLOAD_PATH: (str) path under which the uploaded files are stored.</p>
+<p class="last">file_handlers: (FileHandlers) file handlers used for file reading.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.FileService.file_handlers">
+<code class="descname">file_handlers</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.FileService.file_handlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">FileHandlers</span></code></p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.FileService.get_upload_folder">
+<em class="property">static </em><code class="descname">get_upload_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.FileService.get_upload_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns path to the folder in which uploaded files are stored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">upload_path(str) - path to the folder under which uploaded files are stored.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.FileService.read_columns">
+<em class="property">static </em><code class="descname">read_columns</code><span class="sig-paren">(</span><em>data_source: Visualiser.modules.common.models.DataSource</em><span class="sig-paren">)</span> &rarr; [&lt;class 'str'&gt;]<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.FileService.read_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read columns from a given file and return a list of their names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_source</strong> &#8211; (DataSource) DataSource object instance containing options for a file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(list(str)) list of columns names read from provided file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.FileService.read_file">
+<em class="property">static </em><code class="descname">read_file</code><span class="sig-paren">(</span><em>data_source: Visualiser.modules.common.models.DataSource</em><span class="sig-paren">)</span> &rarr; pandas.core.frame.DataFrame<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.FileService.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads file and returns parsed pandas DataFrame object with handler of the file based on its extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_source</strong> &#8211; (DataSource) DataSource object instance containing options for a file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(pd.DataFrame) pandas DataFrame object with values read and parsed from the file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.RouterStateService">
+<em class="property">class </em><code class="descclassname">CommonServiceProvider.</code><code class="descname">RouterStateService</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.RouterStateService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service handling routing, redirecting and rendering template.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.go">
+<em class="property">static </em><code class="descname">go</code><span class="sig-paren">(</span><em>state: str</em><span class="sig-paren">)</span> &rarr; &lt;function redirect at 0x0000000007E23C80&gt;<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect user to a state provided with method params.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> &#8211; (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
+redirection between and inside blueprints.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">route matching provided state.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.notify">
+<em class="property">static </em><code class="descname">notify</code><span class="sig-paren">(</span><em>message: str</em>, <em>status: str = 'info'</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flashes flask message to the user for later display in the view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message</strong> &#8211; (str) Message that should be flashed to the user</li>
+<li><strong>status</strong> &#8211; (str) status of the flashed message.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.render">
+<em class="property">static </em><code class="descname">render</code><span class="sig-paren">(</span><em>template_path: str</em>, <em>controller: &lt;built-in function any&gt;</em><span class="sig-paren">)</span> &rarr; &lt;function render_template at 0x000000000483D730&gt;<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders view with controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>template_path</strong> &#8211; (str) path to the template that should be displayed to a user.</li>
+<li><strong>controller</strong> &#8211; (any) controller that should be assigned to rendered template.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">rendered template with bound controller.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.submit">
+<em class="property">static </em><code class="descname">submit</code><span class="sig-paren">(</span><em>state: str</em><span class="sig-paren">)</span> &rarr; &lt;function redirect at 0x0000000007E23C80&gt;<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.RouterStateService.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect user to a state provided with method params using request POST method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> &#8211; (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
+redirection between and inside blueprints.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">route matching provided state.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService">
+<em class="property">class </em><code class="descclassname">CommonServiceProvider.</code><code class="descname">WorkingContextService</code><a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service handling, controlling and interacting with the context of the application.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_file_columns">
+<em class="property">static </em><code class="descname">get_file_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; [&lt;class 'tuple'&gt;]<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_file_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of columns read from newly uploaded file to display in select fields. Returns list of two element tuple
+expected by wtforms SelectField.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">[tuple] columns saved from currently uploaded file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_upload_folder">
+<em class="property">static </em><code class="descname">get_upload_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_upload_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns path to the folder in which uploaded files are stored. Accesses FileService and uses the file path set
+in it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">upload_path(str) - path to the folder under which uploaded files are stored.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_user_logged_in">
+<em class="property">static </em><code class="descname">get_user_logged_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.User<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.get_user_logged_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get currently logged user. If no user is logged returns guest user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">user(User) - user that is currently logged in the application</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.save_file_columns">
+<em class="property">static </em><code class="descname">save_file_columns</code><span class="sig-paren">(</span><em>columns: [&lt;class 'str'&gt;]</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.common.services.CommonServiceProvider.WorkingContextService.save_file_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save columns read from a file for later usage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> &#8211; [str] list of column names to save</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="utilities">
+<h2><em>Utilities:</em><a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.utils"></span><dl class="class">
+<dt id="Visualiser.modules.common.utils.Factory">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.utils.</code><code class="descname">Factory</code><a class="headerlink" href="#Visualiser.modules.common.utils.Factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for factorisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>_recipes: (Enum) recipes enumerator containing keys and corresponding recipe function object.</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.common.utils.Factory.build">
+<code class="descname">build</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.utils.Factory.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> &#8211; arguments used for object creation.</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments used for object creation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(any) value returned by object creation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.utils.Recipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.utils.</code><code class="descname">Recipe</code><a class="headerlink" href="#Visualiser.modules.common.utils.Recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base interface for function objects.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>post_execute: (Recipe) recipe that should be executed after this one.</dd>
+</dl>
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.utils.Recipe.execute">
+<em class="property">classmethod </em><code class="descname">execute</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.utils.Recipe.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> &#8211; arguments used for command execution.</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments used for command execution</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(any) value returned by command execution.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.utils.StringTools">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.utils.</code><code class="descname">StringTools</code><a class="headerlink" href="#Visualiser.modules.common.utils.StringTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tools object containing functional tools for working and interacting with string objects.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.utils.StringTools.is_empty">
+<em class="property">static </em><code class="descname">is_empty</code><span class="sig-paren">(</span><em>string: str</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#Visualiser.modules.common.utils.StringTools.is_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the provided string is empty or is None object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; (str) string to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool) boolean value determining provided string emptiness.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.utils.StringTools.parse">
+<em class="property">static </em><code class="descname">parse</code><span class="sig-paren">(</span><em>string: str = ''</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.utils.StringTools.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess the data type written in string and return its instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; (str) string to extract data from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(any) parsed value from string.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.utils.StringTools.parse_params">
+<em class="property">static </em><code class="descname">parse_params</code><span class="sig-paren">(</span><em>string: str</em>, <em>params: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.utils.StringTools.parse_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parametrise string by provided params.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; (str) string to parametrise.</li>
+<li><strong>params</strong> &#8211; (dict) dictionary with parameter keys and values to parse.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(str) string formatted with provided params.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.utils.StringTools.to_float">
+<em class="property">static </em><code class="descname">to_float</code><span class="sig-paren">(</span><em>string: str</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#Visualiser.modules.common.utils.StringTools.to_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse string to a float value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; (str) string to parse onto a float object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float) float value parsed from provided string.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.utils.StringTools.to_snake_case">
+<em class="property">static </em><code class="descname">to_snake_case</code><span class="sig-paren">(</span><em>string: str</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#Visualiser.modules.common.utils.StringTools.to_snake_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return string in snake_case by replacing spaces in it with underscores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; (str) string to replaces spaces for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(str) string with spaces replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="creators">
+<h2><em>Creators:</em><a class="headerlink" href="#creators" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.creators"></span><dl class="class">
+<dt id="Visualiser.modules.common.creators.DocumentFactory">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.creators.</code><code class="descname">DocumentFactory</code><span class="sig-paren">(</span><em>recipes: enum.Enum</em>, <em>data_frame_service: Visualiser.modules.common.services.DataFrameService = &lt;class 'Visualiser.modules.common.services.DataFrameService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for Document factorisation. Contains methods necessary for proper handling of all documents factorisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">_recipes: (Enum) enumerator object containing recipes for document factory.</p>
+<p>_data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.</p>
+<p class="last">_post_creation_tasks: (list) tasks to perform after the document is created.</p>
+</dd>
+<dt>Args:</dt>
+<dd><p class="first">recipes: (Enum) enumerator object containing recipes for document factory.</p>
+<p class="last">data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.common.creators.DocumentFactory.build">
+<code class="descname">build</code><span class="sig-paren">(</span><em>document: Visualiser.modules.common.models.Document</em>, <em>base_object: &lt;built-in function any&gt; = None</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build object from document data. Method finds recipe by object_key of the document executes it and returns
+result of the recipe execution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document</strong> &#8211; (Document) ingredients and characteristics of object to create.</li>
+<li><strong>base_object</strong> &#8211; (any) optional param for recipe execution. Provide this param when recipe appends object to
+another one rather then creating a new one.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">instance (any) object created by recipe execution.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.creators.DocumentFactory.create_object">
+<code class="descname">create_object</code><span class="sig-paren">(</span><em>document: Visualiser.modules.common.models.Document</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory.create_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method builds base document and then appends to it each layer of provided documents model and returns it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> &#8211; (Document) characteristics and ingredients necessary for proper creation of the object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">created_object(any) - instance of an object created from ingredients provided in params.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.creators.DocumentFactory.prepare_layer_data_source">
+<code class="descname">prepare_layer_data_source</code><span class="sig-paren">(</span><em>data_source: Visualiser.modules.common.models.DataSource</em>, <em>filter_expression: Visualiser.modules.common.models.FilterExpression = None</em><span class="sig-paren">)</span> &rarr; pandas.core.frame.DataFrame<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory.prepare_layer_data_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare data source for layer filtering the data if filter_expression is provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_source</strong> &#8211; (DataSource) base data source object to assign to layer document.</li>
+<li><strong>filter_expression</strong> &#8211; (FilterExpression) filter expression to filter data by before assigning to layer
+document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">layer_data_source(pd.DataFrame) - prepared and filtered data_source for a layer.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.creators.DocumentFactory.prepare_layer_document">
+<code class="descname">prepare_layer_document</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer</em>, <em>document: Visualiser.modules.common.models.Document</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.LayerDocument<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory.prepare_layer_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares LayerDocument object for creating layer on a document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>layer</strong> &#8211; (Layer) layer configuration object.</li>
+<li><strong>document</strong> &#8211; (Document) document to append LayerDocument to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">layer_document(LayerDocument) - prepared layer document to append on a document.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.creators.DocumentFactory.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>document: Visualiser.modules.common.models.Document</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentFactory.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates data in document. Should raise an error if data in provided document is incorrect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.creators.DocumentRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.creators.</code><code class="descname">DocumentRecipe</code><a class="headerlink" href="#Visualiser.modules.common.creators.DocumentRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for document recipes functionality asserting that all recipe command classes will have respective create
+methods.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.creators.DocumentRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span> &rarr; &lt;built-in function any&gt;<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create object and return its instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(any) any object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="Visualiser.modules.common.creators.DocumentRecipe.execute">
+<em class="property">classmethod </em><code class="descname">execute</code><span class="sig-paren">(</span><em>document: Visualiser.modules.common.models.Document = None</em>, <em>base_object: &lt;built-in function any&gt; = None</em><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#Visualiser.modules.common.creators.DocumentRecipe.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes document recipe command by returning call to create method from called class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document</strong> &#8211; (Document) document containing ingredients for executing the command</li>
+<li><strong>base_object</strong> &#8211; (any) optional param for recipe execution. Provide this param when recipe appends object to
+another one rather then creating a new one.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(object) result of create method from provided subclass.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="controllers">
+<h2><em>Controllers:</em><a class="headerlink" href="#controllers" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.controllers"></span><dl class="class">
+<dt id="Visualiser.modules.common.controllers.BaseController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.controllers.</code><code class="descname">BaseController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>working_context_service: Visualiser.modules.common.services.WorkingContextService = &lt;class 'Visualiser.modules.common.services.WorkingContextService'&gt;</em>, <em>router_state_service: Visualiser.modules.common.services.RouterStateService = &lt;class 'Visualiser.modules.common.services.RouterStateService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.BaseController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base interface for view controllers. Gathers and handles data for later display to user and communicates with
+services depending on the context.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">_template_path: (str) path to the template that will be rendered in the application.</p>
+<dl class="docutils">
+<dt>_working_context_service: (Services.WorkingContextService) Service for interacting with the context of the</dt>
+<dd>application</dd>
+</dl>
+<p class="last">_router_state_service: (Services.RouterStateService) Service for rendering and redirecting views.</p>
+</dd>
+<dt>Args:</dt>
+<dd><p class="first">template_path: (str) path to the template that will be rendered in the application.</p>
+<dl class="docutils">
+<dt>working_context_service: (Services.WorkingContextService) Service for interacting with the context of the</dt>
+<dd>application</dd>
+</dl>
+<p class="last">router_state_service: (Services.RouterStateService) Service for rendering and redirecting views.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.BaseController.activate">
+<code class="descname">activate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.BaseController.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the controller. Method should return either rendered template or redirect user to a proper page.
+Method should be called in blueprints respective endpoint to display the correct view to the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">rendered template for a view or redirect to another page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.BaseController.on_error_occurred">
+<code class="descname">on_error_occurred</code><span class="sig-paren">(</span><em>error: Exception</em>, <em>next_state: str = '.index'</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.BaseController.on_error_occurred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when an error occurred during controller activation. Method notifies the user about the error
+and switches route state to the one provided via params or to the index page of the current module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>error</strong> &#8211; (Exception) exception that occurred during application runtime.</li>
+<li><strong>next_state</strong> &#8211; (str) route path for the state the application should switch to.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.controllers.</code><code class="descname">DocumentBaseEditController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>document_service: Visualiser.modules.common.services.DocumentService = &lt;class 'Visualiser.modules.common.services.DocumentService'&gt;</em>, <em>file_service: Visualiser.modules.common.services.FileService = &lt;class 'Visualiser.modules.common.services.FileService'&gt;</em>, <em>form_creator: Visualiser.modules.common.forms.FormHandler = &lt;class 'Visualiser.modules.common.forms.FormHandler'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base controller for document edition. Contains all necessary methods, data for proper form handling, parsing
+and submitting</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">_form_creator: (FormHandler) form handler object for form parsing and preparation.</p>
+<p>_file_service: (Services.FileService) Service for file handling, reading and parsing.</p>
+<p>_document_service: (Services.DocumentService) Service for document handling.</p>
+<dl class="docutils">
+<dt>_is_empty: (bool) determines whether the form is initialised for the first time throughout the current</dt>
+<dd>context of the application</dd>
+</dl>
+<p class="last">_form: (Form) form object instance used by the controller.</p>
+</dd>
+<dt>Args:</dt>
+<dd><p class="first">form_creator: (str) form handler object for form parsing and preparation.</p>
+<p>file_service: (Services.FileService) Service for file handling, reading and parsing.</p>
+<p class="last">document_service: (Services.DocumentService) Service for document handling.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.activate">
+<code class="descname">activate</code><span class="sig-paren">(</span><em>is_empty: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.activate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>is_empty</strong> &#8211; (bool) determines whether the controller form data is empty or filled with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">call to the form_action method resolving in proper template rendering or view redirection.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.form_action">
+<code class="descname">form_action</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.form_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get&#8217;s user action by checking pressed button. If controller is empty returns call to on_initialised method.
+Each possible button pressed is resolved by assigned function and by calling router service method redirects
+user to a certain view or displays template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">rendered template or route redirect depending on the form state</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_disposed">
+<code class="descname">on_document_disposed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_disposed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the form is disposed by the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Redirect to the index of the page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_edited">
+<code class="descname">on_document_edited</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_edited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that will be called when document is edited.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rendered controller template.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_saved">
+<code class="descname">on_document_saved</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_document_saved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the document is saved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_file_uploaded">
+<code class="descname">on_file_uploaded</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_file_uploaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the file is submitted by the user. Using assigned form handler maps data from the form
+to a DataSource object, saves the file in the upload folder, saves the column of mentioned file for later
+usage and then reinstantiates the form for user input changes to apply to it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rendered controller template.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_form_submitted">
+<code class="descname">on_form_submitted</code><span class="sig-paren">(</span><em>is_valid: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_form_submitted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the form is submitted by the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rendered controller template.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_layer_removed">
+<code class="descname">on_layer_removed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_layer_removed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when document layer is removed by user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rendered controller template.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.on_layer_submitted">
+<code class="descname">on_layer_submitted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.on_layer_submitted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the layer is submitted by the user. Appends new layer entry to a form layers field list
+and returns rendered template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rendered controller template.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.controllers.DocumentBaseEditController.prepare_form">
+<code class="descname">prepare_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.controllers.DocumentBaseEditController.prepare_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares and parses form that will be used by controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="forms">
+<h2><em>Forms:</em><a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.forms"></span><dl class="class">
+<dt id="Visualiser.modules.common.forms.ColourSelect">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">ColourSelect</code><span class="sig-paren">(</span><em>multiple=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.ColourSelect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders a select field that supports options including additional html params.</p>
+<p>The field must provide an <cite>iter_choices()</cite> method which the widget will
+call on rendering; this method must yield tuples of <cite>(value, label, selected, html_attributes)</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.ColourSelectField">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">ColourSelectField</code><span class="sig-paren">(</span><em>label=None</em>, <em>validators=None</em>, <em>coerce=&lt;class 'str'&gt;</em>, <em>choices=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.ColourSelectField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders select field with colourised option background based on field value. Uses custom colour select widget
+supporting html param providing. Requires proper html colour representation in value of the choices for selection.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.DocumentBaseForm">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">DocumentBaseForm</code><span class="sig-paren">(</span><em>formdata=&lt;object object at 0x000000000063FFE0&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.DocumentBaseForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing form for gathering user input regarding whole document. Contains field, methods and sub-forms
+common for all types of documents</p>
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.DocumentBaseForm.remove_layer">
+<code class="descname">remove_layer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.DocumentBaseForm.remove_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method checks which button for which existing layer of a document has been pressed. If it was button for edition
+returns layer that has the button pressed and removes it from field list. Otherwise the layer is only removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.DocumentBaseForm.submit_layer">
+<code class="descname">submit_layer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.DocumentBaseForm.submit_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends newest layer form filled by user to list of layers in a form and prepares new, empty layer form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.DocumentBaseForm.upload_file">
+<code class="descname">upload_file</code><span class="sig-paren">(</span><em>file_name</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.DocumentBaseForm.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns provided name to FileForm sub-form for later usage in the app.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> &#8211; (str) file_name to assign to the document forms file form.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.DocumentBaseOptionsForm">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">DocumentBaseOptionsForm</code><span class="sig-paren">(</span><em>formdata=&lt;object object at 0x000000000063FFE0&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.DocumentBaseOptionsForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing form for gathering user input regarding document options usable for all documents in app.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.FileForm">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">FileForm</code><span class="sig-paren">(</span><em>formdata=&lt;object object at 0x000000000063FFE0&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.FileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing form for gathering user input regarding data source and handling file upload.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.FormHandler">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">FormHandler</code><span class="sig-paren">(</span><em>columns: [&lt;class 'tuple'&gt;], shapes: [&lt;class 'tuple'&gt;], shape_keys: &lt;built-in function any&gt;, colour_palette: [&lt;class 'tuple'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class responsible for preparing a form and mapping data from it.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">columns([tuple]): list of tuples representing columns available for layer options form data field.</p>
+<p>shapes([tuple]): list of tuples representing shapes available for layer options form object_key.</p>
+<p>shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.</p>
+<p class="last">colour_palette([tuple]): list of tuples representing available colours.</p>
+</dd>
+<dt>Attributes:</dt>
+<dd><p class="first">_supported_shapes([tuple]): list of tuples representing shapes available for layer options form object_key.</p>
+<p>_columns([tuple]): list of tuples representing columns available for layer options form data field.</p>
+<p>_shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.</p>
+<p class="last">_colours([tuple]): list of tuples representing available colours.</p>
+</dd>
+</dl>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_data_source">
+<em class="property">static </em><code class="descname">map_data_source</code><span class="sig-paren">(</span><em>file_form: Visualiser.modules.common.forms.FileForm</em>, <em>is_file_uploaded: bool = False</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.DataSource<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_data_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate DataSource object and map data from provided file_form to it. Depending whether the file from the
+form was previously submitted or not method will either secure the name of uploaded file or read it from.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_form</strong> &#8211; (FileForm) form containing user input for document data source.</li>
+<li><strong>is_file_uploaded</strong> &#8211; (bool) boolean value determining whether the file from form was already uploaded.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">data_source(DataSource) - data source configuration object instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_document_options">
+<code class="descname">map_document_options</code><span class="sig-paren">(</span><em>document_options_form: Visualiser.modules.common.forms.DocumentBaseOptionsForm</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.DocumentOptions<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_document_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate DocumentOptions object and map data from provided document_options_form to it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_options_form</strong> &#8211; (DocumentBaseOptionsForm) document options form containing user input regarding
+document options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(DocumentOptions) - Instantiated document options with data mapped from provided form.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_filter">
+<em class="property">static </em><code class="descname">map_filter</code><span class="sig-paren">(</span><em>filter_entry: dict</em>, <em>data_field: str</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.FilterExpression<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map single filter expression from filter form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filter_entry</strong> &#8211; (dict) filter form dictionary with values to map onto FilterExpression instance.</li>
+<li><strong>data_field</strong> &#8211; (str) data field used for filter expression.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">filter_expression(FilterExpression) - mapped filter expression.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_filters">
+<code class="descname">map_filters</code><span class="sig-paren">(</span><em>layer_form: dict</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.FilterExpression<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map filter values from layers filter sub-form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer_form</strong> &#8211; (dict) layer form dictionary to parse filter from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filter_expression(FilterExpression) - parsed filter expression for a layer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_layer">
+<code class="descname">map_layer</code><span class="sig-paren">(</span><em>layer_form: dict</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.Layer<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate Layer object and map data from provided layer_form to it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer_form</strong> &#8211; (dict) layer form dictionary containing user input regarding layer options.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">layer(Layer) - layer object instance containing options for a layer mapped from provided form.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_title">
+<code class="descname">map_title</code><span class="sig-paren">(</span><em>title: wtforms.fields.core.StringField</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return user input from provided title StringField.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>title</strong> &#8211; (StringField) field containing user input regarding document title.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">title(str) - user input regarding document title.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.map_to_document">
+<code class="descname">map_to_document</code><span class="sig-paren">(</span><em>document_form: Visualiser.modules.common.forms.DocumentBaseForm</em>, <em>document: Visualiser.modules.common.models.Document</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.map_to_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map data from provided document_form and assign respective values from it to provided document object instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document_form</strong> &#8211; (DocumentBaseForm) Base document form containing user input regarding document.</li>
+<li><strong>document</strong> &#8211; (Document) document object instance to assign data from form.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_document_form">
+<code class="descname">prepare_document_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_document_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare full document form with all fields necessary for creating functional documents.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(DocumentForm) - document form containing all fields, buttons and sub-forms.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_document_options_form">
+<code class="descname">prepare_document_options_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.forms.DocumentBaseOptionsForm<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_document_options_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
+columns provided with initialisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(DocumentOptionsForm) - document options form with commonly required fields.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_empty_form">
+<em class="property">static </em><code class="descname">prepare_empty_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_empty_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare empty form for first step of document preparation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(DocumentForm) - basic document form.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_filter_form">
+<code class="descname">prepare_filter_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; flask_wtf.form.FlaskForm<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_filter_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically create wtforms derived filter options form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(FilterOptionsForm) - filter form for a singular filter expression</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_layer_form">
+<code class="descname">prepare_layer_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.forms.LayerOptionsForm<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_layer_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically create wtforms derived LayerForm object for layer creation based on supported shapes, colours and
+columns provided with initialisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(LayerOptionsForm) - form instance for chart layer creation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.common.forms.FormHandler.prepare_title_form">
+<code class="descname">prepare_title_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; wtforms.fields.core.StringField<a class="headerlink" href="#Visualiser.modules.common.forms.FormHandler.prepare_title_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare title form for document title assignment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">title_form(StringField) - title form for a document.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.forms.LayerOptionsForm">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.forms.</code><code class="descname">LayerOptionsForm</code><span class="sig-paren">(</span><em>formdata=&lt;object object at 0x000000000063FFE0&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.forms.LayerOptionsForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing form for gathering user input regarding layer options.</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="models">
+<h2><em>Models:</em><a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.common.models"></span><dl class="class">
+<dt id="Visualiser.modules.common.models.ApplicationOptions">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">ApplicationOptions</code><span class="sig-paren">(</span><em>options: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.models.ApplicationOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of configuration options for running flask application.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property backend_url: (str) url used for backend connection.</p>
+<p>&#64;property colour_palette: ([str]) Colour palette supported throughout application.</p>
+<p class="last">&#64;property allowed_extensions: ([str]) file extensions supported throughout application.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.Axis">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">Axis</code><span class="sig-paren">(</span><em>data_field: str = None</em>, <em>name: str = None</em>, <em>data_type: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.models.Axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of an axis containing options necessary for controlling axis on a chart.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property description(str): display description of an axis.</p>
+<p>&#64;property data_field(str): column description used for an axis.</p>
+<p class="last">&#64;property data_type(str): data type used for an axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.DataSource">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">DataSource</code><a class="headerlink" href="#Visualiser.modules.common.models.DataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of document data source.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property data: (pd.DataFrame) DataFrame object containing data for the document.</p>
+<p>&#64;property column_index: (int) Row index of columns in the DataFrame.</p>
+<p>&#64;property separator: (str) Separator of columns in a file containing DataSource.</p>
+<p>&#64;property file_name: (str) Name of the file containing data for the DataSource.</p>
+<p>&#64;property datetime_columns: [str] List of columns with values in a datetime format.</p>
+<p class="last">&#64;property should_fill_missing_data: (bool) Boolean value determining if missing data should be filled when
+parsing data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.Document">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">Document</code><a class="headerlink" href="#Visualiser.modules.common.models.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of a document containing it&#8217;s fields and object key alongside the data_source against which
+it should be bound.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property model(DocumentOptions): model object containing characteristics of the document.</p>
+<p>&#64;property data_source(DataSource): data source object for document.</p>
+<p class="last">&#64;property object_key(Enum): object key of the document.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.DocumentOptions">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">DocumentOptions</code><a class="headerlink" href="#Visualiser.modules.common.models.DocumentOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents document configuration. Contains useful information and data
+for chart creation and customisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property description(str): description of the document.</p>
+<p>&#64;property layers(list(Layer)): List of all layers to be displayed on document.</p>
+<p>&#64;property width(int): width of the chart in pixels.</p>
+<p>&#64;property height(int): height of the chart in pixels.</p>
+<p>&#64;property description(str): description of the document.</p>
+<p>&#64;property title(str): Title class instance containing styling and display of documents title.</p>
+<p class="last">&#64;property layers(list(ObjectFigure)): List of all layers to be displayed on document.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.FilterExpression">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">FilterExpression</code><span class="sig-paren">(</span><em>expression1: str = None</em>, <em>expression2: str = None</em>, <em>operator: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.models.FilterExpression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of filter expression. Might connect subexpressions for better and more advanced querying.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property a: (Expression or str) first value of an expression</p>
+<p class="last">&#64;property b: (Expression or str) second value of an expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.FormAction">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">FormAction</code><a class="headerlink" href="#Visualiser.modules.common.models.FormAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.FormState">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">FormState</code><a class="headerlink" href="#Visualiser.modules.common.models.FormState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class enumerating possible states for a form.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">BASE: represents state when form is handling base data for an object.</p>
+<p>LAYER: represents state when form is handling layers of an object (used only for documents)</p>
+<p class="last">SUBMIT: represents state when form is valid and ready for submission.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.Layer">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">Layer</code><a class="headerlink" href="#Visualiser.modules.common.models.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of a document layer covering the Y axis settings and figure to display.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.</p>
+<p>&#64;property figure(ObjectFigure): ObjectFigure class instance containing options for object_key to be displayed on
+the document layer.</p>
+<p class="last">&#64;property filter_expression(FilterExpression): filter expression to assign on a layer data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.LayerDocument">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">LayerDocument</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer = None</em>, <em>data_source: pandas.core.frame.DataFrame = None</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.common.models.LayerDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of layer document. Translates configuration of a layer to document structure.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property model(Layer): model object containing characteristics of a layer.</p>
+<p>&#64;property data_source(pd.DataFrame): DataFrame object with values used by layer.</p>
+<p class="last">&#64;property object_key(Enum): object key of the layer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.ObjectFigure">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">ObjectFigure</code><a class="headerlink" href="#Visualiser.modules.common.models.ObjectFigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of a object_key. Contains data necessary for customising point, lines and other
+geometrical shapes on a plot or map.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property object_key(Enum): Object key of the layer representing it&#8217;s shape.</p>
+<p>&#64;property colour(str): Colour of the figure. Can be string description or code for a colour.</p>
+<p>&#64;property opacity(str): Determines transparency of the figure.</p>
+<p class="last">&#64;property size(str): Determines width of the figure on the plot in pixels.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.ObjectKey">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">ObjectKey</code><a class="headerlink" href="#Visualiser.modules.common.models.ObjectKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerator subclass containing keys for objects used in application.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.common.models.TemplateResourcesData">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.common.models.</code><code class="descname">TemplateResourcesData</code><a class="headerlink" href="#Visualiser.modules.common.models.TemplateResourcesData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representation of template metadata for inclusion in the template file. Contains lists of html, css and html
+strings which can be embedded in a template file embedding.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property css(str): list of string containing links to css stylesheets.</p>
+<p>&#64;property js(str): list of strings containing script to include in a html page.</p>
+<p class="last">&#64;property html(str): list of stringified html files to include in an html page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="module-2-charts">
+<h1>Module #2 &#8211; Charts<a class="headerlink" href="#module-2-charts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><em>Services:</em><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.services.</code><code class="descname">ChartServiceProvider</code><a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="class">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.BokehService">
+<em class="property">class </em><code class="descname">BokehService</code><a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.BokehService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static service handling Bokeh chart generation and export.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.BokehService.export_plot">
+<em class="property">static </em><code class="descname">export_plot</code><span class="sig-paren">(</span><em>plot: bokeh.plotting.figure.Figure</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.TemplateResourcesData<a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.BokehService.export_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export plot data. Returns object containing list of all files necessary for embedding the plot data. Does not
+contain meta data for bokeh plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> &#8211; (Figure) bokeh figure object to export resources from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">template_resources(TemplateResourcesData) - object containing lists of all resources for provided plot.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.BokehService.generate_plot">
+<em class="property">static </em><code class="descname">generate_plot</code><span class="sig-paren">(</span><em>chart: Visualiser.modules.charts.models.Chart</em><span class="sig-paren">)</span> &rarr; bokeh.plotting.figure.Figure<a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.BokehService.generate_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate plot for given pandas DataFrame and chart options. Returns created plot object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chart</strong> &#8211; (Chart) options for a chart display and shapes.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">plot(bokeh.plotting.figure) - bokeh plot object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.BokehService.get_bokeh_resources">
+<em class="property">static </em><code class="descname">get_bokeh_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.models.TemplateResourcesData<a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.BokehService.get_bokeh_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get meta resources for bokeh plots. Returns object containing lists of all necessary links and scripts to
+display and embed bokeh chart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">template_resources(TemplateResourcesData) - object containing list of resources for bokeh plots.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.ChartService">
+<em class="property">class </em><code class="descclassname">ChartServiceProvider.</code><code class="descname">ChartService</code><a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.ChartService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service handling all basic operations on charts like fetching or saving them.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.ChartService.get_chart">
+<em class="property">static </em><code class="descname">get_chart</code><span class="sig-paren">(</span><em>chart_id: int</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.charts.models.Chart<a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.ChartService.get_chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns chart configuration object for a chart with given id. Communicates with external database api to fetch
+chart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chart_id</strong> &#8211; (int) id of a chart that should be returned. If none provided will return the demo chart.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(Chart) chart document options.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.charts.services.ChartServiceProvider.ChartService.get_demo_chart">
+<em class="property">static </em><code class="descname">get_demo_chart</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.charts.models.Chart<a class="headerlink" href="#Visualiser.modules.charts.services.ChartServiceProvider.ChartService.get_demo_chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the demo chart generated from test_samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">chart(Chart) - chart object configuration for demo chart.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h2><em>Creators:</em><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.charts.creators"></span><dl class="class">
+<dt id="Visualiser.modules.charts.creators.BarRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">BarRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.BarRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating bars on a plot.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.ChartFactory">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">ChartFactory</code><span class="sig-paren">(</span><em>recipes: enum.Enum</em>, <em>data_frame_service: Visualiser.modules.common.services.DataFrameService = &lt;class 'Visualiser.modules.common.services.DataFrameService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.creators.ChartFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chart specific DocumentFactory containing all necessary methods and overridings for proper chart factorisation.</p>
+<dl class="method">
+<dt id="Visualiser.modules.charts.creators.ChartFactory.prepare_layer_document">
+<code class="descname">prepare_layer_document</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer</em>, <em>document: Visualiser.modules.charts.models.Chart</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.charts.models.ChartLayerDocument<a class="headerlink" href="#Visualiser.modules.charts.creators.ChartFactory.prepare_layer_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares LayerDocument object for creating layer on a chart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>layer</strong> &#8211; (Layer) layer configuration object.</li>
+<li><strong>document</strong> &#8211; (Chart) chart document to append LayerDocument to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">layer_document(ChartLayerDocument) - prepared layer document to append on a document.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.ChartRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">ChartRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.ChartRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating a plot to display to the user.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.charts.creators.ChartRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>document: Visualiser.modules.charts.models.Chart</em><span class="sig-paren">)</span> &rarr; &lt;function figure at 0x0000000009D696A8&gt;<a class="headerlink" href="#Visualiser.modules.charts.creators.ChartRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create bokeh figure to display to the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> &#8211; (Chart) chart document object containing ingredients for bokeh figure creation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">plot(bokeh.plotting.figure) - bokeh figure object to display to the user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Visualiser.modules.charts.creators.ChartRecipe.post_execute">
+<code class="descname">post_execute</code><a class="headerlink" href="#Visualiser.modules.charts.creators.ChartRecipe.post_execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#Visualiser.modules.charts.creators.HoverToolRecipe" title="Visualiser.modules.charts.creators.HoverToolRecipe"><code class="xref py py-class docutils literal"><span class="pre">HoverToolRecipe</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.ChartRecipes">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">ChartRecipes</code><a class="headerlink" href="#Visualiser.modules.charts.creators.ChartRecipes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum class containing supported recipes for chart document factorisation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.CircleRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">CircleRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.CircleRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating a circle on a plot.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.HoverToolRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">HoverToolRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.HoverToolRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating hover tool on the plot.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.charts.creators.HoverToolRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>document: Visualiser.modules.charts.models.Chart</em>, <em>base_object: bokeh.plotting.figure.Figure</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.charts.creators.HoverToolRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a hover tool for a plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document</strong> &#8211; (Chart) chart document object instance.</li>
+<li><strong>base_object</strong> &#8211; (Figure) bokeh figure to create hover tool for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.LayerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">LayerRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.LayerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base interface for layer recipe.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.charts.creators.LayerRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>document: Visualiser.modules.charts.models.ChartLayerDocument</em>, <em>base_object: bokeh.plotting.figure.Figure</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.charts.creators.LayerRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a layer on a plot figure. Method creates layer and adjusts it based on configuration.
+The layer is appended to the provided plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document</strong> &#8211; (LayerDocument) layer document object containing ingredients and configuration.
+creating a line.</li>
+<li><strong>base_object</strong> &#8211; (Figure) bokeh figure to create line on.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.LineRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">LineRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.LineRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating line on a plot.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.creators.SquareRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.creators.</code><code class="descname">SquareRecipe</code><a class="headerlink" href="#Visualiser.modules.charts.creators.SquareRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for creating square on a plot.</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2><em>Controllers:</em><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.charts.controllers"></span><dl class="class">
+<dt id="Visualiser.modules.charts.controllers.ChartCreateController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.controllers.</code><code class="descname">ChartCreateController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>chart_service: Visualiser.modules.charts.services.ChartService = &lt;class 'Visualiser.modules.charts.services.ChartService'&gt;</em>, <em>form_creator: Visualiser.modules.charts.forms.ChartsFormHandler = &lt;class 'Visualiser.modules.charts.forms.ChartsFormHandler'&gt;</em>, <em>document_create_service: Visualiser.modules.charts.services.BokehService = &lt;class 'Visualiser.modules.charts.services.BokehService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartCreateController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller handling creation of the chart by parsing data from form into chart document object and creating it
+using provided document_create_service.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">chart_service: (ChartService) charts specific document service.</p>
+<p>form_creator: (ChartsFormHandler) charts specific form handler.</p>
+<p class="last">document_create_service (BokehService) bokeh service for creating and exporting plots.</p>
+</dd>
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property chart_options: (ChartOptions) options for a chart parsed from controllers form.</p>
+<p>&#64;property bokeh_resources: (TemplateResourcesData) template resources for bokeh library.</p>
+<p>&#64;property chart_resources: (TemplateResourcesData) template resources for generated bokeh plot.</p>
+<p class="last">_document_creator_service: (BokehService) bokeh service for creating and exporting plots.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.charts.controllers.ChartCreateController.load_plot">
+<code class="descname">load_plot</code><span class="sig-paren">(</span><em>chart: Visualiser.modules.charts.models.Chart</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartCreateController.load_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create plot from chart document object instance using controllers document creator service and assigns
+template resources from generated plot to controllers properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chart</strong> &#8211; (Chart) chart object instance to generate plot from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.charts.controllers.ChartCreateController.setup_data_source">
+<code class="descname">setup_data_source</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartCreateController.setup_data_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map data from controllers form data source sub-form and read file from generated data source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>datetime_columns</strong> &#8211; (list(str)) list of datetime columns in the data source.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">data_source(DataSource)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.controllers.ChartDisplayController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.controllers.</code><code class="descname">ChartDisplayController</code><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartDisplayController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller responsible for handling chart creation. Contains all methods necessary for creating and storing
+charts with options provided by form data and pandas data frame object with values loaded from uploaded file.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">__bokeh_resources(TemplateResourcesData): standard css and js resources for bokeh charts.</p>
+<p class="last">__chart_resources(TemplateResourcesData): js and html resources for particular bokeh charts.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.charts.controllers.ChartDisplayController.load_plot">
+<code class="descname">load_plot</code><span class="sig-paren">(</span><em>chart: Visualiser.modules.charts.models.Chart</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartDisplayController.load_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create plot from chart document object instance using controllers document creator service and assigns
+template resources from generated plot to controllers properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chart</strong> &#8211; (Chart) chart object instance to generate plot from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.controllers.ChartEditController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.controllers.</code><code class="descname">ChartEditController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>chart_service: Visualiser.modules.charts.services.ChartService = &lt;class 'Visualiser.modules.charts.services.ChartService'&gt;</em>, <em>form_creator: Visualiser.modules.charts.forms.ChartsFormHandler = &lt;class 'Visualiser.modules.charts.forms.ChartsFormHandler'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartEditController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller for handling chart edition and chart form handling.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">chart_service: (ChartService) charts specific document service.</p>
+<p class="last">form_creator: (ChartsFormHandler) charts specific form handler.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.charts.controllers.ChartEditController.on_form_submitted">
+<code class="descname">on_form_submitted</code><span class="sig-paren">(</span><em>is_valid: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.controllers.ChartEditController.on_form_submitted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action to perform when the form is submitted by the user. Depending whether controllers form is valid or not
+either returns rendered view template or redirects to charts.create route.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>is_valid</strong> &#8211; (bool) param determining whether form is valid.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">rendered view template or redirect to charts creation url.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h2><em>Forms:</em><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.charts.forms"></span><dl class="class">
+<dt id="Visualiser.modules.charts.forms.ChartsFormHandler">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.forms.</code><code class="descname">ChartsFormHandler</code><span class="sig-paren">(</span><em>columns: [&lt;class 'tuple'&gt;], shapes: [&lt;class 'tuple'&gt;], shape_keys: &lt;built-in function any&gt;, colour_palette: [&lt;class 'tuple'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.forms.ChartsFormHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class responsible for creating forms being used in charts module.</p>
+<dl class="method">
+<dt id="Visualiser.modules.charts.forms.ChartsFormHandler.map_document_options">
+<code class="descname">map_document_options</code><span class="sig-paren">(</span><em>document_options_form: Visualiser.modules.common.forms.DocumentBaseOptionsForm</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.charts.models.ChartOptions<a class="headerlink" href="#Visualiser.modules.charts.forms.ChartsFormHandler.map_document_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map chart document options form onto ChartOptions object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_options_form</strong> &#8211; (DocumentBaseOptionsForm) form containing user input regarding options for a chart</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">chart_options(ChartOptions) - chart options configuration object mapped from a form.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.charts.forms.ChartsFormHandler.map_title">
+<code class="descname">map_title</code><span class="sig-paren">(</span><em>title_form: wtforms.fields.core.StringField</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.charts.models.ChartTitle<a class="headerlink" href="#Visualiser.modules.charts.forms.ChartsFormHandler.map_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map chart title string field onto ChartTitle object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>title_form</strong> &#8211; (StringField) string field to extract title from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">title(ChartTitle) - chart title object with title extracted from provided string field.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.charts.forms.ChartsFormHandler.prepare_document_options_form">
+<code class="descname">prepare_document_options_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.forms.DocumentBaseOptionsForm<a class="headerlink" href="#Visualiser.modules.charts.forms.ChartsFormHandler.prepare_document_options_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
+columns provided with initialisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(DocumentOptionsForm) - document options form with commonly required fields.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h2><em>Models:</em><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.charts.models"></span><dl class="class">
+<dt id="Visualiser.modules.charts.models.Chart">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.models.</code><code class="descname">Chart</code><a class="headerlink" href="#Visualiser.modules.charts.models.Chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents whole chart object ready to display. Wraps chart configuration and its data source for easier
+transportation throughout solution and its services.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property chart_options(ChartOptions): chart configuration object for the chart.</p>
+<p class="last">&#64;property data_source(pandas.DataFrame): data source used in the chart.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.models.ChartLayerDocument">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.models.</code><code class="descname">ChartLayerDocument</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer = None</em>, <em>data_source: bokeh.models.sources.ColumnDataSource = None</em>, <em>x_axis: Visualiser.modules.common.models.Axis = &lt;Visualiser.modules.common.models.Axis object at 0x0000000009D80550&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.charts.models.ChartLayerDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents chart layer configuration.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>&#64;property x_axis(Axis): x_axis used for the layer.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.models.ChartOptions">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.models.</code><code class="descname">ChartOptions</code><a class="headerlink" href="#Visualiser.modules.charts.models.ChartOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents chart configuration for data visualisation. Contains useful information and data
+for chart creation and customisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property id(int): chart id for identyfying particular chart.</p>
+<p>&#64;property width(int): width of the chart in pixels.</p>
+<p>&#64;property height(int): height of the chart in pixels.</p>
+<p>&#64;property description(str): description of the chart.</p>
+<p>&#64;property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart.</p>
+<p>&#64;property title(ChartTitle): Title class instance containing styling and display of chart title.</p>
+<p class="last">&#64;property layers(list(ChartFigure)): List of all layers to be displayed on chart.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.charts.models.ChartTitle">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.charts.models.</code><code class="descname">ChartTitle</code><a class="headerlink" href="#Visualiser.modules.charts.models.ChartTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representing title for a chart. Has it&#8217;s title, colour string, font string and styling.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property title(str): actual title of the chart.</p>
+<p>&#64;property colour(str): colour of the title.</p>
+<p>&#64;property font(str): font used for title.</p>
+<p class="last">&#64;property font_style(str): font styling for the title.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="module-3-maps">
+<h1>Module #3 &#8211; Maps<a class="headerlink" href="#module-3-maps" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id6">
+<h2><em>Services:</em><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
+<dt id="Visualiser.modules.maps.services.MapsServiceProvider">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.services.</code><code class="descname">MapsServiceProvider</code><a class="headerlink" href="#Visualiser.modules.maps.services.MapsServiceProvider" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="class">
+<dt id="Visualiser.modules.maps.services.MapsServiceProvider.FoliumService">
+<em class="property">class </em><code class="descname">FoliumService</code><a class="headerlink" href="#Visualiser.modules.maps.services.MapsServiceProvider.FoliumService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static service handling Folium map generation and export.</p>
+<dl class="staticmethod">
+<dt id="Visualiser.modules.maps.services.MapsServiceProvider.FoliumService.export_map">
+<em class="property">static </em><code class="descname">export_map</code><span class="sig-paren">(</span><em>map_object: folium.folium.Map</em><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#Visualiser.modules.maps.services.MapsServiceProvider.FoliumService.export_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export map as html string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map_object</strong> &#8211; (Map) bokeh figure object to export resources from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(str) generated html for map.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Visualiser.modules.maps.services.MapsServiceProvider.FoliumService.generate_map">
+<em class="property">static </em><code class="descname">generate_map</code><span class="sig-paren">(</span><em>map_document: Visualiser.modules.maps.models.MapDocument</em><span class="sig-paren">)</span> &rarr; folium.folium.Map<a class="headerlink" href="#Visualiser.modules.maps.services.MapsServiceProvider.FoliumService.generate_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate plot for given pandas DataFrame and chart options. Returns created map object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map_document</strong> &#8211; (MapDocument) options for a map containing its configuration object and data source.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">generated_map(Map) - bokeh plot object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.services.MapsServiceProvider.MapService">
+<em class="property">class </em><code class="descclassname">MapsServiceProvider.</code><code class="descname">MapService</code><a class="headerlink" href="#Visualiser.modules.maps.services.MapsServiceProvider.MapService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Service containing common methods for handling maps and objects and operations related to them.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h2><em>Creators:</em><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.maps.creators"></span><dl class="class">
+<dt id="Visualiser.modules.maps.creators.CircleMarkerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">CircleMarkerRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.CircleMarkerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for folium CircleMarker creation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.LayerControlRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">LayerControlRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.LayerControlRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for layer control appendage to a map.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.maps.creators.LayerControlRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>base_object: folium.folium.Map</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span> &rarr; folium.folium.Map<a class="headerlink" href="#Visualiser.modules.maps.creators.LayerControlRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add LayerControl feature group to provided folium map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>base_object</strong> &#8211; (Map) map that layer control should be appended to.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">base_object(Map) - folium map object with appended layer control.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.MapFactory">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">MapFactory</code><span class="sig-paren">(</span><em>recipes: enum.Enum</em>, <em>data_frame_service: Visualiser.modules.common.services.DataFrameService = &lt;class 'Visualiser.modules.common.services.DataFrameService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.maps.creators.MapFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map specific DocumentFactory containing all necessary methods and overridings for proper map factorisation.</p>
+<dl class="method">
+<dt id="Visualiser.modules.maps.creators.MapFactory.prepare_layer_document">
+<code class="descname">prepare_layer_document</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer</em>, <em>document: Visualiser.modules.maps.models.MapDocument</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.maps.models.MapLayerDocument<a class="headerlink" href="#Visualiser.modules.maps.creators.MapFactory.prepare_layer_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares LayerDocument object for creating layer on a map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>layer</strong> &#8211; (Layer) layer configuration object.</li>
+<li><strong>document</strong> &#8211; (MapDocument) map document to append layer document to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">layer_document(MapLayerDocument) - prepared layer document to append on a map.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.MapRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">MapRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.MapRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for folium Map object creation.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.maps.creators.MapRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>document: Visualiser.modules.maps.models.MapDocument</em><span class="sig-paren">)</span> &rarr; folium.folium.Map<a class="headerlink" href="#Visualiser.modules.maps.creators.MapRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Folium map to display to the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> &#8211; (MapDocument) chart document object containing ingredients for bokeh figure creation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">plot(Map) - bokeh figure object to display to the user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Visualiser.modules.maps.creators.MapRecipe.post_execute">
+<code class="descname">post_execute</code><a class="headerlink" href="#Visualiser.modules.maps.creators.MapRecipe.post_execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#Visualiser.modules.maps.creators.LayerControlRecipe" title="Visualiser.modules.maps.creators.LayerControlRecipe"><code class="xref py py-class docutils literal"><span class="pre">LayerControlRecipe</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.MapRecipes">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">MapRecipes</code><a class="headerlink" href="#Visualiser.modules.maps.creators.MapRecipes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum class containing supported recipes for chart document factorisation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.MarkerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">MarkerRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.MarkerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for basic folium Marker creation that should be appended to a folium map.</p>
+<dl class="classmethod">
+<dt id="Visualiser.modules.maps.creators.MarkerRecipe.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>document: Visualiser.modules.maps.models.MapLayerDocument</em>, <em>base_object: folium.folium.Map</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.maps.creators.MarkerRecipe.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create marker layer on a Folium Map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document</strong> &#8211; (MapLayerDocument) layer document object containing ingredients and configuration for
+creating a marker layer.</li>
+<li><strong>base_object</strong> &#8211; (Map) Folium map to create marker on.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.PolygonMarkerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">PolygonMarkerRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.PolygonMarkerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recipe for folium PolygonMarker creation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>_number_of_sides: (int) number of sides of created polygon.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.RectangleMarkerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">RectangleMarkerRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.RectangleMarkerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representation of rectangle marker. Declares number of sides that should be used in _create method of parent
+class.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.creators.TriangleMarkerRecipe">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.creators.</code><code class="descname">TriangleMarkerRecipe</code><a class="headerlink" href="#Visualiser.modules.maps.creators.TriangleMarkerRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representation of triangle marker. Declares number of sides that should be used in _create method of
+parent class.</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h2><em>Controllers:</em><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
+<dt id="Visualiser.modules.maps.controllers.MapEditController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.controllers.</code><code class="descname">MapEditController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>map_service: Visualiser.modules.maps.services.MapService = &lt;class 'Visualiser.modules.maps.services.MapService'&gt;</em>, <em>form_creator: Visualiser.modules.maps.forms.MapsFormHandler = &lt;class 'Visualiser.modules.maps.forms.MapsFormHandler'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.maps.controllers.MapEditController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller for handling Map edition and Map form handling.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">map_service: (MapService) charts specific document service.</p>
+<p class="last">form_creator: (MapsFormHandler) charts specific form handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.controllers.MapCreateController">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.controllers.</code><code class="descname">MapCreateController</code><span class="sig-paren">(</span><em>template_path: str = ''</em>, <em>map_service: Visualiser.modules.maps.services.MapService = &lt;class 'Visualiser.modules.maps.services.MapService'&gt;</em>, <em>form_creator: Visualiser.modules.maps.forms.MapsFormHandler = &lt;class 'Visualiser.modules.maps.forms.MapsFormHandler'&gt;</em>, <em>document_create_service: Visualiser.modules.maps.services.FoliumService = &lt;class 'Visualiser.modules.maps.services.FoliumService'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.maps.controllers.MapCreateController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller handling creation of the chart by parsing data from form into map document object and creating it
+using provided document_create_service.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">map_service: (MapService) maps specific document service.</p>
+<p>form_creator: (MapsFormHandler) maps specific form handler.</p>
+<p class="last">document_create_service (FoliumService) folium service for creating and exporting plots.</p>
+</dd>
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property map_options: (MapOptions) options for a chart parsed from controllers form.</p>
+<p>&#64;property map_resources: (str) template resources for bokeh library.</p>
+<p class="last">_document_creator_service: (FoliumService) bokeh service for creating and exporting plots.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.maps.controllers.MapCreateController.load_map">
+<code class="descname">load_map</code><span class="sig-paren">(</span><em>map_document: Visualiser.modules.maps.models.MapDocument</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#Visualiser.modules.maps.controllers.MapCreateController.load_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates and exports map from map document object and stores resources for its display.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>map_document</strong> &#8211; (MapDocument) MapDocument object instance with object and data source configuration for
+a map.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h2><em>Forms:</em><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.maps.forms"></span><dl class="class">
+<dt id="Visualiser.modules.maps.forms.MapsFormHandler">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.forms.</code><code class="descname">MapsFormHandler</code><span class="sig-paren">(</span><em>columns: [&lt;class 'tuple'&gt;], shapes: [&lt;class 'tuple'&gt;], shape_keys: &lt;built-in function any&gt;, colour_palette: [&lt;class 'tuple'&gt;], tiles: [&lt;class 'tuple'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.maps.forms.MapsFormHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class responsible for creating forms being used in maps module.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tiles: [tuple] list of tuples containing supported tiles.</dd>
+<dt>Attributes:</dt>
+<dd>__supported_tiles: [tuple] list of supported types that will be used as select field choices for map tiles.</dd>
+</dl>
+<dl class="method">
+<dt id="Visualiser.modules.maps.forms.MapsFormHandler.map_document_options">
+<code class="descname">map_document_options</code><span class="sig-paren">(</span><em>document_options_form: Visualiser.modules.common.forms.DocumentBaseOptionsForm</em><span class="sig-paren">)</span> &rarr; Visualiser.modules.maps.models.MapOptions<a class="headerlink" href="#Visualiser.modules.maps.forms.MapsFormHandler.map_document_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map chart document options form onto ChartOptions object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_options_form</strong> &#8211; (DocumentBaseOptionsForm) form containing user input regarding options for a chart</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">map_options(ChartOptions) - chart options configuration object mapped from a form.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Visualiser.modules.maps.forms.MapsFormHandler.prepare_document_options_form">
+<code class="descname">prepare_document_options_form</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Visualiser.modules.common.forms.DocumentBaseOptionsForm<a class="headerlink" href="#Visualiser.modules.maps.forms.MapsFormHandler.prepare_document_options_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
+columns provided with initialisation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">form(DocumentOptionsForm) - document options form with commonly required fields.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h2><em>Models:</em><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-Visualiser.modules.maps.models"></span><dl class="class">
+<dt id="Visualiser.modules.maps.models.MapDocument">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.models.</code><code class="descname">MapDocument</code><a class="headerlink" href="#Visualiser.modules.maps.models.MapDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents whole map object ready to display. Wraps chart configuration and its data source for easier
+transportation throughout solution and its services.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property chart_options(ChartOptions): configuration object for the map.</p>
+<p class="last">&#64;property data_source(DataSource): data source used in the map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.models.MapLayerDocument">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.models.</code><code class="descname">MapLayerDocument</code><span class="sig-paren">(</span><em>layer: Visualiser.modules.common.models.Layer = None</em>, <em>data_source: pandas.core.frame.DataFrame = None</em>, <em>latitude: Visualiser.modules.common.models.Axis = &lt;Visualiser.modules.common.models.Axis object at 0x000000000A4859B0&gt;</em>, <em>longtitude: Visualiser.modules.common.models.Axis = &lt;Visualiser.modules.common.models.Axis object at 0x000000000A485A20&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Visualiser.modules.maps.models.MapLayerDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents chart configuration for data visualisation. Contains useful information and data
+for map creation and customisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property latitude(Axis): Axis class instance for determining values for latitudes of a map.</p>
+<p class="last">&#64;property longtitude(Axis): Axis class instance for determining values for longtitudes of a map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Visualiser.modules.maps.models.MapOptions">
+<em class="property">class </em><code class="descclassname">Visualiser.modules.maps.models.</code><code class="descname">MapOptions</code><a class="headerlink" href="#Visualiser.modules.maps.models.MapOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents map configuration for data visualisation. Contains useful information and data
+for map creation and customisation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">&#64;property latitude(Axis): Axis class instance for determining values for latitudes of a map.</p>
+<p class="last">&#64;property longtitude(Axis): Axis class instance for determining values for longtitudes of a map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to DataVisualiser&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#module-1-common">Module #1 &#8211; Common</a><ul>
+<li><a class="reference internal" href="#services"><em>Services:</em></a></li>
+<li><a class="reference internal" href="#utilities"><em>Utilities:</em></a></li>
+<li><a class="reference internal" href="#creators"><em>Creators:</em></a></li>
+<li><a class="reference internal" href="#controllers"><em>Controllers:</em></a></li>
+<li><a class="reference internal" href="#forms"><em>Forms:</em></a></li>
+<li><a class="reference internal" href="#models"><em>Models:</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-2-charts">Module #2 &#8211; Charts</a><ul>
+<li><a class="reference internal" href="#id1"><em>Services:</em></a></li>
+<li><a class="reference internal" href="#id2"><em>Creators:</em></a></li>
+<li><a class="reference internal" href="#id3"><em>Controllers:</em></a></li>
+<li><a class="reference internal" href="#id4"><em>Forms:</em></a></li>
+<li><a class="reference internal" href="#id5"><em>Models:</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-3-maps">Module #3 &#8211; Maps</a><ul>
+<li><a class="reference internal" href="#id6"><em>Services:</em></a></li>
+<li><a class="reference internal" href="#id7"><em>Creators:</em></a></li>
+<li><a class="reference internal" href="#id8"><em>Controllers:</em></a></li>
+<li><a class="reference internal" href="#id9"><em>Forms:</em></a></li>
+<li><a class="reference internal" href="#id10"><em>Models:</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, R. Potyka.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

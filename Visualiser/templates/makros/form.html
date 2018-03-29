@@ -25,18 +25,18 @@
 
 {% macro render_checkbox(field) %}
     <div class="col-lg-4">
-        {{ field.label(class_="control-label") }}:
+        {{ field.label(class_="control-label") }}
     </div>
     <div class="col-lg-7">
-        {{ field(class_="form-control") | safe }}:
+        {{ field(class_="form-control") | safe }}
     </div>
 {% endmacro %}
 
 {% macro render_field_with_label(field) %}
-    <div class="col-lg-3">
-        {{ field.label(class_="control-label") }}:
+    <div class="col-lg-4">
+        {{ field.label(class_="control-label") }}
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-7">
         {% if field.type == "TextAreaField" %}
             {{ field(cols='50', rows='4', class_="form-control") | safe }}
         {% else %}
@@ -261,6 +261,11 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            {{ render_field(form.separator_string) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             {{ render_field(form.columns_row_index) }}
         </div>
     </div>
@@ -362,7 +367,10 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <h4 class="text-success">
-                                                Layer Options:
+                                                Layer Options
+                                                {% if document_type == "chart" %}
+                                                    (determines the shape and Y axis values)
+                                                {% endif %}
                                             </h4>
                                         </div>
                                     </div>

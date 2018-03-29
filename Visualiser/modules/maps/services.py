@@ -13,7 +13,10 @@ class MapService(CommonServiceProvider.DocumentService):
     Service containing common methods for handling maps and objects and operations related to them.
     """
 
-    __supported_tiles = ["Stamen Terrain", "Mapbox Bright", "openstreetmap", "stamenwatercolor"]
+    __supported_tiles = [("Stamen Terrain", "Stamen terrain map"),
+                         ("Mapbox Bright", "Mapbox"),
+                         ("openstreetmap", "Open Street Map"),
+                         ("stamenwatercolor", "Stamen coloured water map")]
 
     @staticmethod
     def get_supported_recipes() -> MapRecipes:
@@ -36,7 +39,7 @@ class MapService(CommonServiceProvider.DocumentService):
     @staticmethod
     def get_supported_tiles() -> [tuple]:
         supported_tiles = MapService.__supported_tiles
-        return [(tile, tile) for tile in supported_tiles]
+        return [tile for tile in supported_tiles]
 
 
 class FoliumService(object):
@@ -52,7 +55,7 @@ class FoliumService(object):
         Generate plot for given pandas DataFrame and chart options. Returns created map object
 
         :param map_document: (MapDocument) options for a map containing its configuration object and data source.
-        :return generated_map: (Map) bokeh plot object
+        :return: generated_map(Map) - bokeh plot object
         """
         factory = MapFactory(recipes=MapService.get_supported_recipes(),
                              data_frame_service=CommonServiceProvider.DataFrameService)
@@ -69,6 +72,10 @@ class FoliumService(object):
         :return: (str) generated html for map.
         """
         return map_object._repr_html_()
+
+    @staticmethod
+    def export_as_png(map_object: Map):
+        return map_object._to_png()
 
 
 class MapsServiceProvider(object):

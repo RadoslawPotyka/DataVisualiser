@@ -15,14 +15,17 @@ class MarkerRecipe(DocumentRecipe):
     Recipe for basic folium Marker creation that should be appended to a folium map.
     """
 
+    _scale = 10
+
     @classmethod
     def create(cls, document: MapLayerDocument, base_object: Map) -> None:
         """
         Create marker layer on a Folium Map.
 
         :param document: (MapLayerDocument) layer document object containing ingredients and configuration for
-        creating a marker layer.
-        :param base_object: (Map) Folium map to create marker on
+            creating a marker layer.
+        :param base_object: (Map) Folium map to create marker on.
+
         :return: None
         """
         return cls._add_layer(map_object=base_object, layer_document=document)
@@ -34,7 +37,9 @@ class MarkerRecipe(DocumentRecipe):
         appended to the provided Folium Map.
 
         :param map_object: (Map) map object to create layer on
+
         :param layer_document: (MapLayerDocument) layer document configuration object.
+
         :return: None
         """
         model = layer_document.model
@@ -52,6 +57,7 @@ class MarkerRecipe(DocumentRecipe):
             value = getattr(row, axis.data_field)
 
             coordinates = [latitude, longtitude]
+            # model.figure.size *= 5
             marker = cls._create_marker(layer_value=str(value), coordinates=coordinates, layer_figure=model.figure)
             feature_group.add_child(marker)
 
@@ -64,8 +70,11 @@ class MarkerRecipe(DocumentRecipe):
         Create single Folium Marker object.
 
         :param layer_value: (str) value of layers data_field to display on markers popup.
-        :param coordinates: [float] coordinates on which the marker should be displayed
+
+        :param coordinates: [float] coordinates on which the marker should be displayed.
+
         :param layer_figure: (ObjectFigure) layer figure configuration object.
+
         :return: (Marker) marker instance adjusted for provided params.
         """
         return Marker(location=coordinates, popup=layer_value)
@@ -82,12 +91,15 @@ class CircleMarkerRecipe(MarkerRecipe):
         Create single Folium CircleMarker object.
 
         :param layer_value: (str) value of layers data_field to display on markers popup.
+
         :param coordinates: [float] coordinates on which the marker should be displayed
+
         :param layer_figure: (ObjectFigure) layer figure configuration object.
+
         :return: (Marker) marker instance adjusted for provided params.
         """
 
-        return CircleMarker(location=coordinates, radius=layer_figure.size,
+        return CircleMarker(location=coordinates, radius=layer_figure.size * cls._scale,
                             popup=layer_value, fill_color=layer_figure.colour, fill=True,
                             color='grey', fill_opacity=layer_figure.opacity)
 
@@ -108,12 +120,15 @@ class PolygonMarkerRecipe(MarkerRecipe):
         Create single Folium PolygonMarker object.
 
         :param layer_value: (str) value of layers data_field to display on markers popup.
+
         :param coordinates: [float] coordinates on which the marker should be displayed
+
         :param layer_figure: (ObjectFigure) layer figure configuration object.
+
         :return: (Marker) marker instance adjusted for provided params.
         """
 
-        return RegularPolygonMarker(location=coordinates, radius=layer_figure.size,
+        return RegularPolygonMarker(location=coordinates, radius=layer_figure.size * cls._scale,
                                     popup=layer_value, fill_color=layer_figure.colour,
                                     color='grey', fill_opacity=layer_figure.opacity,
                                     number_of_sides=cls._number_of_sides)
@@ -144,8 +159,10 @@ class LayerControlRecipe(DocumentRecipe):
     def create(cls, base_object: Map, *args, **kwargs) -> Map:
         """
         Add LayerControl feature group to provided folium map.
+
         :param base_object: (Map) map that layer control should be appended to.
-        :return base_object: (Map) folium map object with appended layer control.
+
+        :return: base_object(Map) - folium map object with appended layer control.
         """
         base_object.add_child(LayerControl())
 
@@ -165,7 +182,7 @@ class MapRecipe(DocumentRecipe):
         Create Folium map to display to the user.
 
         :param document: (MapDocument) chart document object containing ingredients for bokeh figure creation.
-        :return plot: (Map) bokeh figure object to display to the user.
+        :return: plot(Map) - bokeh figure object to display to the user.
         """
         map_options = document.map_options
 
@@ -179,7 +196,7 @@ class MapRecipe(DocumentRecipe):
         Creates Folium Map instance based on map configuration object.
 
         :param map_options: (MapOptions) Configuration object for a map.
-        :return map_object: (Map) Map object instance based on provided configuration.
+        :return: map_object(Map) - Map object instance based on provided configuration.
         """
         map_object = Map(zoom_start=2.5, tiles=map_options.tiles, location=[40.0, 10.0])
 
@@ -221,7 +238,7 @@ class MapFactory(DocumentFactory):
 
         :param layer: (Layer) layer configuration object.
         :param document: (MapDocument) map document to append layer document to.
-        :return layer_document: (MapLayerDocument) prepared layer document to append on a map.
+        :return: layer_document(MapLayerDocument) - prepared layer document to append on a map.
         """
         layer_data_source = self.prepare_layer_data_source(data_source=document.data_source,
                                                            filter_expression=layer.filter_expression)

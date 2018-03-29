@@ -39,6 +39,7 @@ class MapEditController(MapBaseEditController):
 
     Args:
         map_service: (MapService) charts specific document service.
+
         form_creator: (MapsFormHandler) charts specific form handler.
     """
 
@@ -64,12 +65,16 @@ class MapCreateController(MapBaseEditController):
 
     Args:
         map_service: (MapService) maps specific document service.
+
         form_creator: (MapsFormHandler) maps specific form handler.
+
         document_create_service (FoliumService) folium service for creating and exporting plots.
 
     Attributes:
         @property map_options: (MapOptions) options for a chart parsed from controllers form.
+
         @property map_resources: (str) template resources for bokeh library.
+
         _document_creator_service: (FoliumService) bokeh service for creating and exporting plots.
     """
 
@@ -89,7 +94,8 @@ class MapCreateController(MapBaseEditController):
         Generates and exports map from map document object and stores resources for its display.
 
         :param map_document: (MapDocument) MapDocument object instance with object and data source configuration for
-        a map.
+            a map.
+
         :return: None
         """
         map_object = self._document_creator_service.generate_map(map_document=map_document)

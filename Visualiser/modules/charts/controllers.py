@@ -12,6 +12,7 @@ class ChartEditController(DocumentBaseEditController):
 
     Args:
         chart_service: (ChartService) charts specific document service.
+
         form_creator: (ChartsFormHandler) charts specific form handler.
     """
 
@@ -47,13 +48,18 @@ class ChartCreateController(DocumentBaseEditController):
 
     Args:
         chart_service: (ChartService) charts specific document service.
+
         form_creator: (ChartsFormHandler) charts specific form handler.
+
         document_create_service (BokehService) bokeh service for creating and exporting plots.
 
     Attributes:
         @property chart_options: (ChartOptions) options for a chart parsed from controllers form.
+
         @property bokeh_resources: (TemplateResourcesData) template resources for bokeh library.
+
         @property chart_resources: (TemplateResourcesData) template resources for generated bokeh plot.
+
         _document_creator_service: (BokehService) bokeh service for creating and exporting plots.
     """
     __chart_resources = None
@@ -86,7 +92,7 @@ class ChartCreateController(DocumentBaseEditController):
         Map data from controllers form data source sub-form and read file from generated data source.
 
         :param datetime_columns: (list(str)) list of datetime columns in the data source.
-        :return data_source: (DataSource)
+        :return: data_source(DataSource)
         """
         creator = self._get_form_creator()
         data_source = creator.map_data_source(self.form.data_source, is_file_uploaded=True)
@@ -144,6 +150,7 @@ class ChartDisplayController(object):
 
     Attributes:
         __bokeh_resources(TemplateResourcesData): standard css and js resources for bokeh charts.
+
         __chart_resources(TemplateResourcesData): js and html resources for particular bokeh charts.
     """
 
@@ -159,9 +166,11 @@ class ChartDisplayController(object):
 
     def load_plot(self, chart: Chart):
         """
+        Create plot from chart document object instance using controllers document creator service and assigns
+        template resources from generated plot to controllers properties.
 
-        :param chart:
-        :return:
+        :param chart: (Chart) chart object instance to generate plot from.
+        :return: None
         """
         plot = Services.BokehService.generate_plot(chart)
 

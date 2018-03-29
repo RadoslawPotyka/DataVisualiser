@@ -12,14 +12,18 @@ class BaseController(object):
 
     Attributes:
         _template_path: (str) path to the template that will be rendered in the application.
+
         _working_context_service: (Services.WorkingContextService) Service for interacting with the context of the
-                                                                   application
+            application
+
         _router_state_service: (Services.RouterStateService) Service for rendering and redirecting views.
 
     Args:
         template_path: (str) path to the template that will be rendered in the application.
+
         working_context_service: (Services.WorkingContextService) Service for interacting with the context of the
-                                                                   application
+            application
+
         router_state_service: (Services.RouterStateService) Service for rendering and redirecting views.
     """
 
@@ -46,7 +50,8 @@ class BaseController(object):
         Action to perform when an error occurred during controller activation. Method notifies the user about the error
         and switches route state to the one provided via params or to the index page of the current module.
 
-        :param error: (Exception) exception that occurred during application runtime..
+        :param error: (Exception) exception that occurred during application runtime.
+
         :param next_state: (str) route path for the state the application should switch to.
         """
         self._router_state_service.notify(message=str(error), status="danger")
@@ -60,15 +65,21 @@ class DocumentBaseEditController(BaseController):
 
     Attributes:
         _form_creator: (FormHandler) form handler object for form parsing and preparation.
+
         _file_service: (Services.FileService) Service for file handling, reading and parsing.
+
         _document_service: (Services.DocumentService) Service for document handling.
+
         _is_empty: (bool) determines whether the form is initialised for the first time throughout the current
-        context of the application
+            context of the application
+
         _form: (Form) form object instance used by the controller.
 
     Args:
         form_creator: (str) form handler object for form parsing and preparation.
+
         file_service: (Services.FileService) Service for file handling, reading and parsing.
+
         document_service: (Services.DocumentService) Service for document handling.
     """
     _form = None
@@ -89,6 +100,7 @@ class DocumentBaseEditController(BaseController):
     def activate(self, is_empty: bool = True):
         """
         :param is_empty: (bool) determines whether the controller form data is empty or filled with data.
+
         :return: call to the form_action method resolving in proper template rendering or view redirection.
         """
         try:

@@ -8,6 +8,13 @@ from .models import Document, LayerDocument, Layer, FilterExpression, DataSource
 from .services import CommonServiceProvider
 
 
+"""
+.. module:: creators
+   :synopsis: Common and base models for utilities usage in the application.
+
+"""
+
+
 class DocumentRecipe(Recipe):
     """
     Interface for document recipes functionality asserting that all recipe command classes will have respective create
@@ -31,7 +38,7 @@ class DocumentRecipe(Recipe):
 
         :param document: (Document) document containing ingredients for executing the command
         :param base_object: (any) optional param for recipe execution. Provide this param when recipe appends object to
-        another one rather then creating a new one.
+            another one rather then creating a new one.
         :return: (object) result of create method from provided subclass.
         """
         if base_object is None:
@@ -46,11 +53,14 @@ class DocumentFactory(Factory):
 
     Attributes:
         _recipes: (Enum) enumerator object containing recipes for document factory.
+
         _data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.
+
         _post_creation_tasks: (list) tasks to perform after the document is created.
 
     Args:
         recipes: (Enum) enumerator object containing recipes for document factory.
+
         data_frame_service: (CommonServiceProvider.DataFrameService) Service for handling with the data frame objects.
     """
 
@@ -66,7 +76,7 @@ class DocumentFactory(Factory):
         Method builds base document and then appends to it each layer of provided documents model and returns it.
 
         :param document: (Document) characteristics and ingredients necessary for proper creation of the object.
-        :return created_object: (any) instance of an object created from ingredients provided in params.
+        :return: created_object(any) - instance of an object created from ingredients provided in params.
         """
         self.validate(document=document)
 
@@ -84,8 +94,8 @@ class DocumentFactory(Factory):
 
         :param document: (Document) characteristics and ingredients necessary for proper creation of the object.
         :param base_object: (any) optional param for recipe execution. Provide this param when recipe appends object to
-        another one rather then creating a new one.
-        :return base_object: (any) object created by factory with all modifications related to post creation tasks.
+            another one rather then creating a new one.
+        :return: base_object(any) - object created by factory with all modifications related to post creation tasks.
         """
         for additional_task in self._post_creation_tasks:
             additional_task.execute(document=document, base_object=base_object)
@@ -99,7 +109,7 @@ class DocumentFactory(Factory):
 
         :param layer: (Layer) layer configuration object.
         :param document: (Document) document to append LayerDocument to.
-        :return layer_document: (LayerDocument) prepared layer document to append on a document.
+        :return: layer_document(LayerDocument) - prepared layer document to append on a document.
         """
         pass
 
@@ -110,8 +120,8 @@ class DocumentFactory(Factory):
 
         :param data_source: (DataSource) base data source object to assign to layer document.
         :param filter_expression: (FilterExpression) filter expression to filter data by before assigning to layer
-                                                     document.
-        :return layer_data_source: (pd.DataFrame) prepared and filtered data_source for a layer.
+            document.
+        :return: layer_data_source(pd.DataFrame) - prepared and filtered data_source for a layer.
         """
         data_frame = data_source.data
 
@@ -130,8 +140,8 @@ class DocumentFactory(Factory):
 
         :param document: (Document) ingredients and characteristics of object to create.
         :param base_object: (any) optional param for recipe execution. Provide this param when recipe appends object to
-        another one rather then creating a new one.
-        :return instance: (any) object created by recipe execution.
+            another one rather then creating a new one.
+        :return: instance (any) object created by recipe execution.
         """
         recipe = self._get_recipe(object_key=document.object_key)
 

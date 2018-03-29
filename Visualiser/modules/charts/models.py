@@ -40,10 +40,13 @@ class ChartTitle(object):
     Object representing title for a chart. Has it's title, colour string, font string and styling.
 
     Attributes:
-        @property title(str): actual title of the chart
-        @property colour(str): colour of the title
-        @property font(str): font used for title
-        @property font_style(str): font styling for the title
+        @property title(str): actual title of the chart.
+
+        @property colour(str): colour of the title.
+
+        @property font(str): font used for title.
+
+        @property font_style(str): font styling for the title.
     """
 
     def __init__(self):
@@ -91,12 +94,18 @@ class ChartOptions(DocumentOptions):
     for chart creation and customisation.
 
     Attributes:
-        @property id(int): chart id for identyfying particular chart
-        @property width(int): width of the chart in pixels
-        @property height(int): height of the chart in pixels
-        @property description(str): description of the chart
-        @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart
-        @property title(ChartTitle): Title class instance containing styling and display of chart title
+        @property id(int): chart id for identyfying particular chart.
+
+        @property width(int): width of the chart in pixels.
+
+        @property height(int): height of the chart in pixels.
+
+        @property description(str): description of the chart.
+
+        @property x_axis(Axis): Axis class instance for determining values and display of X axis of the chart.
+
+        @property title(ChartTitle): Title class instance containing styling and display of chart title.
+
         @property layers(list(ChartFigure)): List of all layers to be displayed on chart.
     """
 
@@ -138,6 +147,7 @@ class Chart(Document):
 
     Attributes:
         @property chart_options(ChartOptions): chart configuration object for the chart.
+
         @property data_source(pandas.DataFrame): data source used in the chart.
     """
 

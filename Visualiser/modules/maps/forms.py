@@ -16,7 +16,6 @@ class MapsFormHandler(FormHandler):
         __supported_tiles: [tuple] list of supported types that will be used as select field choices for map tiles.
     """
 
-    _scale = 4.0
     _default_title = "My Map"
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple], tiles: [tuple]):
@@ -28,7 +27,7 @@ class MapsFormHandler(FormHandler):
         Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
         columns provided with initialisation.
 
-        :return form: (DocumentOptionsForm) document options form with commonly required fields.
+        :return: form(DocumentOptionsForm) - document options form with commonly required fields.
         """
 
         class DocumentOptionsForm(DocumentBaseOptionsForm):
@@ -38,7 +37,8 @@ class MapsFormHandler(FormHandler):
                                                    validators=[DataRequired()])
         DocumentOptionsForm.longtitude = SelectField("Longtitude Column", choices=self._columns,
                                                      validators=[DataRequired()])
-        DocumentOptionsForm.tiles = SelectField("Map Tiles", choices=self.__supported_tiles,
+        DocumentOptionsForm.tiles = SelectField("Background tiles",
+                                                choices=self.__supported_tiles,
                                                 validators=[DataRequired()])
         DocumentOptionsForm.title = self.prepare_title_form()
 
@@ -50,7 +50,7 @@ class MapsFormHandler(FormHandler):
         Map chart document options form onto ChartOptions object.
 
         :param document_options_form: (DocumentBaseOptionsForm) form containing user input regarding options for a chart
-        :return map_options: (ChartOptions) chart options configuration object mapped from a form.
+        :return: map_options(ChartOptions) - chart options configuration object mapped from a form.
         """
         super().map_document_options(document_options_form=document_options_form)
         map_options = MapOptions()

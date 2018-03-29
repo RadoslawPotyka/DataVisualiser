@@ -62,11 +62,12 @@ class FileForm(FlaskForm):
     Class representing form for gathering user input regarding data source and handling file upload.
     """
     data_source = FileField(label="File")
-    separator_type = SelectField("Columns separator",
-                                 choices=[(",", "comma"), (";", "semicolon"), ("\t", "tab"), (" ", "space")],
+    separator_type = SelectField("Select column separator",
+                                 choices=[(",", "comma"), (";", "semicolon"), ("\t", "tab"), ("\s+", "space")],
                                  default=(",", "comma"))
-    columns_row_index = IntegerField("Index of columns row", default=0)
+    columns_row_index = IntegerField("Index of the row with column names", default=0)
     file_name = HiddenField(StringField())
+    separator_string = StringField("Or type in your own")
     should_fill_missing_data = BooleanField("Select if missing data should be filled", default=True)
 
 
@@ -97,10 +98,9 @@ class DocumentBaseForm(FlaskForm):
 
     def remove_layer(self):
         """
-        Method checks which button for which existing layer of a document has been pressed. If it was button for edition
-        returns layer that has the button pressed and removes it from field list. Otherwise the layer is only removed.
+        Removes layer for which the removed button has been pressed from the layers list.
 
-        :return edited_layer: layer that should be edited (None if layer was removed from the field list)
+        :return: None
         """
         layer_list = []
 
@@ -127,7 +127,7 @@ class DocumentBaseForm(FlaskForm):
         Assigns provided name to FileForm sub-form for later usage in the app.
 
         :param file_name: (str) file_name to assign to the document forms file form.
-        :return:
+        :return: None
         """
         self.data_source.file_name.data = file_name
 
@@ -138,14 +138,20 @@ class FormHandler(object):
 
     Args:
                 columns([tuple]): list of tuples representing columns available for layer options form data field.
+
                 shapes([tuple]): list of tuples representing shapes available for layer options form object_key.
+
                 shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.
+
                 colour_palette([tuple]): list of tuples representing available colours.
 
     Attributes:
         _supported_shapes([tuple]): list of tuples representing shapes available for layer options form object_key.
+
         _columns([tuple]): list of tuples representing columns available for layer options form data field.
+
         _shape_keys(Enum): Enum object containing keys to translate from string value when mapping layers.
+
         _colours([tuple]): list of tuples representing available colours.
     """
 
@@ -153,12 +159,11 @@ class FormHandler(object):
     _columns = None
     _shape_keys = None
     _colours = None
-    _scale = 1.0
     _default_title = "My Document"
     _supported_conditions = [("", "None"), ("==", "="), ("!=", "!="),
                              ("<=", "<="), (">=", ">="), (">", ">"), ("<", "<")]
     _supported_collocations = [("&", "and"), ("|", "or")]
-    _object_size_scales = [("1.25", "Thin"), ("2", "Medium"), ("3.5", "Thick")]
+    _object_size_scales = [("0.6", "Thin"), ("0.9", "Medium"), ("1.3", "Thick")]
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
         self._columns = columns
@@ -174,7 +179,7 @@ class FormHandler(object):
         """
         Prepare empty form for first step of document preparation.
 
-        :return form: (DocumentForm) basic document form.
+        :return: form(DocumentForm) - basic document form.
         """
 
         class DocumentForm(DocumentBaseForm):
@@ -187,7 +192,7 @@ class FormHandler(object):
         """
         Prepare full document form with all fields necessary for creating functional documents.
 
-        :return form: (DocumentForm) document form containing all fields, buttons and sub-forms.
+        :return: form(DocumentForm) - document form containing all fields, buttons and sub-forms.
         """
 
         class DocumentForm(DocumentBaseForm):
@@ -208,7 +213,7 @@ class FormHandler(object):
         Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
         columns provided with initialisation.
 
-        :return form: (DocumentOptionsForm) document options form with commonly required fields.
+        :return: form(DocumentOptionsForm) - document options form with commonly required fields.
         """
         pass
 
@@ -216,7 +221,7 @@ class FormHandler(object):
         """
         Prepare title form for document title assignment.
 
-        :return title_form: (StringField) title form for a document.
+        :return: title_form(StringField) - title form for a document.
         """
         title_form = StringField("Title", default=self._default_title, validators=[DataRequired()])
         return title_form
@@ -226,7 +231,7 @@ class FormHandler(object):
         Dynamically create wtforms derived LayerForm object for layer creation based on supported shapes, colours and
         columns provided with initialisation.
 
-        :return form: (LayerOptionsForm) form instance for chart layer creation.
+        :return: form(LayerOptionsForm) - form instance for chart layer creation.
         """
 
         class LayerForm(LayerOptionsForm):
@@ -248,7 +253,7 @@ class FormHandler(object):
         """
         Dynamically create wtforms derived filter options form.
 
-        :return form: (FilterOptionsForm) filter form for a singular filter expression
+        :return: form(FilterOptionsForm) - filter form for a singular filter expression
         """
 
         class FilterOptionsForm(FlaskForm):
@@ -268,13 +273,17 @@ class FormHandler(object):
 
         :param file_form: (FileForm) form containing user input for document data source.
         :param is_file_uploaded: (bool) boolean value determining whether the file from form was already uploaded.
-        :return data_source: (DataSource) data source configuration object instance.
+        :return: data_source(DataSource) - data source configuration object instance.
         """
         data_source = DataSource()
 
-        separator = file_form.separator_type.data
-        column_index = file_form.columns_row_index.data
+        if not StringTools.is_empty(file_form.separator_string.data):
+            separator = file_form.separator_string.data
+        else:
+            separator = file_form.separator_type.data
 
+        column_index = file_form.columns_row_index.data
+        print(separator)
         if is_file_uploaded:
             file_name = file_form.file_name.data
         elif file_form.data_source.data:
@@ -296,7 +305,7 @@ class FormHandler(object):
 
         :param document_form: (DocumentBaseForm) Base document form containing user input regarding document.
         :param document: (Document) document object instance to assign data from form.
-        :return document: None
+        :return: None
         """
         document.model = self.map_document_options(document_options_form=document_form.document_options)
         document.model.layers = [self.map_layer(layer_entry) for layer_entry in document_form.layers.data]
@@ -308,7 +317,7 @@ class FormHandler(object):
 
         :param document_options_form: (DocumentBaseOptionsForm) document options form containing user input regarding
          document options.
-        :return: (DocumentOptions) Instantiated document options with data mapped from provided form.
+        :return: (DocumentOptions) - Instantiated document options with data mapped from provided form.
         """
         pass
 
@@ -317,7 +326,7 @@ class FormHandler(object):
         Return user input from provided title StringField.
 
         :param title: (StringField) field containing user input regarding document title.
-        :return title: (str) user input regarding document title.
+        :return: title(str) - user input regarding document title.
         """
         return title.data
 
@@ -326,7 +335,7 @@ class FormHandler(object):
         Instantiate Layer object and map data from provided layer_form to it.
 
         :param layer_form: (dict) layer form dictionary containing user input regarding layer options.
-        :return layer: (Layer) layer object instance containing options for a layer mapped from provided form.
+        :return: layer(Layer) - layer object instance containing options for a layer mapped from provided form.
         """
         layer = Layer()
 
@@ -335,7 +344,7 @@ class FormHandler(object):
         layer.axis.name = layer_form["layer_name"]
 
         size = StringTools.to_float(string=layer_form["size"])
-        layer.figure.size = size * self._scale
+        layer.figure.size = size
 
         layer.figure.object_key = self._shape_keys[layer_form["shape"]]
         layer.figure.opacity = layer_form["opacity"]
@@ -349,7 +358,7 @@ class FormHandler(object):
         Map filter values from layers filter sub-form.
 
         :param layer_form: (dict) layer form dictionary to parse filter from
-        :return filter_expression: (FilterExpression) parsed filter expression for a layer.
+        :return: filter_expression(FilterExpression) - parsed filter expression for a layer.
         """
         data_field = layer_form["data_field"]
         operator = layer_form["operator"]
@@ -375,7 +384,7 @@ class FormHandler(object):
 
         :param filter_entry: (dict) filter form dictionary with values to map onto FilterExpression instance.
         :param data_field: (str) data field used for filter expression.
-        :return filter_expression: (FilterExpression) mapped filter expression.
+        :return: filter_expression(FilterExpression) - mapped filter expression.
         """
         filter_expression = None
 

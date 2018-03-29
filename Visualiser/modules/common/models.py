@@ -3,9 +3,16 @@ from enum import Enum
 import pandas as pd
 
 
+"""
+.. module:: Common Models
+   :synopsis: Common and base models for later usage in the application.
+"""
+
+
 class ObjectKey(Enum):
     """
     Enumerator subclass containing keys for objects used in application.
+
     """
     Chart = "Chart"
     Map = "Map"
@@ -33,6 +40,7 @@ class FilterExpression(object):
 
     Attributes:
         @property a: (Expression or str) first value of an expression
+
         @property b: (Expression or str) second value of an expression
     """
 
@@ -68,12 +76,17 @@ class DataSource(object):
 
     Attributes:
         @property data: (pd.DataFrame) DataFrame object containing data for the document.
+
         @property column_index: (int) Row index of columns in the DataFrame.
+
         @property separator: (str) Separator of columns in a file containing DataSource.
+
         @property file_name: (str) Name of the file containing data for the DataSource.
+
         @property datetime_columns: [str] List of columns with values in a datetime format.
+
         @property should_fill_missing_data: (bool) Boolean value determining if missing data should be filled when
-                                                   parsing data.
+        parsing data.
     """
 
     def __init__(self):
@@ -140,9 +153,13 @@ class ObjectFigure(object):
 
     Attributes:
         @property object_key(Enum): Object key of the layer representing it's shape.
+
         @property colour(str): Colour of the figure. Can be string description or code for a colour.
+
         @property opacity(str): Determines transparency of the figure.
+
         @property size(str): Determines width of the figure on the plot in pixels.
+
     """
 
     def __init__(self):
@@ -188,9 +205,12 @@ class Axis(object):
     """
     Object representation of an axis containing options necessary for controlling axis on a chart.
 
-    @property description(str): display description of an axis.
-    @property data_field(str): column description used for an axis.
-    @property data_type(str): data type used for an axis.
+    Attributes:
+        @property description(str): display description of an axis.
+
+        @property data_field(str): column description used for an axis.
+
+        @property data_type(str): data type used for an axis.
     """
 
     def __init__(self, data_field: str = None, name: str = None, data_type: str = None):
@@ -229,8 +249,10 @@ class Layer(object):
 
     Attributes:
         @property axis(Axis): Axis class instance for determining values and display of Y axis of the chart layer.
+
         @property figure(ObjectFigure): ObjectFigure class instance containing options for object_key to be displayed on
         the document layer.
+
         @property filter_expression(FilterExpression): filter expression to assign on a layer data.
     """
 
@@ -270,13 +292,19 @@ class DocumentOptions(object):
     for chart creation and customisation.
 
     Attributes:
-        @property description(str): description of the chart
-        @property layers(list(Layer)): List of all layers to be displayed on chart.
-        @property width(int): width of the chart in pixels
-        @property height(int): height of the chart in pixels
-        @property description(str): description of the chart
-        @property title(str): Title class instance containing styling and display of chart title
-        @property layers(list(ObjectFigure)): List of all layers to be displayed on chart.
+        @property description(str): description of the document.
+
+        @property layers(list(Layer)): List of all layers to be displayed on document.
+
+        @property width(int): width of the chart in pixels.
+
+        @property height(int): height of the chart in pixels.
+
+        @property description(str): description of the document.
+
+        @property title(str): Title class instance containing styling and display of documents title.
+
+        @property layers(list(ObjectFigure)): List of all layers to be displayed on document.
     """
 
     __DEFAULT_SIZE = 750
@@ -336,7 +364,9 @@ class Document(object):
 
     Attributes:
         @property model(DocumentOptions): model object containing characteristics of the document.
+
         @property data_source(DataSource): data source object for document.
+
         @property object_key(Enum): object key of the document.
     """
 
@@ -371,7 +401,9 @@ class LayerDocument(Document):
 
     Attributes:
         @property model(Layer): model object containing characteristics of a layer.
+
         @property data_source(pd.DataFrame): DataFrame object with values used by layer.
+
         @property object_key(Enum): object key of the layer.
     """
 
@@ -401,7 +433,9 @@ class FormState(Enum):
 
     Attributes:
         BASE: represents state when form is handling base data for an object.
+
         LAYER: represents state when form is handling layers of an object (used only for documents)
+
         SUBMIT: represents state when form is valid and ready for submission.
     """
     BASE = 0
@@ -416,7 +450,9 @@ class TemplateResourcesData(object):
 
     Attributes:
         @property css(str): list of string containing links to css stylesheets.
+
         @property js(str): list of strings containing script to include in a html page.
+
         @property html(str): list of stringified html files to include in an html page.
     """
 
@@ -456,7 +492,9 @@ class ApplicationOptions(object):
 
     Attributes:
         @property backend_url: (str) url used for backend connection.
+
         @property colour_palette: ([str]) Colour palette supported throughout application.
+
         @property allowed_extensions: ([str]) file extensions supported throughout application.
     """
 

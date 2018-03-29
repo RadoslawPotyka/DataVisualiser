@@ -6,10 +6,11 @@ from ..common.models import DocumentOptions, LayerDocument, Axis, Layer, Documen
 class MapLayerDocument(LayerDocument):
     """
     Represents chart configuration for data visualisation. Contains useful information and data
-    for chart creation and customisation.
+    for map creation and customisation.
 
     Attributes:
         @property latitude(Axis): Axis class instance for determining values for latitudes of a map.
+
         @property longtitude(Axis): Axis class instance for determining values for longtitudes of a map.
     """
     def __init__(self,
@@ -40,11 +41,12 @@ class MapLayerDocument(LayerDocument):
 
 class MapOptions(DocumentOptions):
     """
-    Represents chart configuration for data visualisation. Contains useful information and data
-    for chart creation and customisation.
+    Represents map configuration for data visualisation. Contains useful information and data
+    for map creation and customisation.
 
     Attributes:
         @property latitude(Axis): Axis class instance for determining values for latitudes of a map.
+
         @property longtitude(Axis): Axis class instance for determining values for longtitudes of a map.
     """
 
@@ -81,12 +83,13 @@ class MapOptions(DocumentOptions):
 
 class MapDocument(Document):
     """
-    Represents whole chart object ready to display. Wraps chart configuration and its data source for easier
+    Represents whole map object ready to display. Wraps chart configuration and its data source for easier
     transportation throughout solution and its services.
 
     Attributes:
-        @property chart_options(ChartOptions): chart configuration object for the chart.
-        @property data_source(pandas.DataFrame): data source used in the chart.
+        @property chart_options(ChartOptions): configuration object for the map.
+
+        @property data_source(DataSource): data source used in the map.
     """
 
     _object_key = ObjectKey.Map

@@ -1,7 +1,7 @@
 from enum import Enum
 from abc import abstractmethod
 
-from bokeh.plotting import figure
+from bokeh.plotting import figure, Figure
 from bokeh.models import HoverTool, ColumnDataSource
 
 from .models import Chart, ChartOptions, ChartTitle, ChartLayerDocument
@@ -15,12 +15,14 @@ class HoverToolRecipe(DocumentRecipe):
     """
 
     @classmethod
-    def create(cls, document: Chart, base_object: figure) -> None:
+    def create(cls, document: Chart, base_object: Figure) -> None:
         """
         Create a hover tool for a plot.
 
         :param document: (Chart) chart document object instance.
-        :param base_object: (bokeh.plotting.figure) bokeh figure to create hover tool for.
+
+        :param base_object: (Figure) bokeh figure to create hover tool for.
+
         :return: None
         """
         chart_options = document.chart_options
@@ -29,14 +31,16 @@ class HoverToolRecipe(DocumentRecipe):
         return cls._add_hover_tool(chart_layers=layers, plot=base_object)
 
     @classmethod
-    def _add_hover_tool(cls, chart_layers: [Layer], plot: figure) -> [tuple]:
+    def _add_hover_tool(cls, chart_layers: [Layer], plot: Figure) -> None:
         """
         Add hover tool to a bokeh plot. Method iterates through chart layers to create a hover tool tooltip for each of
         them based on axis of the layer.
 
-        :param chart_layers:  list(Layer) list of layers to prepare tooltips for.
-        :param plot: bokeh.plotting.figure) bokeh figure to create hover tool for.
-        :return:
+        :param chart_layers: list(Layer) list of layers to prepare tooltips for.
+
+        :param plot: (Figure) bokeh figure to create hover tool for.
+
+        :return: None
         """
         tooltips = []
 
@@ -45,7 +49,7 @@ class HoverToolRecipe(DocumentRecipe):
             cls._prepare_tooltip(tooltips=tooltips, axis=axis)
 
         if len(tooltips) > 0:
-            hover_tool = HoverTool(tooltips=tooltips)
+            hover_tool = HoverTool(tooltips=tooltips, mode="mouse", point_policy="follow_mouse")
             plot.add_tools(hover_tool)
 
     @classmethod
@@ -54,7 +58,9 @@ class HoverToolRecipe(DocumentRecipe):
         Prepares tooltip tuple for a given axis and appends it to provided tooltips list.
 
         :param tooltips: list(tuple) list of tuples containing tooltips for a plot.
+
         :param axis: (Axis) axis of a layer to prepare tooltip tuple for.
+
         :return: None
         """
         tooltip_data = '@{0}'.format(axis.data_field)
@@ -69,15 +75,19 @@ class LayerRecipe(DocumentRecipe):
     Base interface for layer recipe.
     """
 
+    _scale = None
+
     @classmethod
-    def create(cls, document: ChartLayerDocument, base_object: figure) -> None:
+    def create(cls, document: ChartLayerDocument, base_object: Figure) -> None:
         """
         Create a layer on a plot figure. Method creates layer and adjusts it based on configuration.
         The layer is appended to the provided plot.
 
         :param document: (LayerDocument) layer document object containing ingredients and configuration.
-        creating a line.
-        :param base_object: (bokeh.plotting.figure) bokeh figure to create line on
+            creating a line.
+
+        :param base_object: (Figure) bokeh figure to create line on.
+
         :return: None
         """
         return cls._add_layer(plot=base_object, layer_document=document)
@@ -93,6 +103,8 @@ class LineRecipe(LayerRecipe):
     Recipe for creating line on a plot.
     """
 
+    _scale = 2.5
+
     @classmethod
     def _add_layer(cls, plot: figure, layer_document: ChartLayerDocument) -> None:
         """
@@ -100,7 +112,9 @@ class LineRecipe(LayerRecipe):
         the provided plot.
 
         :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
-        :param plot: (bokeh.plotting.figure) bokeh figure to create line on.
+
+        :param plot: (Figure) bokeh figure to create line on.
+
         :return: None
         """
         layer_model = layer_document.model
@@ -115,7 +129,7 @@ class LineRecipe(LayerRecipe):
                   color=layer_figure.colour,
                   alpha=layer_figure.opacity,
                   legend=axis.name,
-                  line_width=layer_figure.size,
+                  line_width=layer_figure.size * cls._scale,
                   source=layer_document.data_source)
 
 
@@ -124,6 +138,8 @@ class CircleRecipe(LayerRecipe):
     Recipe for creating a circle on a plot.
     """
 
+    _scale = 6
+
     @classmethod
     def _add_layer(cls, plot: figure, layer_document: ChartLayerDocument) -> None:
         """
@@ -131,7 +147,9 @@ class CircleRecipe(LayerRecipe):
         appended to the provided plot.
 
         :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
+
         :param plot: (bokeh.plotting.figure) bokeh figure to create circle on.
+
         :return: None
         """
         layer_model = layer_document.model
@@ -147,7 +165,7 @@ class CircleRecipe(LayerRecipe):
                     color=layer_figure.colour,
                     alpha=layer_figure.opacity,
                     legend=axis.name,
-                    size=layer_figure.size,
+                    size=layer_figure.size * cls._scale,
                     source=layer_document.data_source)
 
 
@@ -155,6 +173,8 @@ class SquareRecipe(LayerRecipe):
     """
     Recipe for creating square on a plot.
     """
+
+    _scale = 6
 
     @classmethod
     def _add_layer(cls, plot: figure, layer_document: ChartLayerDocument) -> None:
@@ -178,39 +198,8 @@ class SquareRecipe(LayerRecipe):
                     color=layer_figure.colour,
                     alpha=layer_figure.opacity,
                     legend=axis.name,
-                    size=layer_figure.size,
+                    size=layer_figure.size * cls._scale,
                     source=layer_document.data_source)
-
-
-class BarRecipe(LayerRecipe):
-    """
-    Recipe for creating bars on a plot.
-    """
-
-    @classmethod
-    def _add_layer(cls, plot: figure, layer_document: ChartLayerDocument) -> None:
-        """
-        Create bars on a plot figure. Method creates bars and adjusts them based on configuration.
-        TGenerated bars are appended to the plot.
-
-        :param layer_document: (LayerDocument) layer document object containing ingredients and configuration.
-        :param plot: (bokeh.plotting.figure) bokeh figure to create bars on.
-        :return: None
-        """
-        layer_model = layer_document.model
-        layer_figure = layer_model.figure
-
-        axis = layer_model.axis
-        axis.name = axis.name or axis.data_field
-
-        plot.yaxis.axis_label = axis.name
-        plot.vbar(x=layer_document.x_axis.data_field,
-                  top=axis.data_field,
-                  color=layer_figure.colour,
-                  alpha=layer_figure.opacity,
-                  legend=axis.name,
-                  width=layer_figure.size,
-                  source=layer_document.data_source)
 
 
 class ChartRecipe(DocumentRecipe):
@@ -226,7 +215,7 @@ class ChartRecipe(DocumentRecipe):
         Create bokeh figure to display to the user.
 
         :param document: (Chart) chart document object containing ingredients for bokeh figure creation.
-        :return plot: (bokeh.plotting.figure) bokeh figure object to display to the user.
+        :return: plot(bokeh.plotting.figure) - bokeh figure object to display to the user.
         """
         chart_options = document.chart_options
 
@@ -240,14 +229,13 @@ class ChartRecipe(DocumentRecipe):
         """
         Create plot based on options provided via chart object and return it.
 
-        :return: plot(bokeh.plotting.figure): bokeh plot figure instance customised for provided options.
+        :return: plot(bokeh.plotting.figure)- bokeh plot figure instance customised for provided options.
         """
         x = chart_options.x_axis
         x_data_type = x.data_type
 
         plot = figure(height=chart_options.height, width=chart_options.width, x_axis_type=x_data_type)
         plot.xaxis.axis_label = chart_options.x_axis.name or chart_options.x_axis.data_field
-
         return plot
 
     @staticmethod
@@ -273,7 +261,6 @@ class ChartRecipes(Enum):
     Line = LineRecipe
     Circle = CircleRecipe
     Square = SquareRecipe
-    Bars = BarRecipe
 
 
 class ChartFactory(DocumentFactory):
@@ -287,7 +274,7 @@ class ChartFactory(DocumentFactory):
 
         :param layer: (Layer) layer configuration object.
         :param document: (Chart) chart document to append LayerDocument to.
-        :return layer_document: (ChartLayerDocument) prepared layer document to append on a document.
+        :return: layer_document(ChartLayerDocument) - prepared layer document to append on a document.
         """
         layer_data_source = self.prepare_layer_data_source(data_source=document.data_source,
                                                            filter_expression=layer.filter_expression)

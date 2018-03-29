@@ -11,7 +11,6 @@ class ChartsFormHandler(FormHandler):
     Class responsible for creating forms being used in charts module.
     """
 
-    _default_size = 1.5
     _default_title = "My Chart"
 
     def __init__(self, columns: [tuple], shapes: [tuple], shape_keys: any, colour_palette: [tuple]):
@@ -22,16 +21,16 @@ class ChartsFormHandler(FormHandler):
         Dynamically create wtforms derived DocumentOptionsForm object for document options creation based on supported
         columns provided with initialisation.
 
-        :return form: (DocumentOptionsForm) document options form with commonly required fields.
+        :return: form(DocumentOptionsForm) - document options form with commonly required fields.
         """
 
         class DocumentOptionsForm(DocumentBaseOptionsForm):
             pass
 
-        DocumentOptionsForm.x_axis = SelectField("X Column", choices=self._columns, validators=[DataRequired()])
+        DocumentOptionsForm.x_axis = SelectField("X axis column", choices=self._columns, validators=[DataRequired()])
         DocumentOptionsForm.title = self.prepare_title_form()
-        DocumentOptionsForm.x_axis_label = StringField(label="X column label", validators=[Length(max=50)])
-        DocumentOptionsForm.is_date_column = BooleanField(label="Click if the column contains dates")
+        DocumentOptionsForm.x_axis_label = StringField(label="X axis label", validators=[Length(max=50)])
+        DocumentOptionsForm.is_date_column = BooleanField(label="Select if the column contains dates")
 
         form = DocumentOptionsForm
         return form
@@ -41,7 +40,7 @@ class ChartsFormHandler(FormHandler):
         Map chart document options form onto ChartOptions object.
 
         :param document_options_form: (DocumentBaseOptionsForm) form containing user input regarding options for a chart
-        :return chart_options: (ChartOptions) chart options configuration object mapped from a form.
+        :return: chart_options(ChartOptions) - chart options configuration object mapped from a form.
         """
         super().map_document_options(document_options_form=document_options_form)
         chart_options = ChartOptions()
@@ -63,7 +62,7 @@ class ChartsFormHandler(FormHandler):
         Map chart title string field onto ChartTitle object.
 
         :param title_form: (StringField) string field to extract title from
-        :return title: (ChartTitle) chart title object with title extracted from provided string field.
+        :return: title(ChartTitle) - chart title object with title extracted from provided string field.
         """
         title = ChartTitle()
 

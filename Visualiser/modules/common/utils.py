@@ -4,6 +4,13 @@ from enum import Enum
 from numpy import unicode
 
 
+"""
+.. module:: utils
+   :synopsis: Common and base models for utilities usage in the application.
+
+"""
+
+
 class Recipe(metaclass=ABCMeta):
     """
     Base interface for function objects.
@@ -13,7 +20,6 @@ class Recipe(metaclass=ABCMeta):
     """
 
     post_execute = None
-    pre_execute = None
 
     @classmethod
     @abstractmethod
@@ -43,14 +49,9 @@ class Factory(metaclass=ABCMeta):
         Get recipe function object by object_key.
 
         :param object_key: (Enum) key of the object to fetch recipe for
-        :return recipe: (Recipe) recipe for object with provided key
+        :return: recipe(Recipe) - recipe for object with provided key
         """
         recipe = self._recipes[object_key.name].value
-
-        if recipe is None:
-            # TODO: extract to decorator
-            raise AttributeError("Unknown recipe!")
-
         return recipe
 
     @abstractmethod

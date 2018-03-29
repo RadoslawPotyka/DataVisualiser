@@ -128,7 +128,7 @@ class WorkingContextService(Service):
         Returns path to the folder in which uploaded files are stored. Accesses FileService and uses the file path set
         in it.
 
-        :return upload_path: (str) path to the folder under which uploaded files are stored.
+        :return: upload_path(str) - path to the folder under which uploaded files are stored.
         """
         path = os.path.abspath(os.path.dirname(__file__))
         upload_path = os.path.join(path, FileService.UPLOAD_PATH)
@@ -139,7 +139,7 @@ class WorkingContextService(Service):
         """
         Get currently logged user. If no user is logged returns guest user.
 
-        :return user: (User) user that is currently logged in the application
+        :return: user(User) - user that is currently logged in the application
         """
         user = User(name="guest")
 
@@ -152,6 +152,7 @@ class FileService(Service):
 
     Attributes:
         UPLOAD_PATH: (str) path under which the uploaded files are stored.
+
         file_handlers: (FileHandlers) file handlers used for file reading.
     """
 
@@ -163,7 +164,7 @@ class FileService(Service):
         """
         Returns path to the folder in which uploaded files are stored.
 
-        :return upload_path: (str) path to the folder under which uploaded files are stored.
+        :return: upload_path(str) - path to the folder under which uploaded files are stored.
         """
         path = os.path.abspath(os.path.dirname(__file__))
         upload_path = os.path.join(path, FileService.UPLOAD_PATH)
@@ -205,7 +206,7 @@ class FileService(Service):
             return callback(data_frame=data_frame)
         except TypeError:
             raise ParsingError()
-        # return DataFrameService.remove_missing_data(data_frame=data_frame) if
+            # return DataFrameService.remove_missing_data(data_frame=data_frame) if
 
     @staticmethod
     def __get_file_type(file_name: str):
@@ -214,7 +215,7 @@ class FileService(Service):
         returning 'csv' type.
 
         :param file_name: (str) name of the file to fetch extension for.
-        :return extension: (str) extension of provided file_name
+        :return: extension(str) - extension of provided file_name
         """
         extension = ""
 
@@ -276,7 +277,7 @@ class DataFrameService(object):
 
         :param data_frame: (pd.DataFrame) DataFrame object to perform filtering on.
         :param filter_expression: (FilterExpression) filter expression to filter data by.
-        :return df: (pd.DataFrame) DataFrame object with filtered data based on provided expression.
+        :return: (pd.DataFrame) DataFrame object with filtered data based on provided expression.
         """
         query = str(filter_expression)
         # try:
@@ -317,8 +318,8 @@ class DataFrameService(object):
         :param columns_list: (list(Axis)) list of Axis objects for which the data types should be tested.
         :return: (list) list of columns with unmatched data types.
         """
-        return [column.data_field for column in columns_list if not
-                DataFrameService.validate_column(data_frame=data_frame, column=column)]
+        return [column.data_field for column in columns_list if
+                not DataFrameService.validate_column(data_frame=data_frame, column=column)]
 
     @staticmethod
     def validate_columns(data_frame: pd.DataFrame, columns_list: [Axis]) -> bool:
@@ -384,7 +385,7 @@ class RouterStateService(Service):
         Redirect user to a state provided with method params.
 
         :param state: (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
-        redirection between and inside blueprints.
+            redirection between and inside blueprints.
 
         :return: route matching provided state.
         """
@@ -396,7 +397,7 @@ class RouterStateService(Service):
         Redirect user to a state provided with method params using request POST method.
 
         :param state: (str) state to redirect user to. Should contain full endpoint with blueprint name for proper
-        redirection between and inside blueprints.
+            redirection between and inside blueprints.
 
         :return: route matching provided state.
         """

@@ -1,7 +1,7 @@
 from enum import Enum
 
 from bokeh.embed import components
-from bokeh.plotting import figure
+from bokeh.plotting import figure, Figure
 from bokeh.resources import CDN
 
 from ..common.models import TemplateResourcesData
@@ -24,6 +24,7 @@ class ChartService(CommonServiceProvider.DocumentService):
         chart.
 
         :param chart_id: (int) id of a chart that should be returned. If none provided will return the demo chart.
+
         :return: (Chart) chart document options.
         """
         if chart_id is None:
@@ -36,7 +37,7 @@ class ChartService(CommonServiceProvider.DocumentService):
         """
         Returns the demo chart generated from test_samples.
 
-        :return chart: (Chart) chart object configuration for demo chart.
+        :return: chart(Chart) - chart object configuration for demo chart.
         """
         chart = ChartSampleGenerator.create_chart()
         return chart
@@ -66,12 +67,13 @@ class BokehService(object):
     """
 
     @staticmethod
-    def generate_plot(chart: Chart) -> figure:
+    def generate_plot(chart: Chart) -> Figure:
         """
-        Generate plot for given pandas DataFrame and chart options. Returns created plot object
+        Generate plot for given pandas DataFrame and chart options. Returns created plot object.
 
         :param chart: (Chart) options for a chart display and shapes.
-        :return plot: (bokeh.plotting.figure) bokeh plot object
+
+        :return: plot(bokeh.plotting.figure) - bokeh plot object.
         """
         factory = ChartFactory(recipes=ChartService.get_supported_recipes(),
                                data_frame_service=CommonServiceProvider.DataFrameService)
@@ -85,7 +87,7 @@ class BokehService(object):
         Get meta resources for bokeh plots. Returns object containing lists of all necessary links and scripts to
         display and embed bokeh chart.
 
-        :return template_resources: (TemplateResourcesData) object containing list of resources for bokeh plots.
+        :return: template_resources(TemplateResourcesData) - object containing list of resources for bokeh plots.
         """
         template_resources = TemplateResourcesData()
         template_resources.js = CDN.js_files[0]
@@ -94,12 +96,14 @@ class BokehService(object):
         return template_resources
 
     @staticmethod
-    def export_plot(plot: figure) -> TemplateResourcesData:
+    def export_plot(plot: Figure) -> TemplateResourcesData:
         """
         Export plot data. Returns object containing list of all files necessary for embedding the plot data. Does not
         contain meta data for bokeh plots.
-        :param plot: (bokeh.plotting.figure) bokeh figure object to export resources from.
-        :return template_resources: (TemplateResourcesData) object containing lists of all resources for provided plot.
+
+        :param plot: (Figure) bokeh figure object to export resources from.
+
+        :returns: template_resources(TemplateResourcesData) - object containing lists of all resources for provided plot.
         """
         template_resources = TemplateResourcesData()
         template_resources.js, template_resources.html = components(plot)

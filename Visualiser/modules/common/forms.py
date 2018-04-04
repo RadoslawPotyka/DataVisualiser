@@ -283,7 +283,7 @@ class FormHandler(object):
             separator = file_form.separator_type.data
 
         column_index = file_form.columns_row_index.data
-        print(separator)
+
         if is_file_uploaded:
             file_name = file_form.file_name.data
         elif file_form.data_source.data:
@@ -341,7 +341,7 @@ class FormHandler(object):
 
         data_field = layer_form["data_field"]
         layer.axis.data_field = data_field
-        layer.axis.name = layer_form["layer_name"]
+        layer.axis.name = layer_form["layer_name"] or data_field
 
         size = StringTools.to_float(string=layer_form["size"])
         layer.figure.size = size

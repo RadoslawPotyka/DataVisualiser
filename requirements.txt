@@ -1,4 +1,4 @@
-bokeh==0.12.14
+bokeh==0.12.2
 branca==0.2.0
 certifi==2018.1.18
 chardet==3.0.4
